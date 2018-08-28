@@ -1,7 +1,7 @@
 # Личный проект «Кэндишоп» [![Build status][travis-image]][travis-url]
 
 * Студент: [Артём Грецков](https://up.htmlacademy.ru/javascript/15/user/103788).
-* Наставник: `Неизвестно`.
+* Наставник: `Александр Малинов`.
 
 ---
 
