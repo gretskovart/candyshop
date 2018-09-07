@@ -42,3 +42,86 @@ var getProductNames = function () {
     'Острый язычок'
   ];
 };
+
+var getProductImage = function () {
+
+};
+
+var getProductAmount = function () {
+  return getRandomInteger(0, 20);
+};
+
+var getProductPrice = function () {
+  return getRandomInteger(100, 1500);
+};
+
+var getProductWeight = function () {
+  return getRandomInteger(30, 300);
+};
+
+var getProductRating = function () {
+  var productRating = {
+    value: getRandomInteger(),
+    number: getProductRatingNumber()
+  };
+
+  var getProductRatingValue = function () {
+    return getRandomInteger(1, 5);
+  };
+
+  var getProductRatingNumber = function () {
+    return getRandomInteger(10, 900);
+  };
+
+  return productRating();
+};
+
+var getProductNutritionFacts = function () {
+  var nutritionFacts = [
+    sugar: getProductNutritionFactsIsSugar(),
+    energy: ,
+    contents:
+  ];
+
+  var getProductNutritionFactsIsSugar = function () {
+    return getRandomInteger(0, 1) = 1 ? true : false;
+  };
+
+  var getProductNutritionFactsEnergy = function () {
+      return getRandomInteger(70, 500);
+  };
+
+  var getProductNutritionFactsContents = function () {
+    var ProductNutritionFactsContents = {
+      'молоко',
+      'сливки',
+      'вода',
+      'пищевой краситель',
+      'патока',
+      'ароматизатор бекона',
+      'ароматизатор свинца',
+      'ароматизатор дуба, идентичный натуральному',
+      'ароматизатор картофеля',
+      'лимонная кислота',
+      'загуститель',
+      'эмульгатор',
+      'консервант: сорбат калия',
+      'посолочная смесь: соль, нитрит натрия',
+      'ксилит',
+      'карбамид',
+      'вилларибо',
+      'виллабаджо'
+    };
+
+    var productContentsLen = getRandomInteger(0, ProductNutritionFactsContents
+      .length);
+
+    for (var i = 0; i < productContentsLen; i++) {
+      var randomContent  = '';
+      // TODO: добавить запятые
+      randomContent += ProductNutritionFactsContents[productContentsLen - 1];
+    }
+  };
+
+  return nutritionFacts;
+};
