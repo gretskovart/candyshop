@@ -110,22 +110,22 @@ var getProductRating = function () {
 };
 
 var getProductNutritionFacts = function () {
-  var nutritionFacts = [
+  var nutritionFacts = {
     sugar: getProductNutritionFactsIsSugar(),
-    energy: ,
-    contents:
-  ];
+    energy: getProductNutritionFactsEnergy(),
+    contents: getProductNutritionFactsContents()
+  };
 
   var getProductNutritionFactsIsSugar = function () {
-    return getRandomInteger(0, 1) = 1 ? true : false;
+    return (getRandomInteger(0, 1) === 1) ? true : false;
   };
 
   var getProductNutritionFactsEnergy = function () {
-      return getRandomInteger(70, 500);
+    return getRandomInteger(70, 500);
   };
 
   var getProductNutritionFactsContents = function () {
-    var ProductNutritionFactsContents = {
+    var ProductNutritionFactsContents = [
       'молоко',
       'сливки',
       'вода',
@@ -144,19 +144,31 @@ var getProductNutritionFacts = function () {
       'карбамид',
       'вилларибо',
       'виллабаджо'
-    };
+    ];
 
     var productContentsLen = getRandomInteger(0, ProductNutritionFactsContents
       .length);
     var productsContents = ProductNutritionFactsContents[productContentsLen - 1];
 
     for (var i = 0; i < productContentsLen; i++) {
-      var randomContent  = '';
+      var randomContent = '';
 
       randomContent += (i < productContentsLen - 1) ? productsContents + ', ' :
-      productsContents;
+        productsContents;
     }
+
+    return randomContent;
   };
 
   return nutritionFacts;
 };
+
+var hideCatalogCards = function () {
+  var cards = document.querySelector('.catalog__cards');
+  var load = document.querySelector('.catalog__load');
+
+  cards.classList.remove('catalog__cards--load');
+  load.classList.add('visually-hidden');
+};
+
+hideCatalogCards();
