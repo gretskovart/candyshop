@@ -44,7 +44,40 @@ var getProductNames = function () {
 };
 
 var getProductImage = function () {
+  var productImageName = [
+    'ice-garlic.jpg',
+    'ice-cucumber.jpg',
+    'ice-pig.jpg',
+    'ice-mushroom.jpg',
+    'ice-eggplant.jpg',
+    'ice-italian.jpg',
+    'gum-wasabi.jpg',
+    'gum-eggplant.jpg',
+    'gum-mustard.jpg',
+    'gum-cedar.jpg',
+    'gum-portwine.jpg',
+    'gum-chile.jpg',
+    'soda-bacon.jpg',
+    'soda-peanut-grapes.jpg',
+    'soda-celery.jpg',
+    'soda-cob.jpg',
+    'soda-garlic.jpg',
+    'soda-russian.jpg',
+    'marmalade-sour.jpg',
+    'marmalade-corn.jpg',
+    'marmalade-caviar.jpg',
+    'marmalade-new-year.jpg',
+    'marmalade-beer.jpg',
+    'marshmallow-shrimp.jpg',
+    'marshmallow-bacon.jpg',
+    'marshmallow-wine.jpg',
+    'marshmallow-beer.jpg',
+    'marshmallow-spicy.jpg'
+  ];
 
+  var productImagePath = 'img/cards/';
+
+  return productImagePath + getRandomFromArray(productImageName);
 };
 
 var getProductAmount = function () {
