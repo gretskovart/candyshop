@@ -148,11 +148,13 @@ var getProductNutritionFacts = function () {
 
     var productContentsLen = getRandomInteger(0, ProductNutritionFactsContents
       .length);
+    var productsContents = ProductNutritionFactsContents[productContentsLen - 1];
 
     for (var i = 0; i < productContentsLen; i++) {
       var randomContent  = '';
-      // TODO: добавить запятые
-      randomContent += ProductNutritionFactsContents[productContentsLen - 1];
+
+      randomContent += (i < productContentsLen - 1) ? productsContents + ', ' :
+      productsContents;
     }
   };
 
