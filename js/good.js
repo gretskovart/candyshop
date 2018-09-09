@@ -199,12 +199,12 @@ var createProductsArray = function () {
   return productsArray;
 };
 
-var renderProducts = function (product) {
+var renderProduct = function (product) {
   var productElement = similarProductTemplate.cloneNode(true);
   var productsArray = createProductsArray();
 
   for (var i = 0; i < productsArray.length; i++) {
-    var renderProductsAmount = function () {
+    var renderProductAmount = function () {
       if (productsArray[i].amount > 5) {
         productElement.classList.add('card--in-stock');
       } else if (productsArray.amount >= 1 && product.amount <= 5) {
@@ -214,19 +214,19 @@ var renderProducts = function (product) {
       }
     };
 
-    var renderProductsName = function () {
+    var renderProductName = function () {
       productElement.querySelector('.card__title').textContent = productElement
       .name;
     };
 
-    var renderProductsPrice = function () {
+    var renderProductPrice = function () {
       productElement.querySelector('.card__price').textContent = productElement
       .price;
       productElement.querySelector('.card__price').textContent = '/ ' +
       productElement.weight + ' Г';
     };
 
-    var renderProductsRating = function () {
+    var renderProductRating = function () {
       var productsRatingClassList = productElement.querySelector('.stars__rating')
       .classList;
 
@@ -252,7 +252,7 @@ var renderProducts = function (product) {
       .rating.number;
     };
 
-    var renderProductsCharacteristic = function () {
+    var renderProductCharacteristic = function () {
       if (productsArray[i].nutritionFacts.sugar) {
         productElement.querySelector('.card__characteristic').textContent =
         'Содержит сахар';
@@ -266,18 +266,18 @@ var renderProducts = function (product) {
     };
   }
 
-  renderProductsAmount();
-  renderProductsName();
-  renderProductsPrice();
-  renderProductsRating();
-  renderProductsCharacteristic();
+  renderProductAmount();
+  renderProductName();
+  renderProductPrice();
+  renderProductRating();
+  renderProductCharacteristic();
 };
 
 var addProductsToPage = function () {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
-    fragment.appendChild(renderProducts(createProductsArray(i)));
+    fragment.appendChild(renderProduct(createProductsArray(i)));
   }
 
   productsContainer.appendChild(fragment);
