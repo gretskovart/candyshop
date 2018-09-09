@@ -201,12 +201,11 @@ var createProductsArray = function (quantity) {
 
 var renderProduct = function (product) {
   var productElement = similarProductTemplate.cloneNode(true);
-  var productsArray = createProductsArray(PRODUCTS_QUANTITY);
 
   var renderProductAmount = function () {
-    if (productsArray.amount > 5) {
+    if (product.amount > 5) {
       productElement.classList.add('card--in-stock');
-    } else if (productsArray.amount >= 1 && product.amount <= 5) {
+    } else if (product.amount >= 1 && product.amount <= 5) {
       productElement.classList.add('card--little');
     } else {
       productElement.classList.add('card--soon');
@@ -229,7 +228,7 @@ var renderProduct = function (product) {
     var productsRatingClassList = productElement.querySelector('.stars__rating')
     .classList;
 
-    switch (productsArray.rating.value) {
+    switch (product.rating.value) {
       case 1:
         productsRatingClassList.add('stars__rating--one');
         break;
@@ -252,7 +251,7 @@ var renderProduct = function (product) {
   };
 
   var renderProductCharacteristic = function () {
-    if (productsArray.nutritionFacts.sugar) {
+    if (product.nutritionFacts.sugar) {
       productElement.querySelector('.card__characteristic').textContent =
       'Содержит сахар';
     } else {
