@@ -203,68 +203,66 @@ var renderProduct = function (product) {
   var productElement = similarProductTemplate.cloneNode(true);
   var productsArray = createProductsArray(PRODUCTS_QUANTITY);
 
-  for (var i = 0; i < productsArray.length; i++) {
-    var renderProductAmount = function () {
-      if (productsArray[i].amount > 5) {
-        productElement.classList.add('card--in-stock');
-      } else if (productsArray.amount >= 1 && product.amount <= 5) {
-        productElement.classList.add('card--little');
-      } else {
-        productElement.classList.add('card--soon');
-      }
-    };
+  var renderProductAmount = function () {
+    if (productsArray.amount > 5) {
+      productElement.classList.add('card--in-stock');
+    } else if (productsArray.amount >= 1 && product.amount <= 5) {
+      productElement.classList.add('card--little');
+    } else {
+      productElement.classList.add('card--soon');
+    }
+  };
 
-    var renderProductName = function () {
-      productElement.querySelector('.card__title').textContent = productElement
-      .name;
-    };
+  var renderProductName = function () {
+    productElement.querySelector('.card__title').textContent = productElement
+    .name;
+  };
 
-    var renderProductPrice = function () {
-      productElement.querySelector('.card__price').textContent = productElement
-      .price;
-      productElement.querySelector('.card__price').textContent = '/ ' +
-      productElement.weight + ' Г';
-    };
+  var renderProductPrice = function () {
+    productElement.querySelector('.card__price').textContent = productElement
+    .price;
+    productElement.querySelector('.card__price').textContent = '/ ' +
+    productElement.weight + ' Г';
+  };
 
-    var renderProductRating = function () {
-      var productsRatingClassList = productElement.querySelector('.stars__rating')
-      .classList;
+  var renderProductRating = function () {
+    var productsRatingClassList = productElement.querySelector('.stars__rating')
+    .classList;
 
-      switch (productsArray[i].rating.value) {
-        case 1:
-          productsRatingClassList.add('stars__rating--one');
-          break;
-        case 2:
-          productsRatingClassList.add('stars__rating--two');
-          break;
-        case 3:
-          productsRatingClassList.add('stars__rating--three');
-          break;
-        case 4:
-          productsRatingClassList.add('stars__rating--four');
-          break;
-        case 5:
-          productsRatingClassList.add('stars__rating--five');
-          break;
-      }
+    switch (productsArray.rating.value) {
+      case 1:
+        productsRatingClassList.add('stars__rating--one');
+        break;
+      case 2:
+        productsRatingClassList.add('stars__rating--two');
+        break;
+      case 3:
+        productsRatingClassList.add('stars__rating--three');
+        break;
+      case 4:
+        productsRatingClassList.add('stars__rating--four');
+        break;
+      case 5:
+        productsRatingClassList.add('stars__rating--five');
+        break;
+    }
 
-      productElement.querySelector('.star__count').textContent = productElement
-      .rating.number;
-    };
+    productElement.querySelector('.star__count').textContent = productElement
+    .rating.number;
+  };
 
-    var renderProductCharacteristic = function () {
-      if (productsArray[i].nutritionFacts.sugar) {
-        productElement.querySelector('.card__characteristic').textContent =
-        'Содержит сахар';
-      } else {
-        productElement.querySelector('.card__characteristic').textContent =
-        'Без сахара';
-      }
+  var renderProductCharacteristic = function () {
+    if (productsArray.nutritionFacts.sugar) {
+      productElement.querySelector('.card__characteristic').textContent =
+      'Содержит сахар';
+    } else {
+      productElement.querySelector('.card__characteristic').textContent =
+      'Без сахара';
+    }
 
-      productElement.querySelector('.card__composition-list').textContent =
-      productElement.nutritionFacts.contents;
-    };
-  }
+    productElement.querySelector('.card__composition-list').textContent =
+    productElement.nutritionFacts.contents;
+  };
 
   renderProductAmount();
   renderProductName();
