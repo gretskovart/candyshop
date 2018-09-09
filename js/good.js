@@ -181,10 +181,10 @@ var hideCatalogCards = function () {
 
 hideCatalogCards();
 
-var createProductsArray = function () {
+var createProductsArray = function (quantity) {
   var productsArray = [];
 
-  for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
+  for (var i = 0; i < quantity; i++) {
     productsArray[i] = {
       name: getProductNames(),
       picture: getProductImage(),
@@ -201,7 +201,7 @@ var createProductsArray = function () {
 
 var renderProduct = function (product) {
   var productElement = similarProductTemplate.cloneNode(true);
-  var productsArray = createProductsArray();
+  var productsArray = createProductsArray(PRODUCTS_QUANTITY);
 
   for (var i = 0; i < productsArray.length; i++) {
     var renderProductAmount = function () {
