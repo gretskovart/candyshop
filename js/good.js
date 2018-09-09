@@ -100,7 +100,7 @@ var getProductWeight = function () {
 
 var getProductRating = function () {
   var productRating = {
-    value: getRandomInteger(),
+    value: getProductRatingValue(),
     number: getProductRatingNumber()
   };
 
