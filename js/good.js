@@ -271,6 +271,8 @@ var renderProduct = function (product) {
   renderProductPrice();
   renderProductRating();
   renderProductCharacteristic();
+
+  return productElement;
 };
 
 var addProductsToPage = function () {
