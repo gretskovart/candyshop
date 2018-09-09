@@ -195,7 +195,18 @@ var createProductsArray = function () {
   }
 };
 
-var renderProducts = function () {
+var renderProducts = function (product) {
+  var productElement = similarProductTemplate.cloneNode(true);
+
+  if (product.amount > 5) {
+    productElement.classList.add('card--in-stock');
+  } else if (product.amount >= 1 && product.amount <= 5) {
+    productElement.classList.add('card--little');
+  } else {
+    productElement.classList.add('card--soon');
+  }
+
+  productElement.querySelector('.card__title').textContent = productElement.name;
 
 };
 
