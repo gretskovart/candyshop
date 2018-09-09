@@ -101,11 +101,6 @@ var getProductWeight = function () {
 };
 
 var getProductRating = function () {
-  var productRating = {
-    value: getProductRatingValue(),
-    number: getProductRatingNumber()
-  };
-
   var getProductRatingValue = function () {
     return getRandomInteger(1, 5);
   };
@@ -114,16 +109,15 @@ var getProductRating = function () {
     return getRandomInteger(10, 900);
   };
 
-  return productRating();
+  var productRating = {
+    value: getProductRatingValue(),
+    number: getProductRatingNumber()
+  };
+
+  return productRating;
 };
 
 var getProductNutritionFacts = function () {
-  var nutritionFacts = {
-    sugar: getProductNutritionFactsIsSugar(),
-    energy: getProductNutritionFactsEnergy(),
-    contents: getProductNutritionFactsContents()
-  };
-
   var getProductNutritionFactsIsSugar = function () {
     return (getRandomInteger(0, 1) === 1) ? true : false;
   };
@@ -168,6 +162,12 @@ var getProductNutritionFacts = function () {
     return randomContent;
   };
 
+  var nutritionFacts = {
+    sugar: getProductNutritionFactsIsSugar(),
+    energy: getProductNutritionFactsEnergy(),
+    contents: getProductNutritionFactsContents()
+  };
+
   return nutritionFacts;
 };
 
@@ -201,9 +201,9 @@ var renderProducts = function (product) {
   var productElement = similarProductTemplate.cloneNode(true);
 
   var renderProductsAmount = function () {
-    if (product.amount > 5) {
+    if (productElement.amount > 5) {
       productElement.classList.add('card--in-stock');
-    } else if (product.amount >= 1 && product.amount <= 5) {
+    } else if (productElement.amount >= 1 && product.amount <= 5) {
       productElement.classList.add('card--little');
     } else {
       productElement.classList.add('card--soon');
@@ -269,5 +269,13 @@ var renderProducts = function (product) {
 };
 
 var addProductsToPage = function () {
+  var fragment = document.createDocumentFragment();
 
+  for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
+    fragment.appendChild(renderProducts(createProductsArray(i)));
+  }
+
+  productsContainer.appendChild(fragment);
 };
+
+addProductsToPage();
