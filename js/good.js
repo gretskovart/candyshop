@@ -1,5 +1,11 @@
 'use strict';
 
+var PRODUCTS_QUANTITY = 26;
+
+var similarProductTemplate = document.querySelector('#card').content
+.querySelector('.catalog__card');
+var productsContainer = document.querySelector('.catalog__cards');
+
 var getRandomFromArray = function (arr) {
   return Math.floor(Math.random() * arr.length);
 };
@@ -172,3 +178,27 @@ var hideCatalogCards = function () {
 };
 
 hideCatalogCards();
+
+var createProductsArray = function () {
+  var productsArray = [];
+
+  for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
+    productsArray[i] = {
+      name: getProductNames(),
+      picture: getProductImage(),
+      amount: getProductAmount(),
+      price: getProductPrice(),
+      weight: getProductWeight(),
+      rating: getProductRating(),
+      nutritionFacts: getProductNutritionFacts()
+    };
+  }
+};
+
+var renderProducts = function () {
+
+};
+
+var addProductsToPage = function () {
+
+};
