@@ -208,6 +208,9 @@ var renderProducts = function (product) {
 
   productElement.querySelector('.card__title').textContent = productElement.name;
 
+  productElement.querySelector('.card__price').textContent = productElement.price;
+  productElement.querySelector('.card__price').textContent = '/ ' +
+  productElement.weight + ' Г';
 };
 
 var addProductsToPage = function () {
