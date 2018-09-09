@@ -270,13 +270,13 @@ var addProductsToPage = function () {
       };
     }
 
-    return productsArray;
+    return renderProduct(productsArray);
   };
 
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
-    fragment.appendChild(renderProduct(createProductsArray));
+    fragment.appendChild(createProductsArray);
   }
 
   productsContainer.appendChild(fragment);
