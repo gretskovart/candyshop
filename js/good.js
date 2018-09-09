@@ -181,24 +181,6 @@ var hideCatalogCards = function () {
 
 hideCatalogCards();
 
-var createProductsArray = function (quantity) {
-  var productsArray = [];
-
-  for (var i = 0; i < quantity; i++) {
-    productsArray[i] = {
-      name: getProductNames(),
-      picture: getProductImage(),
-      amount: getProductAmount(),
-      price: getProductPrice(),
-      weight: getProductWeight(),
-      rating: getProductRating(),
-      nutritionFacts: getProductNutritionFacts()
-    };
-  }
-
-  return productsArray;
-};
-
 var renderProduct = function (product) {
   var productElement = similarProductTemplate.cloneNode(true);
 
@@ -273,6 +255,24 @@ var renderProduct = function (product) {
 };
 
 var addProductsToPage = function () {
+  var createProductsArray = function (quantity) {
+    var productsArray = [];
+
+    for (var i = 0; i < quantity; i++) {
+      productsArray[i] = {
+        name: getProductNames(),
+        picture: getProductImage(),
+        amount: getProductAmount(),
+        price: getProductPrice(),
+        weight: getProductWeight(),
+        rating: getProductRating(),
+        nutritionFacts: getProductNutritionFacts()
+      };
+    }
+
+    return productsArray;
+  };
+
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
