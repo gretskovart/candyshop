@@ -211,10 +211,37 @@ var renderProducts = function (product) {
   var renderProductsName = function () {
     productElement.querySelector('.card__title').textContent = productElement.name;
   };
+
   var renderProductsPrice = function () {
     productElement.querySelector('.card__price').textContent = productElement.price;
     productElement.querySelector('.card__price').textContent = '/ ' +
     productElement.weight + ' Г';
+  };
+
+  var renderProductsRating = function () {
+    var productsRatingClassList = productElement.querySelector('.stars__rating')
+    .classList;
+
+    switch (productElement.rating.value) {
+      case 1:
+        productsRatingClassList.add('stars__rating--one');
+        break;
+      case 2:
+        productsRatingClassList.add('stars__rating--two');
+        break;
+      case 3:
+        productsRatingClassList.add('stars__rating--three');
+        break;
+      case 4:
+        productsRatingClassList.add('stars__rating--four');
+        break;
+      case 5:
+        productsRatingClassList.add('stars__rating--five');
+        break;
+    }
+
+    productElement.querySelector('.star__count').textContent = productElement
+    .rating.number;
   };
 };
 
