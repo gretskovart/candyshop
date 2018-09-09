@@ -211,11 +211,13 @@ var renderProducts = function (product) {
   };
 
   var renderProductsName = function () {
-    productElement.querySelector('.card__title').textContent = productElement.name;
+    productElement.querySelector('.card__title').textContent = productElement
+    .name;
   };
 
   var renderProductsPrice = function () {
-    productElement.querySelector('.card__price').textContent = productElement.price;
+    productElement.querySelector('.card__price').textContent = productElement
+    .price;
     productElement.querySelector('.card__price').textContent = '/ ' +
     productElement.weight + ' Г';
   };
@@ -245,6 +247,25 @@ var renderProducts = function (product) {
     productElement.querySelector('.star__count').textContent = productElement
     .rating.number;
   };
+
+  var renderProductsCharacteristic = function () {
+    if (productElement.nutritionFacts.sugar) {
+      productElement.querySelector('.card__characteristic').textContent =
+      'Содержит сахар';
+    } else {
+      productElement.querySelector('.card__characteristic').textContent =
+      'Без сахара';
+    }
+
+    productElement.querySelector('.card__composition-list').textContent =
+    productElement.nutritionFacts.contents;
+  };
+
+  renderProductsAmount();
+  renderProductsName();
+  renderProductsPrice();
+  renderProductsRating();
+  renderProductsCharacteristic();
 };
 
 var addProductsToPage = function () {
