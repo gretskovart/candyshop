@@ -7,7 +7,7 @@ var similarProductTemplate = document.querySelector('#card').content
 var productsContainer = document.querySelector('.catalog__cards');
 
 var getRandomFromArray = function (arr) {
-  return Math.floor(Math.random() * arr.length);
+  return arr[Math.floor(Math.random() * arr.length)];
 };
 
 var getRandomInteger = function (min, max) {
@@ -47,6 +47,8 @@ var getProductNames = function () {
     'Бельгийское пенное',
     'Острый язычок'
   ];
+
+  return getRandomFromArray(productsName);
 };
 
 var getProductImage = function () {
