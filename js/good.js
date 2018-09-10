@@ -189,6 +189,10 @@ var hideCatalogCards = function () {
 hideCatalogCards();
 
 var renderProductCart = function (product) {
+  if (product === undefined) {
+    throw new Error('Нет аргументов');
+  }
+
   var productElementCart = similarProductCartTemplate.cloneNode(true);
 
   var renderProductCartName = function () {
