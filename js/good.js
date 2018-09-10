@@ -202,8 +202,14 @@ var renderProductCart = function (product) {
     imgProduct.setAttribute('alt', product.name);
   };
 
+  var renderProductCartPrice = function () {
+    productElementCart.querySelector('.card-order__price').textContent =
+    product.price + ' ₽';
+  };
+
   renderProductCartName();
   renderProductCartImage();
+  renderProductCartPrice();
 
   return productElementCart;
 };
