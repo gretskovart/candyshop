@@ -1,13 +1,14 @@
 'use strict';
 
 var PRODUCTS_QUANTITY = 26;
-var PRODUCTS_CANT_QUANTITY = 3;
+var PRODUCTS_CART_QUANTITY = 3;
 
 var similarProductTemplate = document.querySelector('#card').content
 .querySelector('.catalog__card');
-var similarProductCartTemplate = document.querySelector('#card').content
-.querySelector('.catalog__card');
+var similarProductCartTemplate = document.querySelector('#card-order').content
+.querySelector('.goods_card');
 var productsContainer = document.querySelector('.catalog__cards');
+var productsCartContainer = document.querySelector('.goods__cards');
 
 var getRandomFromArray = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -176,12 +177,36 @@ var getProductNutritionFacts = function () {
 var hideCatalogCards = function () {
   var cards = document.querySelector('.catalog__cards');
   var load = document.querySelector('.catalog__load');
+  var goodsCards = document.querySelector('.goods__cards');
+  var cardEmpty = document.querySelector('.goods__card-empty');
 
   cards.classList.remove('catalog__cards--load');
   load.classList.add('visually-hidden');
+  goodsCards.classList.remove('goods__cards');
+  cardEmpty.style.display = 'none';
 };
 
 hideCatalogCards();
+
+var renderProductCart = function (product) {
+  var productElementCart = similarProductCartTemplate.cloneNode(true);
+
+  var renderProductCartName = function () {
+    productElementCart.querySelector('.card__title').textContent = product.name;
+  };
+
+  var renderProductCartImage = function () {
+    var imgProduct = productElementCart.querySelector('.card__img');
+
+    imgProduct.setAttribute('src', product.picture);
+    imgProduct.setAttribute('alt', product.name);
+  };
+
+  renderProductCartName();
+  renderProductCartImage();
+
+  return productElementCart;
+};
 
 var renderProduct = function (product) {
   var productElement = similarProductTemplate.cloneNode(true);
@@ -287,7 +312,18 @@ var addProductsToPage = function () {
     productsContainer.appendChild(fragment);
   };
 
+  var appendProductsCartFromArray = function (productsArray) {
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < PRODUCTS_CART_QUANTITY; i++) {
+      fragment.appendChild(renderProductCart(productsArray[i]));
+    }
+
+    productsCartContainer.appendChild(fragment);
+  };
+
   appendProductsFromArray(createProductsArray(PRODUCTS_QUANTITY));
+  appendProductsCartFromArray(createProductsArray(PRODUCTS_CART_QUANTITY));
 };
 
 addProductsToPage();
