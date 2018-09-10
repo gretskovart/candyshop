@@ -1,8 +1,11 @@
 'use strict';
 
 var PRODUCTS_QUANTITY = 26;
+var PRODUCTS_CANT_QUANTITY = 3;
 
 var similarProductTemplate = document.querySelector('#card').content
+.querySelector('.catalog__card');
+var similarProductCartTemplate = document.querySelector('#card').content
 .querySelector('.catalog__card');
 var productsContainer = document.querySelector('.catalog__cards');
 
@@ -239,7 +242,10 @@ var renderProduct = function (product) {
   };
 
   var renderProductImage = function () {
-    productElement.querySelector('.card__img').setAttribute('src', product.picture);
+    var imgProduct = productElement.querySelector('.card__img');
+
+    imgProduct.setAttribute('src', product.picture);
+    imgProduct.setAttribute('alt', product.name);
   };
 
   renderProductAmount();
