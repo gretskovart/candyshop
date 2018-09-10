@@ -182,7 +182,7 @@ var hideCatalogCards = function () {
 
   cards.classList.remove('catalog__cards--load');
   load.classList.add('visually-hidden');
-  goodsCards.classList.remove('goods__cards');
+  goodsCards.classList.remove('goods__cards--empty');
   cardEmpty.style.display = 'none';
 };
 
