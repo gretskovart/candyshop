@@ -84,7 +84,6 @@ var getProductImage = function () {
   ];
 
   var productImagePath = 'img/cards/';
-
   return productImagePath + getRandomFromArray(productImageName);
 };
 
@@ -195,15 +194,12 @@ var renderProduct = function (product) {
   };
 
   var renderProductName = function () {
-    productElement.querySelector('.card__title').textContent = productElement
-    .name;
+    productElement.querySelector('.card__title').textContent = product.name;
   };
 
   var renderProductPrice = function () {
-    productElement.querySelector('.card__price').textContent = productElement
-    .price;
-    productElement.querySelector('.card__price').textContent = '/ ' +
-    productElement.weight + ' Г';
+    productElement.querySelector('.card__price').textContent = product.price;
+    productElement.querySelector('.card__price').textContent = '/ ' + product.weight + ' Г';
   };
 
   var renderProductRating = function () {
@@ -228,21 +224,21 @@ var renderProduct = function (product) {
         break;
     }
 
-    productElement.querySelector('.star__count').textContent = productElement
-    .rating.number;
+    productElement.querySelector('.star__count').textContent = product.rating.number;
   };
 
   var renderProductCharacteristic = function () {
     if (product.nutritionFacts.sugar) {
-      productElement.querySelector('.card__characteristic').textContent =
-      'Содержит сахар';
+      productElement.querySelector('.card__characteristic').textContent = 'Содержит сахар';
     } else {
-      productElement.querySelector('.card__characteristic').textContent =
-      'Без сахара';
+      productElement.querySelector('.card__characteristic').textContent = 'Без сахара';
     }
 
-    productElement.querySelector('.card__composition-list').textContent =
-    productElement.nutritionFacts.contents;
+    productElement.querySelector('.card__composition-list').textContent = product.nutritionFacts.contents;
+  };
+
+  var renderProductImage = function () {
+    productElement.querySelector('.card__img').setAttribute('src', product.picture);
   };
 
   renderProductAmount();
@@ -250,6 +246,7 @@ var renderProduct = function (product) {
   renderProductPrice();
   renderProductRating();
   renderProductCharacteristic();
+  renderProductImage();
 
   return productElement;
 };
@@ -270,20 +267,20 @@ var addProductsToPage = function () {
       };
     }
 
-    return renderProduct(productsArray);
+    return productsArray;
   };
 
   var appendProductsFromArray = function (productsArray) {
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
-      fragment.appendChild(productsArray);
+      fragment.appendChild(renderProduct(productsArray[i]));
     }
 
     productsContainer.appendChild(fragment);
   };
 
-  appendProductsFromArray(createProductsArray());
+  appendProductsFromArray(createProductsArray(PRODUCTS_QUANTITY));
 };
 
 addProductsToPage();
