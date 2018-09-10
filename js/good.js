@@ -198,8 +198,9 @@ var renderProduct = function (product) {
   };
 
   var renderProductPrice = function () {
-    productElement.querySelector('.card__price').textContent = product.price;
-    productElement.querySelector('.card__price').textContent = '/ ' + product.weight + ' Г';
+    productElement.querySelector('.card__price').innerHtml = product.price
+    + '<span class="card__currency">₽</span><span class="card__weight">/ '
+    + product.weight + ' Г</span>';
   };
 
   var renderProductRating = function () {
