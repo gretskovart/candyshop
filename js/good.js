@@ -273,13 +273,17 @@ var addProductsToPage = function () {
     return renderProduct(productsArray);
   };
 
-  var fragment = document.createDocumentFragment();
+  var appendProductsFromArray = function (productsArray) {
+    var fragment = document.createDocumentFragment();
 
-  for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
-    fragment.appendChild(createProductsArray);
-  }
+    for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
+      fragment.appendChild(productsArray);
+    }
 
-  productsContainer.appendChild(fragment);
+    productsContainer.appendChild(fragment);
+  };
+
+  appendProductsFromArray(createProductsArray());
 };
 
 addProductsToPage();
