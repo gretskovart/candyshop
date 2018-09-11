@@ -310,9 +310,9 @@ var addProductsToPage = function () {
     return productsArray;
   };
 
-  var appendProductsFromArray = function (productsArray) {
-    var fragment = document.createDocumentFragment();
+  var fragment = document.createDocumentFragment();
 
+  var appendProductsFromArray = function (productsArray) {
     for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
       fragment.appendChild(renderProduct(productsArray[i]));
     }
@@ -321,8 +321,6 @@ var addProductsToPage = function () {
   };
 
   var appendProductsCartFromArray = function (productsArray) {
-    var fragment = document.createDocumentFragment();
-
     for (var i = 0; i < PRODUCTS_CART_QUANTITY; i++) {
       fragment.appendChild(renderProductCart(productsArray[i]));
     }
