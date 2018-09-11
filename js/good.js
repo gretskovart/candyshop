@@ -186,8 +186,6 @@ var hideCatalogCards = function () {
   cardEmpty.style.display = 'none';
 };
 
-hideCatalogCards();
-
 var renderProductCart = function (product) {
   if (product === undefined) {
     throw new Error('Нет аргументов');
@@ -332,6 +330,7 @@ var addProductsToPage = function () {
     productsCartContainer.appendChild(fragment);
   };
 
+  hideCatalogCards();
   appendProductsFromArray(createProductsArray(PRODUCTS_QUANTITY));
   appendProductsCartFromArray(createProductsArray(PRODUCTS_CART_QUANTITY));
 };
