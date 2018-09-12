@@ -194,11 +194,11 @@ var renderProductCart = function (product) {
   var productElementCart = similarProductCartTemplate.cloneNode(true);
 
   var renderProductCartName = function () {
-    productElementCart.querySelector('.card__title').textContent = product.name;
+    productElementCart.querySelector('.card-order__title').textContent = product.name;
   };
 
   var renderProductCartImage = function () {
-    var imgProduct = productElementCart.querySelector('.card__img');
+    var imgProduct = productElementCart.querySelector('.card-order__img');
 
     imgProduct.setAttribute('src', product.picture);
     imgProduct.setAttribute('alt', product.name);
