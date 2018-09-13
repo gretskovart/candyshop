@@ -333,4 +333,18 @@ var addProductsToPage = function () {
   appendProductsCartFromArray(createProductsArray(PRODUCTS_CART_QUANTITY));
 };
 
+var addSelectedFavorite = function (evt) {
+  evt.preventDefault();
+  evt.target.classList.toggle('card__btn-favorite--selected');
+};
+
+var favoriteClickHandler = function () {
+  var cardBtnFavorite = productsContainer.querySelectorAll('.card__btn-favorite');
+
+  for (var i = 0; i < cardBtnFavorite.length; i++) {
+    cardBtnFavorite[i].addEventListener('click', addSelectedFavorite);
+  }
+};
+
 addProductsToPage();
+favoriteClickHandler();
