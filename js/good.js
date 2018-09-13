@@ -339,6 +339,12 @@ var addSelectedFavorite = function (evt) {
   evt.target.classList.toggle('card__btn-favorite--selected');
 };
 
+shoAllProducts.addEventListener('click', function (evt) {
+  evt.preventDefault(); // Временно
+  addProductsToPage();
+  favoriteClickHandler(); // работает только из функции
+});
+
 var favoriteClickHandler = function () {
   var cardBtnFavorite = productsContainer.querySelectorAll('.card__btn-favorite');
 
@@ -346,10 +352,3 @@ var favoriteClickHandler = function () {
     cardBtnFavorite[i].addEventListener('click', addSelectedFavorite);
   }
 };
-
-shoAllProducts.addEventListener('click', function (evt) {
-  evt.preventDefault(); // Временно
-  addProductsToPage();
-});
-
-favoriteClickHandler();
