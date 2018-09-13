@@ -9,6 +9,7 @@ var similarProductCartTemplate = document.querySelector('#card-order').content
 .querySelector('.goods_card');
 var productsContainer = document.querySelector('.catalog__cards');
 var productsCartContainer = document.querySelector('.goods__cards');
+var shoAllProducts = document.querySelector('.catalog__submit');
 
 var getRandomFromArray = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -346,5 +347,9 @@ var favoriteClickHandler = function () {
   }
 };
 
-addProductsToPage();
+shoAllProducts.addEventListener('click', function (evt) {
+  evt.preventDefault(); // Временно
+  addProductsToPage();
+});
+
 favoriteClickHandler();
