@@ -9,7 +9,7 @@ var similarProductCartTemplate = document.querySelector('#card-order').content
 .querySelector('.goods_card');
 var productsContainer = document.querySelector('.catalog__cards');
 var productsCartContainer = document.querySelector('.goods__cards');
-var shoAllProducts = document.querySelector('.catalog__submit');
+var showAllProducts = document.querySelector('.catalog__submit');
 
 var getRandomFromArray = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -336,19 +336,26 @@ var addProductsToPage = function () {
 
 var addSelectedFavorite = function (evt) {
   evt.preventDefault();
-  evt.target.classList.toggle('card__btn-favorite--selected');
+
+  var target = evt.target;
+
+  while (target !== productsContainer) {
+    if (target.classList.contains('card__btn-favorite')) {
+      target.classList.toggle('card__btn-favorite--selected');
+
+      return;
+    }
+    target = target.parentNode;
+  }
 };
 
-shoAllProducts.addEventListener('click', function (evt) {
+showAllProducts.addEventListener('click', function (evt) {
   evt.preventDefault(); // Временно
   addProductsToPage();
-  favoriteClickHandler(); // работает только из функции
 });
 
 var favoriteClickHandler = function () {
-  var cardBtnFavorite = productsContainer.querySelectorAll('.card__btn-favorite');
-
-  for (var i = 0; i < cardBtnFavorite.length; i++) {
-    cardBtnFavorite[i].addEventListener('click', addSelectedFavorite);
-  }
+  productsContainer.addEventListener('click', addSelectedFavorite);
 };
+
+favoriteClickHandler();
