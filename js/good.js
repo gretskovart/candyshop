@@ -377,3 +377,11 @@ var luhnAlgorithm = function (cardNumber) {
     return a + b;
   }, 0) % 10);
 };
+
+var formSubmitChecker = function () {
+  var form = document.querySelector('.buy form');
+
+  form.addEventListener('submit', luhnAlgorithm);
+};
+
+formSubmitChecker();
