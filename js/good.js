@@ -380,8 +380,13 @@ var luhnAlgorithm = function (cardNumber) {
 
 var formSubmitChecker = function () {
   var form = document.querySelector('.buy form');
+  var cardVal = document.querySelector('#payment__card-number').value;
 
-  form.addEventListener('submit', luhnAlgorithm);
+  form.addEventListener('submit', function (evt) {
+    if (!luhnAlgorithm(cardVal)) {
+      evt.preventDefault();
+    }
+  });
 };
 
 formSubmitChecker();
