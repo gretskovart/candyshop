@@ -360,33 +360,44 @@ var favoriteClickHandler = function () {
 
 favoriteClickHandler();
 
-var luhnAlgorithm = function (cardNumber) {
-  var arr = cardNumber.toString().split(',').map(function (char, index) {
-    var digit = parseInt(char, 10);
+// проверка карты
+var cardChecker = function () {
+  var paymentBlock = document.querySelector('.payment__inputs');
+  var cardVal = paymentBlock.querySelector('#payment__card-number').value;
+  var dateVal = paymentBlock.querySelector('#payment__card-date').value;
+  var statusCard = paymentBlock.querySelector('.payment__card-status');
 
-    if ((index + cardNumber.length) % 2 === 0) {
-      var digitX2 = digit * 2;
+  var luhnAlgorithm = function (cardNumber) {
+    var arr = cardNumber.toString().split('');
+    var sum = 0;
 
-      return digitX2 > 9 ? digitX2 - 9 : digitX2;
+    for (var i = 0; i < arr.length; i++) {
+      var integer = parseFloat(arr[i]);
+      if (i % 2 === 0) {
+        integer *= 2;
+      }
+
+      if (integer >= 10) {
+        integer -= 9;
+      }
+
+      sum += integer;
     }
 
-    return digit;
-  });
+    return (sum % 10 !== 0);
+  };
 
-  return !(arr.reduce(function (a, b) {
-    return a + b;
-  }, 0) % 10);
+  var dateChecker = function (date) {
+    var month = date.toString().substring(0, 2);
+    month = parseFloat(month);
+
+    return (month <= 12 && month > 1);
+  };
+
+  if (luhnAlgorithm(cardVal) && dateChecker(dateVal)) {
+    statusCard.textContent = 'определен!';
+  }
+
 };
 
-var formSubmitChecker = function () {
-  var form = document.querySelector('.buy form');
-  var cardVal = document.querySelector('#payment__card-number').value;
-
-  form.addEventListener('submit', function (evt) {
-    if (!luhnAlgorithm(cardVal)) {
-      evt.preventDefault();
-    }
-  });
-};
-
-formSubmitChecker();
+cardChecker();
