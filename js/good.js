@@ -367,22 +367,31 @@ var formInputsChecker = function () {
   var formCardDate = form.querySelector('#payment__card-date');
   var formCardCvc = form.querySelector('#payment__card-cvc');
   var formCardName = form.querySelector('#payment__cardholder');
+  var sumCardCheck = 0;
 
   formName.addEventListener('focusout', function (evt) {
     var formNameValue = formName.value;
 
     if (!isNotEmpty(formNameValue)) {
       evt.target.setCustomValidity('Введите ваше имя');
+
+      return;
     }
+
+    sumCardCheck++;
   });
 
   formCardNum.addEventListener('focusout', function (evt) {
     var formCardNumValue = formCardNum.value;
 
     if (!isNotEmpty(formCardNumValue) || !checkInteger(formCardNumValue)
-    || !luhnAlgorithm(formCardNumValue)) {
+    || !checkLuhnAlgorithm(formCardNumValue)) {
       evt.target.setCustomValidity('Введите корректный номер карты');
+
+      return;
     }
+
+    sumCardCheck++;
   });
 
   formCardName.addEventListener('focusout', function (evt) {
@@ -390,7 +399,11 @@ var formInputsChecker = function () {
 
     if (!isNotEmpty(formCardNameValue)) {
       evt.target.setCustomValidity('Введите имя владельца карты');
+
+      return;
     }
+
+    sumCardCheck++;
   });
 
   formCardDate.addEventListener('focusout', function (evt) {
@@ -399,7 +412,11 @@ var formInputsChecker = function () {
     if (!isNotEmpty(formCardDateValue) || !checkInteger(formCardDateValue)
     || !dateChecker(formCardDateValue)) {
       evt.target.setCustomValidity('Введите корректный срок действия карты');
+
+      return;
     }
+
+    sumCardCheck++;
   });
 
   formCardCvc.addEventListener('focusout', function (evt) {
@@ -409,6 +426,23 @@ var formInputsChecker = function () {
       evt.target.setCustomValidity('Введите корректный CVC карты');
     }
   });
+
+  var getCardStatus = function () {
+    var cardStatus = form.querySelector('.payment__card-status');
+    var paymentsBlock = form.querySelector('.payment__inputs');
+
+    paymentsBlock.addEventListener('focusout', function (evt) {
+      if (evt.target.tagName !== 'input') {
+        return;
+      }
+
+      if (sumCardCheck === 4) {
+        cardStatus.textContent = 'Одобрен';
+      }
+    });
+  };
+
+  getCardStatus();
 };
 
 formInputsChecker();
@@ -421,7 +455,7 @@ var checkInteger = function (val) {
   return !isNaN(parseFloat(val));
 };
 
-var luhnAlgorithm = function (cardNumber) {
+var checkLuhnAlgorithm = function (cardNumber) {
   var arr = cardNumber.toString().split('');
   var sum = 0;
 
