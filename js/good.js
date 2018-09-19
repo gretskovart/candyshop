@@ -350,7 +350,7 @@ var addSelectedFavorite = function (evt) {
 };
 
 showAllProducts.addEventListener('click', function (evt) {
-  evt.preventDefault(); // Временно
+  evt.preventDefault();
   addProductsToPage();
 });
 
@@ -360,44 +360,90 @@ var favoriteClickHandler = function () {
 
 favoriteClickHandler();
 
-// проверка карты
-var cardChecker = function () {
-  var paymentBlock = document.querySelector('.payment__inputs');
-  var cardVal = paymentBlock.querySelector('#payment__card-number').value;
-  var dateVal = paymentBlock.querySelector('#payment__card-date').value;
-  var statusCard = paymentBlock.querySelector('.payment__card-status');
+var formInputsChecker = function () {
+  var form = document.querySelector('.buy form');
+  var formName = form.querySelector('#contact-data__name');
+  var formCardNum = form.querySelector('#payment__card-number');
+  var formCardDate = form.querySelector('#payment__card-date');
+  var formCardCvc = form.querySelector('#payment__card-cvc');
+  var formCardName = form.querySelector('#payment__cardholder');
 
-  var luhnAlgorithm = function (cardNumber) {
-    var arr = cardNumber.toString().split('');
-    var sum = 0;
+  formName.addEventListener('focusout', function (evt) {
+    var formNameValue = formName.value;
 
-    for (var i = 0; i < arr.length; i++) {
-      var integer = parseFloat(arr[i]);
-      if (i % 2 === 0) {
-        integer *= 2;
-      }
-
-      if (integer >= 10) {
-        integer -= 9;
-      }
-
-      sum += integer;
+    if (!isNotEmpty(formNameValue)) {
+      evt.target.setCustomValidity('Введите ваше имя');
     }
+  });
 
-    return (sum % 10 !== 0);
-  };
+  formCardNum.addEventListener('focusout', function (evt) {
+    var formCardNumValue = formCardNum.value;
 
-  var dateChecker = function (date) {
-    var month = date.toString().substring(0, 2);
-    month = parseFloat(month);
+    if (!isNotEmpty(formCardNumValue) || !checkInteger(formCardNumValue)
+    || !luhnAlgorithm(formCardNumValue)) {
+      evt.target.setCustomValidity('Введите корректный номер карты');
+    }
+  });
 
-    return (month <= 12 && month > 1);
-  };
+  formCardName.addEventListener('focusout', function (evt) {
+    var formCardNameValue = formCardName.value;
 
-  if (luhnAlgorithm(cardVal) && dateChecker(dateVal)) {
-    statusCard.textContent = 'определен!';
-  }
+    if (!isNotEmpty(formCardNameValue)) {
+      evt.target.setCustomValidity('Введите имя владельца карты');
+    }
+  });
 
+  formCardDate.addEventListener('focusout', function (evt) {
+    var formCardDateValue = formCardDate.value;
+
+    if (!isNotEmpty(formCardDateValue) || !checkInteger(formCardDateValue)
+    || !dateChecker(formCardDateValue)) {
+      evt.target.setCustomValidity('Введите корректный срок действия карты');
+    }
+  });
+
+  formCardCvc.addEventListener('focusout', function (evt) {
+    var formCardCvcValue = formCardCvc.value;
+
+    if (!isNotEmpty(formCardCvcValue) || checkInteger(formCardCvcValue)) {
+      evt.target.setCustomValidity('Введите корректный CVC карты');
+    }
+  });
 };
 
-cardChecker();
+formInputsChecker();
+
+var isNotEmpty = function (val) {
+  return val !== '';
+};
+
+var checkInteger = function (val) {
+  return !isNaN(parseFloat(val));
+};
+
+var luhnAlgorithm = function (cardNumber) {
+  var arr = cardNumber.toString().split('');
+  var sum = 0;
+
+  for (var i = 0; i < arr.length; i++) {
+    var integer = parseFloat(arr[i]);
+    if (i % 2 === 0) {
+      integer *= 2;
+    }
+
+    if (integer >= 10) {
+      integer -= 9;
+    }
+
+    sum += integer;
+  }
+
+  return (sum % 10 !== 0);
+};
+
+var dateChecker = function (val) {
+  var month = val.toString().substring(0, 2);
+  month = parseFloat(month);
+
+  return (month <= 12 && month > 1);
+};
