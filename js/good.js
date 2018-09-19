@@ -377,8 +377,6 @@ var formInputsChecker = function () {
 
       return;
     }
-
-    sumCardCheck++;
   });
 
   formCardNum.addEventListener('focusout', function (evt) {
@@ -388,10 +386,9 @@ var formInputsChecker = function () {
     || !checkLuhnAlgorithm(formCardNumValue)) {
       evt.target.setCustomValidity('Введите корректный номер карты');
 
+      sumCardCheck++;
       return;
     }
-
-    sumCardCheck++;
   });
 
   formCardName.addEventListener('focusout', function (evt) {
@@ -400,10 +397,9 @@ var formInputsChecker = function () {
     if (!isNotEmpty(formCardNameValue)) {
       evt.target.setCustomValidity('Введите имя владельца карты');
 
+      sumCardCheck++;
       return;
     }
-
-    sumCardCheck++;
   });
 
   formCardDate.addEventListener('focusout', function (evt) {
@@ -413,10 +409,9 @@ var formInputsChecker = function () {
     || !dateChecker(formCardDateValue)) {
       evt.target.setCustomValidity('Введите корректный срок действия карты');
 
+      sumCardCheck++;
       return;
     }
-
-    sumCardCheck++;
   });
 
   formCardCvc.addEventListener('focusout', function (evt) {
@@ -424,6 +419,9 @@ var formInputsChecker = function () {
 
     if (!isNotEmpty(formCardCvcValue) || checkInteger(formCardCvcValue)) {
       evt.target.setCustomValidity('Введите корректный CVC карты');
+
+      sumCardCheck++;
+      return;
     }
   });
 
@@ -468,8 +466,6 @@ var checkLuhnAlgorithm = function (cardNumber) {
     if (integer >= 10) {
       integer -= 9;
     }
-
-    sum += integer;
   }
 
   return (sum % 10 !== 0);
