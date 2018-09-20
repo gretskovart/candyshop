@@ -425,7 +425,7 @@ var dateChecker = function (val) {
   var date = new Date();
   var year = date.getFullYear().toString().substr(-2);
   var yearForm = val.toString().substr(-2);
-  var month = date.genMonth() + 1;
+  var month = date.getMonth() + 1;
   var monthForm = val.toString().substr(-10, 2);
   month = parseFloat(month);
 
