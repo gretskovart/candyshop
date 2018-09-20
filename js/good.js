@@ -422,11 +422,12 @@ var checkLuhnAlgorithm = function (cardNumber) {
 };
 
 var dateChecker = function (val) {
+  val = val.value;
   var date = new Date();
   var year = date.getFullYear().toString().substr(-2);
-  var yearForm = val.toString().substr(-2);
+  var yearForm = val.substr(-2);
   var month = date.getMonth() + 1;
-  var monthForm = val.toString().substr(-10, 2);
+  var monthForm = val.substr(-10, 2);
   month = parseFloat(month);
 
   var checkMonth = function () {
