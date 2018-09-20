@@ -362,99 +362,47 @@ favoriteClickHandler();
 
 var formInputsChecker = function () {
   var form = document.querySelector('.buy form');
-  var formName = form.querySelector('#contact-data__name');
   var formCardNum = form.querySelector('#payment__card-number');
   var formCardDate = form.querySelector('#payment__card-date');
-  var formCardCvc = form.querySelector('#payment__card-cvc');
-  var formCardName = form.querySelector('#payment__cardholder');
-  var sumCardCheck = 0;
 
-  formName.addEventListener('focusout', function (evt) {
-    var formNameValue = formName.value;
+  var formPaymentInputs = document.querySelector('.payment__inputs')
+  .querySelectorAll('input');
 
-    if (!isNotEmpty(formNameValue)) {
-      evt.target.setCustomValidity('Введите ваше имя');
+  for (var i = 0; i < formPaymentInputs.length; i++) {
+    formPaymentInputs[i].addEventListener('blur', function (evt) {
+      switch (evt.target) {
+        case formCardNum:
+          if (!checkLuhnAlgorithm(formCardNum)) {
+            formCardNum.setCustomValidity('Введите корректный номер карты');
 
-      return;
-    }
-  });
+          } else {
+            formCardNum.classList.add('inputChecked');
 
-  formCardNum.addEventListener('focusout', function (evt) {
-    var formCardNumValue = formCardNum.value;
+          }
+          break;
+        case formCardDate:
+          if (!dateChecker(formCardDate)) {
+            formCardDate.setCustomValidity('Введите корректный срок действия карты');
 
-    if (!isNotEmpty(formCardNumValue) || !checkInteger(formCardNumValue)
-    || !checkLuhnAlgorithm(formCardNumValue)) {
-      evt.target.setCustomValidity('Введите корректный номер карты');
+          } else {
+            formCardNum.classList.add('inputChecked');
 
-      sumCardCheck++;
-      return;
-    }
-  });
-
-  formCardName.addEventListener('focusout', function (evt) {
-    var formCardNameValue = formCardName.value;
-
-    if (!isNotEmpty(formCardNameValue)) {
-      evt.target.setCustomValidity('Введите имя владельца карты');
-
-      sumCardCheck++;
-      return;
-    }
-  });
-
-  formCardDate.addEventListener('focusout', function (evt) {
-    var formCardDateValue = formCardDate.value;
-
-    if (!isNotEmpty(formCardDateValue) || !checkInteger(formCardDateValue)
-    || !dateChecker(formCardDateValue)) {
-      evt.target.setCustomValidity('Введите корректный срок действия карты');
-
-      sumCardCheck++;
-      return;
-    }
-  });
-
-  formCardCvc.addEventListener('focusout', function (evt) {
-    var formCardCvcValue = formCardCvc.value;
-
-    if (!isNotEmpty(formCardCvcValue) || checkInteger(formCardCvcValue)) {
-      evt.target.setCustomValidity('Введите корректный CVC карты');
-
-      sumCardCheck++;
-      return;
-    }
-  });
-
-  var getCardStatus = function () {
-    var cardStatus = form.querySelector('.payment__card-status');
-    var paymentsBlock = form.querySelector('.payment__inputs');
-
-    paymentsBlock.addEventListener('focusout', function (evt) {
-      if (evt.target.tagName !== 'input') {
-        return;
-      }
-
-      if (sumCardCheck === 4) {
-        cardStatus.textContent = 'Одобрен';
+          }
+          break;
       }
     });
-  };
+  }
 
-  getCardStatus();
+  form.addEventListener('submit', function () {
+    return (formCardNum.classList.contains('inputChecked') && formCardDate
+    .classList.contains('inputChecked'));
+  });
 };
 
 formInputsChecker();
 
-var isNotEmpty = function (val) {
-  return val !== '';
-};
-
-var checkInteger = function (val) {
-  return !isNaN(parseFloat(val));
-};
-
 var checkLuhnAlgorithm = function (cardNumber) {
-  var arr = cardNumber.toString().split('');
+  var arr = cardNumber.value.toString().split('');
   var sum = 0;
 
   for (var i = 0; i < arr.length; i++) {
@@ -466,14 +414,28 @@ var checkLuhnAlgorithm = function (cardNumber) {
     if (integer >= 10) {
       integer -= 9;
     }
+
+    sum += integer;
   }
 
-  return (sum % 10 !== 0);
+  return (sum % 10 === 0);
 };
 
 var dateChecker = function (val) {
-  var month = val.toString().substring(0, 2);
+  var date = new Date();
+  var year = date.getFullYear().toString().substr(-2);
+  var yearForm = val.toString().substr(-2);
+  var month = date.genMonth() + 1;
+  var monthForm = val.toString().substr(-10, 2);
   month = parseFloat(month);
 
-  return (month <= 12 && month > 1);
+  var checkMonth = function () {
+    return (monthForm <= 12 && monthForm > 1);
+  };
+
+  var checkYear = function () {
+    return (yearForm > year) || (yearForm === year) && (monthForm >= month);
+  };
+
+  return checkMonth() && checkYear();
 };
