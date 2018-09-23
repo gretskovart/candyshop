@@ -212,7 +212,7 @@ var renderProductCart = function (product) {
   };
 
   var renderProductCartAmount = function () {
-    productElementCart.querySelector('.card-order__count').textContent = product.count;
+    productElementCart.querySelector('.card-order__count').setAttribute('value', 1);
   };
 
   renderProductCartName();
