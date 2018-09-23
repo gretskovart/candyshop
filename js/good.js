@@ -1,7 +1,6 @@
 'use strict';
 
 var PRODUCTS_QUANTITY = 26;
-var PRODUCTS_CART_QUANTITY = 3;
 
 var similarProductTemplate = document.querySelector('#card').content
 .querySelector('.catalog__card');
@@ -10,10 +9,6 @@ var similarProductCartTemplate = document.querySelector('#card-order').content
 var productsContainer = document.querySelector('.catalog__cards');
 var productsCartContainer = document.querySelector('.goods__cards');
 var showAllProducts = document.querySelector('.catalog__submit');
-
-var findThisProduct = function (item) {
-  return productsContainer.querySelectorAll('.catalog__card').item(item)
-};
 
 var getRandomFromArray = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -182,11 +177,12 @@ var getProductNutritionFacts = function () {
 var hideCatalogCards = function () {
   var cards = document.querySelector('.catalog__cards');
   var load = document.querySelector('.catalog__load');
+  var goodsCards = document.querySelector('.goods__cards');
   var cardEmpty = document.querySelector('.goods__card-empty');
 
   cards.classList.remove('catalog__cards--load');
   load.classList.add('visually-hidden');
-  productsCartContainer.classList.remove('goods__cards--empty');
+  goodsCards.classList.remove('goods__cards--empty');
   cardEmpty.style.display = 'none';
 };
 
@@ -213,9 +209,14 @@ var renderProductCart = function (product) {
     product.price + ' ₽';
   };
 
+  var renderProductCartAmount = function () {
+    productElementCart.querySelector('.card-order__count').textContent = product.count;
+  };
+
   renderProductCartName();
   renderProductCartImage();
   renderProductCartPrice();
+  renderProductCartAmount();
 
   return productElementCart;
 };
@@ -231,8 +232,6 @@ var renderProduct = function (product) {
     } else {
       productElement.classList.add('card--soon');
     }
-
-    productElement.setAttribute('data-quantity', product.amount);
   };
 
   var renderProductName = function () {
@@ -298,7 +297,7 @@ var renderProduct = function (product) {
 };
 
 var addProductsToPage = function () {
-  window.createProductsArray = function (quantity) {
+  var createProductsArray = function (quantity) {
     var productsArray = [];
 
     for (var i = 0; i < quantity; i++) {
@@ -326,24 +325,17 @@ var addProductsToPage = function () {
     productsContainer.appendChild(fragment);
   };
 
-// переносим эту функцию в обработчик кнопки
-/*
-  var appendProductsCartFromArray = function (productsArray) {
-    for (var i = 0; i < PRODUCTS_CART_QUANTITY; i++) {
-      fragment.appendChild(renderProductCart(productsArray[i]));
-    }
+  hideCatalogCards();
+  appendProductsFromArray(createProductsArray(PRODUCTS_QUANTITY));
+};
 
+var addProductsToCart = function () {
+  var fragment = document.createDocumentFragment();
+
+  var appendProductsCartFromArray = function (objToCart) {
+    fragment.appendChild(renderProductCart(objToCart));
     productsCartContainer.appendChild(fragment);
   };
-  */
-
-
-
-// переносим эту функцию в обработчик кнопки
-
-  hideCatalogCards();
-  appendProductsFromArray(window.createProductsArray(PRODUCTS_QUANTITY));
-//  appendProductsCartFromArray(createProductsArray(PRODUCTS_CART_QUANTITY));
 };
 
 var addSelectedFavorite = function (evt) {
@@ -364,7 +356,6 @@ var addSelectedFavorite = function (evt) {
 showAllProducts.addEventListener('click', function (evt) {
   evt.preventDefault(); // Временно
   addProductsToPage();
-  addToCartButtonHandler();
 });
 
 var favoriteClickHandler = function () {
@@ -373,35 +364,21 @@ var favoriteClickHandler = function () {
 
 favoriteClickHandler();
 
+// создаем карточку в корзине
+var createCardInCart = function () {
+
+};
+// создаем карточку в корзине
+
 // добавляем карточку по нажатию на кнопку
 var addToCartButtonHandler = function () {
-  var addButton = productsContainer.querySelectorAll('.card__btn');
+  var addButton = document.querySelectorAll('.card__btn');
 
   for (var i = 0; i < addButton.length; i++) {
-    addButton[i].addEventListener('click', createCardInCart(findThisProduct(i),
-        i, window.createProductsArray()));
+    addButton[i].addEventListener('click', createCardInCart);
   }
 };
-
 // добавляем карточку по нажатию на кнопку
-
-// создаем карточку в корзине
-var createCardInCart = function (target, i, productsArray) {
-  var goodAttr = productsCartContainer.querySelector('[data-id'
-  + target.dataset.id + ']');
-
-  if (goodAttr === null) {
-    var cartCard = renderProductCart(productsArray[i]);
-    productsCartContainer.appendChild(cartCard);
-
-  } else {
-    // меняем количество
-  }
-
-};
-
-// создаем карточку в корзине
-
 
 // увеличиваем количество товаров в корзине
 
