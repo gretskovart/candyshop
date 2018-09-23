@@ -334,6 +334,10 @@ var addProductsToCart = function (objToCart) {
 
   fragment.appendChild(renderProductCart(objToCart));
   productsCartContainer.appendChild(fragment);
+
+  removeButtonHandler();
+  decreaseCartHandler();
+  increaseCartHandler();
 };
 
 var addSelectedFavorite = function (evt) {
@@ -392,14 +396,62 @@ var copyObj = function (arr, objName) {
 };
 // копируем объект карточки
 
-// увеличиваем количество товаров в корзине
+// изменяем количество товаров в корзине
+var changeQantityCartObj = function (evt, act) {
+  var currentObj = evt.target.closest('.goods_card');
+  var cartObjCount = currentObj.querySelector('.card-order__count');
+  var currentCount = parseInt(cartObjCount.getAttribute('value'), 10);
 
-// увеличиваем количество товаров в корзине
+  // TODO: сделать условия по-элегантнее
+  if (act === 'increase') {
+    cartObjCount.setAttribute('value', currentCount += 1);
+  } else if (act === 'decrease') {
+    if (currentCount !== 1) {
+      cartObjCount.setAttribute('value', currentCount -= 1);
+    } else {
+      removeCartObj(evt);
+    }
+  }
+};
 
-// уменьшаем количество товаров в корзине
+var decreaseCartHandler = function () {
+  var decreaseButton = productsCartContainer.querySelectorAll('.card-order__btn--decrease');
+  var act = 'decrease';
 
-// уменьшаем количество товаров в корзине
+  for (var i = 0; i < decreaseButton.length; i++) {
+    decreaseButton[i].addEventListener('click', function (evt) {
+      changeQantityCartObj(evt, act);
+    });
+  }
+};
+
+var increaseCartHandler = function () {
+  var increaseButton = productsCartContainer.querySelectorAll('.card-order__btn--increase');
+  var act = 'increase';
+
+  for (var i = 0; i < increaseButton.length; i++) {
+    increaseButton[i].addEventListener('click', function (evt) {
+      changeQantityCartObj(evt, act);
+    });
+  }
+};
+// изменяем количество товаров в корзине
 
 // удаляем товар из корзины
+var removeCartObj = function (evt) {
+  var currentObj = evt.target.closest('.goods_card');
+  currentObj.remove();
+};
+
+var removeButtonHandler = function () {
+  var removeButton = productsCartContainer.querySelectorAll('.card-order__close');
+
+  for (var i = 0; i < removeButton.length; i++) {
+    removeButton[i].addEventListener('click', function (evt) {
+      evt.preventDefault();
+      removeCartObj(evt);
+    });
+  }
+};
 
 // удаляем товар из корзины
