@@ -9,6 +9,8 @@ var similarProductCartTemplate = document.querySelector('#card-order').content
 var productsContainer = document.querySelector('.catalog__cards');
 var productsCartContainer = document.querySelector('.goods__cards');
 var showAllProducts = document.querySelector('.catalog__submit');
+var productsArray = [];
+var productsCartArray = [];
 
 var getRandomFromArray = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -298,8 +300,6 @@ var renderProduct = function (product) {
 
 var addProductsToPage = function () {
   var createProductsArray = function (quantity) {
-    var productsArray = [];
-
     for (var i = 0; i < quantity; i++) {
       productsArray[i] = {
         name: getProductNames(),
@@ -317,9 +317,9 @@ var addProductsToPage = function () {
 
   var fragment = document.createDocumentFragment();
 
-  var appendProductsFromArray = function (productsArray) {
+  var appendProductsFromArray = function (arr) {
     for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
-      fragment.appendChild(renderProduct(productsArray[i]));
+      fragment.appendChild(renderProduct(arr[i]));
     }
 
     productsContainer.appendChild(fragment);
@@ -329,13 +329,11 @@ var addProductsToPage = function () {
   appendProductsFromArray(createProductsArray(PRODUCTS_QUANTITY));
 };
 
-var addProductsToCart = function () {
+var addProductsToCart = function (objToCart) {
   var fragment = document.createDocumentFragment();
 
-  var appendProductsCartFromArray = function (objToCart) {
-    fragment.appendChild(renderProductCart(objToCart));
-    productsCartContainer.appendChild(fragment);
-  };
+  fragment.appendChild(renderProductCart(objToCart));
+  productsCartContainer.appendChild(fragment);
 };
 
 var addSelectedFavorite = function (evt) {
@@ -354,8 +352,9 @@ var addSelectedFavorite = function (evt) {
 };
 
 showAllProducts.addEventListener('click', function (evt) {
-  evt.preventDefault(); // Временно
+  evt.preventDefault();
   addProductsToPage();
+  addToCartButtonHandler();
 });
 
 var favoriteClickHandler = function () {
@@ -368,9 +367,14 @@ favoriteClickHandler();
 var addToCartButtonHandler = function () {
   var addButton = document.querySelectorAll('.card__btn');
 
-
   for (var i = 0; i < addButton.length; i++) {
-    addButton[i].addEventListener('click', createCardInCart);
+    addButton[i].addEventListener('click', function (evt) {
+      var currentCard = evt.target.closest('.catalog__card');
+      var currentCardName = currentCard.querySelector('.card__title').textContent;
+      var productObj = copyObj(productsArray, currentCardName);
+
+      productsCartArray.push(addProductsToCart(productObj));
+    });
   }
 };
 
@@ -387,8 +391,6 @@ var copyObj = function (arr, objName) {
   return copy;
 };
 // копируем объект карточки
-
-// добавляем карточку по нажатию на кнопку
 
 // увеличиваем количество товаров в корзине
 
