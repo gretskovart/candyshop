@@ -390,6 +390,10 @@ var copyObj = function (arr, objName) {
     }
   }
 
+  // TODO: увеличить amount объекта productsCartArray (если нет такого объекта)
+
+  // TODO: уменьшить amount объекта productsArray
+
   var copy = Object.assign({}, currentObj);
 
   return copy;
@@ -404,9 +408,11 @@ var changeQantityCartObj = function (evt, act) {
 
   // TODO: сделать условия по-элегантнее
   if (act === 'increase') {
+    // TODO: менять amount объекта productsCartArray
     cartObjCount.setAttribute('value', currentCount += 1);
   } else if (act === 'decrease') {
     if (currentCount !== 1) {
+    // TODO: менять amount объекта productsCartArray
       cartObjCount.setAttribute('value', currentCount -= 1);
     } else {
       removeCartObj(evt);
