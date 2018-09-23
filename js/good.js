@@ -364,20 +364,30 @@ var favoriteClickHandler = function () {
 
 favoriteClickHandler();
 
-// создаем карточку в корзине
-var createCardInCart = function () {
-
-};
-// создаем карточку в корзине
-
 // добавляем карточку по нажатию на кнопку
 var addToCartButtonHandler = function () {
   var addButton = document.querySelectorAll('.card__btn');
+
 
   for (var i = 0; i < addButton.length; i++) {
     addButton[i].addEventListener('click', createCardInCart);
   }
 };
+
+// копируем объект карточки
+var copyObj = function (arr, objName) {
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i].name === objName) {
+      var currentObj = arr[i];
+    }
+  }
+
+  var copy = Object.assign({}, currentObj);
+
+  return copy;
+};
+// копируем объект карточки
+
 // добавляем карточку по нажатию на кнопку
 
 // увеличиваем количество товаров в корзине
