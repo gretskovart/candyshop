@@ -368,11 +368,11 @@ var renderHeaderProductCartPrice = function (obj, act) {
       headerCart.textContent = 'В корзине ничего нет';
     } else {
       fullPrice -= obj.price;
-      quantity -= 1;
+      quantityInCart -= 1;
     }
   }
 
-  headerCart.textContent = 'В корзине ' + quantity + ' товара на ' + fullPrice + '₽';
+  headerCart.textContent = 'В корзине ' + quantityInCart + ' товара на ' + fullPrice + '₽';
 };
 
 showAllProducts.addEventListener('click', function (evt) {
