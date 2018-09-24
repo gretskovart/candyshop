@@ -10,7 +10,7 @@ var productsContainer = document.querySelector('.catalog__cards');
 var productsCartContainer = document.querySelector('.goods__cards');
 var showAllProducts = document.querySelector('.catalog__submit');
 var fullPrice = 0;
-var quantity = 0;
+var quantityInCart = 0;
 var productsArray = [];
 var productsCartArray = [];
 
@@ -362,9 +362,9 @@ var renderHeaderProductCartPrice = function (obj, act) {
 
   if (act === 'increase') {
     fullPrice += obj.price;
-    quantity += 1;
+    quantityInCart += 1;
   } else if (act === 'decrease') {
-    if (fullPrice === obj.price || quantity === 1) {
+    if (fullPrice === obj.price || quantityInCart === 1) {
       headerCart.textContent = 'В корзине ничего нет';
     } else {
       fullPrice -= obj.price;
