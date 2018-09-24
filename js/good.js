@@ -364,14 +364,19 @@ var renderHeaderProductCartPrice = function (price, act, qnty) {
     fullPrice += price;
     quantityInCart += 1;
   } else if (act === 'decrease') {
-    if (fullPrice === price || quantityInCart === 1) {
-      headerCart.textContent = 'В корзине ничего нет'; // не работает
+    if (quantityInCart <= 1 || quantityInCart === qnty) {
+      // BUG: при остатке 1 товара в корзине срабатывает
+      headerCart.textContent = 'В корзине ничего нет';
+      quantityInCart = 0;
+      fullPrice = 0;
+      return;
+
     } else {
       fullPrice -= price;
       quantityInCart -= (qnty) ? qnty : 1;
     }
   }
-
+  // TODO: правильные окончания
   headerCart.textContent = 'В корзине ' + quantityInCart + ' товара на ' + fullPrice + '₽';
 };
 
