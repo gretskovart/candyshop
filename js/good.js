@@ -357,7 +357,7 @@ var addSelectedFavorite = function (evt) {
   }
 };
 
-var renderHeaderProductCartPrice = function (price, act) {
+var renderHeaderProductCartPrice = function (price, act, qnty) {
   var headerCart = document.querySelector('.main-header__basket');
 
   if (act === 'increase') {
@@ -365,10 +365,10 @@ var renderHeaderProductCartPrice = function (price, act) {
     quantityInCart += 1;
   } else if (act === 'decrease') {
     if (fullPrice === price || quantityInCart === 1) {
-      headerCart.textContent = 'В корзине ничего нет';
+      headerCart.textContent = 'В корзине ничего нет'; // не работает
     } else {
       fullPrice -= price;
-      quantityInCart -= 1;
+      quantityInCart -= (qnty) ? qnty : 1;
     }
   }
 
@@ -480,6 +480,13 @@ var increaseCartHandler = function () {
 // удаляем товар из корзины
 var removeCartObj = function (evt) {
   var currentObj = evt.target.closest('.goods_card');
+  var currentObjQuantity = currentObj.querySelector('.card-order__count');
+  var currentObjQuantityVal = parseInt(currentObjQuantity.getAttribute('value'), 10);
+  var cartPrice = currentObj.querySelector('.card-order__price').textContent;
+  var currentObjFullPrice = parseInt(cartPrice, 10) * currentObjQuantityVal;
+  var act = 'decrease';
+
+  renderHeaderProductCartPrice(currentObjFullPrice, act, currentObjQuantityVal);
   currentObj.remove();
 };
 
