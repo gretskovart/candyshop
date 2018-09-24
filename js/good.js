@@ -357,17 +357,17 @@ var addSelectedFavorite = function (evt) {
   }
 };
 
-var renderHeaderProductCartPrice = function (obj, act) {
+var renderHeaderProductCartPrice = function (price, act) {
   var headerCart = document.querySelector('.main-header__basket');
 
   if (act === 'increase') {
-    fullPrice += obj.price;
+    fullPrice += price;
     quantityInCart += 1;
   } else if (act === 'decrease') {
-    if (fullPrice === obj.price || quantityInCart === 1) {
+    if (fullPrice === price || quantityInCart === 1) {
       headerCart.textContent = 'В корзине ничего нет';
     } else {
-      fullPrice -= obj.price;
+      fullPrice -= price;
       quantityInCart -= 1;
     }
   }
@@ -400,7 +400,7 @@ var addToCartButtonHandler = function () {
 
       if (productObj) {
         productsCartArray.push(addProductsToCart(productObj));
-        renderHeaderProductCartPrice(productObj, act);
+        renderHeaderProductCartPrice(productObj.price, act);
       }
     });
   }
@@ -433,6 +433,8 @@ var changeQantityCartObj = function (evt, act) {
   var currentObj = evt.target.closest('.goods_card');
   var cartObjCount = currentObj.querySelector('.card-order__count');
   var currentCount = parseInt(cartObjCount.getAttribute('value'), 10);
+  var cartPrice = currentObj.querySelector('.card-order__price').textContent;
+  var currentObjPrice = parseInt(cartPrice, 10);
 
   // TODO: сделать условия по-элегантнее
   if (act === 'increase') {
@@ -446,6 +448,8 @@ var changeQantityCartObj = function (evt, act) {
       removeCartObj(evt);
     }
   }
+
+  renderHeaderProductCartPrice(currentObjPrice, act);
 };
 
 var decreaseCartHandler = function () {
