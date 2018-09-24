@@ -377,7 +377,9 @@ var addToCartButtonHandler = function () {
       var currentCardName = currentCard.querySelector('.card__title').textContent;
       var productObj = copyObj(productsArray, currentCardName);
 
-      productsCartArray.push(addProductsToCart(productObj));
+      if (productObj) {
+        productsCartArray.push(addProductsToCart(productObj));
+      }
     });
   }
 };
@@ -388,6 +390,10 @@ var copyObj = function (arr, objName) {
     if (arr[i].name === objName) {
       var currentObj = arr[i];
     }
+  }
+
+  if (currentObj.amount < 1) {
+    return false;
   }
 
   // TODO: увеличить amount объекта productsCartArray (если нет такого объекта)
@@ -426,6 +432,7 @@ var decreaseCartHandler = function () {
 
   for (var i = 0; i < decreaseButton.length; i++) {
     decreaseButton[i].addEventListener('click', function (evt) {
+      evt.stopPropagation();
       changeQantityCartObj(evt, act);
     });
   }
@@ -437,6 +444,7 @@ var increaseCartHandler = function () {
 
   for (var i = 0; i < increaseButton.length; i++) {
     increaseButton[i].addEventListener('click', function (evt) {
+      evt.stopPropagation();
       changeQantityCartObj(evt, act);
     });
   }
