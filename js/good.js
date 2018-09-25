@@ -562,3 +562,26 @@ var toggleDelivery = function (target) {
 };
 
 changeDelievery();
+
+// слайдер
+var sliderHandler = function () {
+  var sliderPinLeft = document.querySelector('.range__btn--left');
+  var sliderPinRight = document.querySelector('.range__btn--right');
+  var rangePriceMin = document.querySelector('.range__price--min');
+  var rangePriceMax = document.querySelector('.range__price--max');
+
+  sliderPinLeft.addEventListener('mouseup', function (evt) {
+    rangePriceMin.textContent = changeRangePrice(evt);
+  });
+  sliderPinRight.addEventListener('mouseup', function (evt) {
+    rangePriceMax.textContent = changeRangePrice(evt);
+  });
+};
+
+var changeRangePrice = function (evt) {
+  var currentPosition = evt.clientX; // посчитать стоимость
+
+  return parseInt(currentPosition, 10);
+};
+
+sliderHandler();
