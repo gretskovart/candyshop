@@ -507,3 +507,30 @@ var removeButtonHandler = function () {
 };
 
 // удаляем товар из корзины
+
+// переключаем способ оплаты
+
+var changePayment = function () {
+  var toggleButton = document.querySelector('.toggle-btn');
+
+  toggleButton.addEventListener('click', function (evt) {
+    var btnTarget = evt.target;
+
+    if (btnTarget.tagName === 'INPUT' && !btnTarget.hasAttribute('checked')) {
+      togglePayment(btnTarget);
+    }
+  });
+};
+
+var togglePayment = function (target) {
+  var cashWrap = document.querySelector('.payment__cash-wrap');
+  var cardWrap = document.querySelector('.payment__card-wrap');
+  var checkedBtn = document.querySelector('.toggle-btn__input[checked]');
+
+  cardWrap.classList.toggle('visually-hidden');
+  cashWrap.classList.toggle('visually-hidden');
+  target.setAttribute('checked', true);
+  checkedBtn.removeAttribute('checked');
+};
+
+changePayment();
