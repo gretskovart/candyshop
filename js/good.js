@@ -522,6 +522,7 @@ var changePayment = function () {
   });
 };
 
+// TODO: объединить функции табов
 var togglePayment = function (target) {
   var paymentSection = document.querySelector('.payment');
   var cashWrap = paymentSection.querySelector('.payment__cash-wrap');
