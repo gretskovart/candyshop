@@ -511,9 +511,9 @@ var removeButtonHandler = function () {
 // переключаем способ оплаты
 
 var changePayment = function () {
-  var toggleButton = document.querySelector('.toggle-btn');
+  var toggleButtonPay = document.querySelector('.toggle-btn');
 
-  toggleButton.addEventListener('click', function (evt) {
+  toggleButtonPay.addEventListener('click', function (evt) {
     var btnTarget = evt.target;
 
     if (btnTarget.tagName === 'INPUT' && !btnTarget.hasAttribute('checked')) {
@@ -523,9 +523,10 @@ var changePayment = function () {
 };
 
 var togglePayment = function (target) {
-  var cashWrap = document.querySelector('.payment__cash-wrap');
-  var cardWrap = document.querySelector('.payment__card-wrap');
-  var checkedBtn = document.querySelector('.toggle-btn__input[checked]');
+  var paymentSection = document.querySelector('.payment');
+  var cashWrap = paymentSection.querySelector('.payment__cash-wrap');
+  var cardWrap = paymentSection.querySelector('.payment__card-wrap');
+  var checkedBtn = paymentSection.querySelector('.toggle-btn__input[checked]');
 
   cardWrap.classList.toggle('visually-hidden');
   cashWrap.classList.toggle('visually-hidden');
@@ -534,3 +535,29 @@ var togglePayment = function (target) {
 };
 
 changePayment();
+
+var changeDelievery = function () {
+  var toggleButtonDelivery = document.querySelector('.deliver__toggle');
+
+  toggleButtonDelivery.addEventListener('click', function (evt) {
+    var btnTarget = evt.target;
+
+    if (btnTarget.tagName === 'INPUT' && !btnTarget.hasAttribute('checked')) {
+      toggleDelivery(btnTarget);
+    }
+  });
+};
+
+var toggleDelivery = function (target) {
+  var deliverySection = document.querySelector('.deliver');
+  var store = deliverySection.querySelector('.deliver__store');
+  var courier = deliverySection.querySelector('.deliver__courier');
+  var checkedBtn = deliverySection.querySelector('.toggle-btn__input[checked]');
+
+  store.classList.toggle('visually-hidden');
+  courier.classList.toggle('visually-hidden');
+  target.setAttribute('checked', true);
+  checkedBtn.removeAttribute('checked');
+};
+
+changeDelievery();
