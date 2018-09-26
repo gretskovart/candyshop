@@ -376,8 +376,42 @@ var renderHeaderProductCartPrice = function (price, act, qnty) {
       quantityInCart -= (qnty) ? qnty : 1;
     }
   }
-  // TODO: правильные окончания
-  headerCart.textContent = 'В корзине ' + quantityInCart + ' товара на ' + fullPrice + '₽';
+
+  headerCart.textContent = 'В корзине ' + quantityInCart + ' товар' +
+  getCorrectEnds(quantityInCart) + ' на ' + fullPrice + '₽';
+};
+
+var getCorrectEnds = function (quantity) {
+  var ends = ['', 'а', 'ов'];
+  var number = (quantity > 10 && quantity < 21) ? 10 : quantity;
+  var lastInteger = number.toString().slice(-1);
+  var end;
+
+  lastInteger = parseInt(lastInteger, 10);
+
+  switch (lastInteger) {
+    case 1:
+      end = ends[0];
+
+      break;
+    case 2:
+    case 3:
+    case 4:
+      end = ends[1];
+
+      break;
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 0:
+      end = ends[2];
+
+      break;
+  }
+
+  return end;
 };
 
 showAllProducts.addEventListener('click', function (evt) {
@@ -509,7 +543,6 @@ var removeButtonHandler = function () {
 // удаляем товар из корзины
 
 // переключаем способ оплаты
-
 var changePayment = function () {
   var toggleButtonPay = document.querySelector('.toggle-btn');
 
@@ -520,19 +553,6 @@ var changePayment = function () {
       togglePayment(btnTarget);
     }
   });
-};
-
-// TODO: объединить функции табов
-var togglePayment = function (target) {
-  var paymentSection = document.querySelector('.payment');
-  var cashWrap = paymentSection.querySelector('.payment__cash-wrap');
-  var cardWrap = paymentSection.querySelector('.payment__card-wrap');
-  var checkedBtn = paymentSection.querySelector('.toggle-btn__input[checked]');
-
-  cardWrap.classList.toggle('visually-hidden');
-  cashWrap.classList.toggle('visually-hidden');
-  target.setAttribute('checked', true);
-  checkedBtn.removeAttribute('checked');
 };
 
 changePayment();
@@ -549,6 +569,22 @@ var changeDelievery = function () {
   });
 };
 
+changeDelievery();
+
+// TODO: объединить функции табов
+var togglePayment = function (target) {
+  var paymentSection = document.querySelector('.payment');
+  var cashWrap = paymentSection.querySelector('.payment__cash-wrap');
+  var cardWrap = paymentSection.querySelector('.payment__card-wrap');
+  var checkedBtn = paymentSection.querySelector('.toggle-btn__input[checked]');
+
+  cardWrap.classList.toggle('visually-hidden');
+  cashWrap.classList.toggle('visually-hidden');
+  target.setAttribute('checked', true);
+  checkedBtn.removeAttribute('checked');
+};
+
+
 var toggleDelivery = function (target) {
   var deliverySection = document.querySelector('.deliver');
   var store = deliverySection.querySelector('.deliver__store');
@@ -560,8 +596,6 @@ var toggleDelivery = function (target) {
   target.setAttribute('checked', true);
   checkedBtn.removeAttribute('checked');
 };
-
-changeDelievery();
 
 // слайдер
 var sliderHandler = function () {
