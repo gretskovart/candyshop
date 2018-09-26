@@ -578,10 +578,17 @@ var sliderHandler = function () {
   });
 };
 
-var changeRangePrice = function (evt) {
-  var currentPosition = evt.clientX; // посчитать стоимость
+var getCoords = function (elem) {
+  return parseInt(elem.getBoundingClientRect().x, 10);
+};
 
-  return parseInt(currentPosition, 10);
+var changeRangePrice = function (evt) {
+  var currentPin = evt.target;
+  var currentCoords = getCoords(currentPin);
+  var rangeFilter = document.querySelector('.range__filter');
+  var startCoords = getCoords(rangeFilter);
+
+  return currentCoords - startCoords;
 };
 
 sliderHandler();
