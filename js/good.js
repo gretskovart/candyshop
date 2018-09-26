@@ -11,6 +11,10 @@ var productsCartContainer = document.querySelector('.goods__cards');
 var showAllProducts = document.querySelector('.catalog__submit');
 var fullPrice = 0;
 var quantityInCart = 0;
+var cards = document.querySelector('.catalog__cards');
+var load = document.querySelector('.catalog__load');
+var goodsCards = document.querySelector('.goods__cards');
+var cardEmpty = document.querySelector('.goods__card-empty');
 var productsArray = [];
 var productsCartArray = [];
 
@@ -178,16 +182,17 @@ var getProductNutritionFacts = function () {
   return nutritionFacts;
 };
 
-var hideCatalogCards = function () {
-  var cards = document.querySelector('.catalog__cards');
-  var load = document.querySelector('.catalog__load');
-  var goodsCards = document.querySelector('.goods__cards');
-  var cardEmpty = document.querySelector('.goods__card-empty');
-
+var showCatalogCards = function () {
+// вынести 2-ую функцию
   cards.classList.remove('catalog__cards--load');
   load.classList.add('visually-hidden');
   goodsCards.classList.remove('goods__cards--empty');
   cardEmpty.style.display = 'none';
+};
+
+var hideCatalogCards = function () {
+  goodsCards.classList.add('goods__cards--empty');
+  cardEmpty.style.display = 'block';
 };
 
 var renderProductCart = function (product) {
@@ -327,7 +332,7 @@ var addProductsToPage = function () {
     productsContainer.appendChild(fragment);
   };
 
-  hideCatalogCards();
+  showCatalogCards();
   appendProductsFromArray(createProductsArray(PRODUCTS_QUANTITY));
 };
 
@@ -360,21 +365,26 @@ var addSelectedFavorite = function (evt) {
 var renderHeaderProductCartPrice = function (price, act, qnty) {
   var headerCart = document.querySelector('.main-header__basket');
 
-  if (act === 'increase') {
-    fullPrice += price;
-    quantityInCart += 1;
-  } else if (act === 'decrease') {
-    if (quantityInCart <= 1 || quantityInCart === qnty) {
-      // BUG: при остатке 1 товара в корзине срабатывает
-      headerCart.textContent = 'В корзине ничего нет';
-      quantityInCart = 0;
-      fullPrice = 0;
-      return;
+  switch (act) {
+    case 1:
+      fullPrice += price;
+      quantityInCart += 1;
 
-    } else {
-      fullPrice -= price;
-      quantityInCart -= (qnty) ? qnty : 1;
-    }
+      break;
+    case -1:
+      if (quantityInCart <= 1 || quantityInCart === qnty) {
+        headerCart.textContent = 'В корзине ничего нет';
+        quantityInCart = 0;
+        fullPrice = 0;
+
+        return;
+
+      } else {
+        fullPrice -= price;
+        quantityInCart -= (qnty) ? qnty : 1;
+      }
+
+      break;
   }
 
   headerCart.textContent = 'В корзине ' + quantityInCart + ' товар' +
@@ -429,7 +439,6 @@ favoriteClickHandler();
 // добавляем карточку по нажатию на кнопку
 var addToCartButtonHandler = function () {
   var addButton = document.querySelectorAll('.card__btn');
-  var act = 'increase';
 
   for (var i = 0; i < addButton.length; i++) {
     addButton[i].addEventListener('click', function (evt) {
@@ -437,9 +446,26 @@ var addToCartButtonHandler = function () {
       var currentCardName = currentCard.querySelector('.card__title').textContent;
       var productObj = copyObj(productsArray, currentCardName);
 
+// BUG: добавляется несколько объектов
       if (productObj) {
-        productsCartArray.push(addProductsToCart(productObj));
-        renderHeaderProductCartPrice(productObj.price, act);
+        console.log(productsCartArray);
+        if (productsCartArray.length === 0) {
+          productsCartArray.push(productObj);
+          addProductsToCart(productObj);
+        } else {
+          productsCartArray.forEach(function (item, j) {
+            if (item.name === currentCardName) {
+              alert('1');
+              changeQantityCartObj(evt, 1); // заменить evt
+              productsCartArray[j].amount += 1;
+            } else {
+              alert('2');
+              productsCartArray.push(productObj);
+              addProductsToCart(productObj);
+            }
+          });
+        }
+        renderHeaderProductCartPrice(productObj.price, 1);
       }
     });
   }
@@ -447,23 +473,19 @@ var addToCartButtonHandler = function () {
 
 // копируем объект карточки
 var copyObj = function (arr, objName) {
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i].name === objName) {
-      var currentObj = arr[i];
-    }
+  for (var i = 0; i < arr.length && arr[i].name !== objName; i++) {
+    var currentObj = arr[i + 1];
   }
+
+  currentObj.amount -= 1;
 
   if (currentObj.amount < 1) {
     return false;
+  } else {
+    var copy = Object.assign({}, currentObj);
+
+    return copy;
   }
-
-  // TODO: увеличить amount объекта productsCartArray (если нет такого объекта)
-
-  // TODO: уменьшить amount объекта productsArray
-
-  var copy = Object.assign({}, currentObj);
-
-  return copy;
 };
 // копируем объект карточки
 
@@ -475,17 +497,20 @@ var changeQantityCartObj = function (evt, act) {
   var cartPrice = currentObj.querySelector('.card-order__price').textContent;
   var currentObjPrice = parseInt(cartPrice, 10);
 
-  // TODO: сделать условия по-элегантнее
-  if (act === 'increase') {
-    // TODO: менять amount объекта productsCartArray
-    cartObjCount.setAttribute('value', currentCount += 1);
-  } else if (act === 'decrease') {
-    if (currentCount !== 1) {
-    // TODO: менять amount объекта productsCartArray
-      cartObjCount.setAttribute('value', currentCount -= 1);
-    } else {
-      removeCartObj(evt);
-    }
+  switch (act) {
+    case 1:
+      cartObjCount.setAttribute('value', currentCount += 1);
+
+      break;
+    case -1:
+      if (currentCount !== 1) {
+      // TODO: менять amount объекта productsCartArray
+        cartObjCount.setAttribute('value', currentCount -= 1);
+      } else {
+        removeCartObj(evt);
+      }
+
+      break;
   }
 
   renderHeaderProductCartPrice(currentObjPrice, act);
@@ -493,26 +518,22 @@ var changeQantityCartObj = function (evt, act) {
 
 var decreaseCartHandler = function () {
   var decreaseButton = productsCartContainer.querySelectorAll('.card-order__btn--decrease');
-  var act = 'decrease';
+  var lastElem = decreaseButton.length - 1;
 
-  for (var i = 0; i < decreaseButton.length; i++) {
-    decreaseButton[i].addEventListener('click', function (evt) {
-      evt.stopPropagation();
-      changeQantityCartObj(evt, act);
-    });
-  }
+  decreaseButton[lastElem].addEventListener('click', function (evt) {
+    evt.stopPropagation();
+    changeQantityCartObj(evt, -1);
+  });
 };
 
 var increaseCartHandler = function () {
   var increaseButton = productsCartContainer.querySelectorAll('.card-order__btn--increase');
-  var act = 'increase';
+  var lastElem = increaseButton.length - 1;
 
-  for (var i = 0; i < increaseButton.length; i++) {
-    increaseButton[i].addEventListener('click', function (evt) {
-      evt.stopPropagation();
-      changeQantityCartObj(evt, act);
-    });
-  }
+  increaseButton[lastElem].addEventListener('click', function (evt) {
+    evt.stopPropagation();
+    changeQantityCartObj(evt, 1);
+  });
 };
 // изменяем количество товаров в корзине
 
@@ -523,10 +544,11 @@ var removeCartObj = function (evt) {
   var currentObjQuantityVal = parseInt(currentObjQuantity.getAttribute('value'), 10);
   var cartPrice = currentObj.querySelector('.card-order__price').textContent;
   var currentObjFullPrice = parseInt(cartPrice, 10) * currentObjQuantityVal;
-  var act = 'decrease';
 
-  renderHeaderProductCartPrice(currentObjFullPrice, act, currentObjQuantityVal);
+  renderHeaderProductCartPrice(currentObjFullPrice, -1, currentObjQuantityVal);
   currentObj.remove();
+  // TODO: удалять объект из глоабльного массива
+  // TODO: hideCatalogCards(); при условии пустого глобально массива
 };
 
 var removeButtonHandler = function () {
