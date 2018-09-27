@@ -684,3 +684,84 @@ var changeRangePrice = function (evt) {
 };
 
 sliderHandler();
+
+var formInputsChecker = function () {
+  var form = document.querySelector('.buy form');
+  var formCardNum = form.querySelector('#payment__card-number');
+  var formCardDate = form.querySelector('#payment__card-date');
+
+  var formPaymentInputs = document.querySelector('.payment__inputs')
+  .querySelectorAll('input');
+
+  for (var i = 0; i < formPaymentInputs.length; i++) {
+    formPaymentInputs[i].addEventListener('blur', function (evt) {
+      switch (evt.target) {
+        case formCardNum:
+          if (!checkLuhnAlgorithm(formCardNum)) {
+            formCardNum.setCustomValidity('Введите корректный номер карты');
+
+          } else {
+            formCardNum.classList.add('inputChecked');
+
+          }
+          break;
+        case formCardDate:
+          if (!dateChecker(formCardDate)) {
+            formCardDate.setCustomValidity('Введите корректный срок действия карты');
+
+          } else {
+            formCardNum.classList.add('inputChecked');
+
+          }
+          break;
+      }
+    });
+  }
+
+  form.addEventListener('submit', function () {
+    return (formCardNum.classList.contains('inputChecked') && formCardDate
+    .classList.contains('inputChecked'));
+  });
+};
+
+formInputsChecker();
+
+var checkLuhnAlgorithm = function (cardNumber) {
+  var arr = cardNumber.value.toString().split('');
+  var sum = 0;
+
+  for (var i = 0; i < arr.length; i++) {
+    var integer = parseFloat(arr[i]);
+    if (i % 2 === 0) {
+      integer *= 2;
+    }
+
+    if (integer >= 10) {
+      integer -= 9;
+    }
+
+    sum += integer;
+  }
+
+  return (sum % 10 === 0);
+};
+
+var dateChecker = function (val) {
+  val = val.value;
+  var date = new Date();
+  var year = date.getFullYear().toString().substr(-2);
+  var yearForm = val.substr(-2);
+  var month = date.getMonth() + 1;
+  var monthForm = val.substr(-10, 2);
+  month = parseFloat(month);
+
+  var checkMonth = function () {
+    return (monthForm <= 12 && monthForm > 1);
+  };
+
+  var checkYear = function () {
+    return (yearForm > year) || (yearForm === year) && (monthForm >= month);
+  };
+
+  return checkMonth() && checkYear();
+};
