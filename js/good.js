@@ -258,6 +258,7 @@ var renderProduct = function (product) {
   var renderProductRating = function () {
     var productsRatingClassList = productElement.querySelector('.stars__rating')
     .classList;
+    productsRatingClassList.remove('stars__rating--five');
 
     switch (product.rating.value) {
       case 1:
