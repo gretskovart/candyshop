@@ -660,12 +660,11 @@ var toggleDelivery = function (target) {
 
 // слайдер
 var sliderHandler = function (elem) {
-  debugger;
   elem.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
     var currentPinCoord = {
-      x: evt.clientX
+      x: getCoords(evt.target)
     };
 
     var moveUpHandler = function () {
