@@ -367,7 +367,6 @@ var addSelectedFavorite = function (evt) {
 
 var renderHeaderProductCartPrice = function (price, act, qnty) {
   var headerCart = document.querySelector('.main-header__basket');
-
   switch (act) {
     case 1:
       fullPrice += price;
@@ -454,19 +453,19 @@ var addToCartButtonHandler = function () {
           productsCartArray.push(productObj);
           addProductsToCart(productObj);
         } else {
-          productsCartArray.forEach(function (item, j) {
-            if (item.name === currentCardName) {
-              // прибавляет по 2 товара в шапку если одинаковые
+          for (var j = 0; j < productsCartArray.length; j++) {
+            if (productsCartArray[j].name === currentCardName) {
               changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
               productsCartArray[j].amount += 1;
+              return;
             } else {
               productsCartArray.push(productObj);
               addProductsToCart(productObj);
             }
-          });
+          }
         }
-        renderHeaderProductCartPrice(productObj.price, 1);
       }
+      renderHeaderProductCartPrice(productObj.price, 1);
     });
   }
 };
@@ -527,7 +526,6 @@ var getCurrentCartObj = function (objName) {
       var currentCartObj = productsCartArray[i];
     }
   }
-
   return currentCartObj;
 };
 
