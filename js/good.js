@@ -236,6 +236,7 @@ var renderProduct = function (product) {
   var productElement = similarProductTemplate.cloneNode(true);
 
   var renderProductAmount = function () {
+    productElement.setAttribute('amount', product.amount);
     if (product.amount > 5) {
       productElement.classList.add('card--in-stock');
     } else if (product.amount >= 1 && product.amount <= 5) {
@@ -250,7 +251,7 @@ var renderProduct = function (product) {
   };
 
   var renderProductPrice = function () {
-    productElement.querySelector('.card__price').innerHtml = product.price
+    productElement.querySelector('.card__price').innerHTML = product.price
     + '<span class="card__currency">₽</span><span class="card__weight">/ '
     + product.weight + ' Г</span>';
   };
@@ -258,6 +259,7 @@ var renderProduct = function (product) {
   var renderProductRating = function () {
     var productsRatingClassList = productElement.querySelector('.stars__rating')
     .classList;
+    productsRatingClassList.remove('stars__rating--five');
 
     switch (product.rating.value) {
       case 1:
@@ -367,7 +369,6 @@ var addSelectedFavorite = function (evt) {
 
 var renderHeaderProductCartPrice = function (price, act, qnty) {
   var headerCart = document.querySelector('.main-header__basket');
-
   switch (act) {
     case 1:
       fullPrice += price;
@@ -447,39 +448,45 @@ var addToCartButtonHandler = function () {
     addButton[i].addEventListener('click', function (evt) {
       var currentCard = evt.target.closest('.catalog__card');
       var currentCardName = currentCard.querySelector('.card__title').textContent;
-      var productObj = copyObj(productsArray, currentCardName);
+      var currentCardPrice = parseFloat(currentCard.querySelector('.card__price').textContent);
+      var productObj = copyObj(productsArray, currentCardName, currentCardPrice);
+      var attrAmount = parseFloat(currentCard.getAttribute('amount'));
+      if (attrAmount === 0) {
+        return;
+      }
 
       if (productObj) {
         if (productsCartArray.length === 0) {
           productsCartArray.push(productObj);
           addProductsToCart(productObj);
         } else {
-          productsCartArray.forEach(function (item, j) {
-            if (item.name === currentCardName) {
-              // прибавляет по 2 товара в шапку если одинаковые
+          for (var j = 0; j < productsCartArray.length; j++) {
+            if (productsCartArray[j].name === currentCardName) {
               changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
               productsCartArray[j].amount += 1;
+              return;
             } else {
               productsCartArray.push(productObj);
               addProductsToCart(productObj);
             }
-          });
+          }
         }
-        renderHeaderProductCartPrice(productObj.price, 1);
       }
+      renderHeaderProductCartPrice(productObj.price, 1);
     });
   }
 };
 
 // копируем объект карточки
-var copyObj = function (arr, objName) {
+var copyObj = function (arr, objName, objPrice) {
   for (var i = 0; i < arr.length; i++) {
-    if (arr[i].name === objName) {
+    if (arr[i].name === objName && arr[i].price === objPrice) {
       var currentObj = arr[i];
     }
   }
-
-  currentObj.amount -= 1;
+  if (currentObj.amount > 0) {
+    currentObj.amount -= 1;
+  }
 
   if (currentObj.amount < 1) {
     return false;
@@ -527,7 +534,6 @@ var getCurrentCartObj = function (objName) {
       var currentCartObj = productsCartArray[i];
     }
   }
-
   return currentCartObj;
 };
 
