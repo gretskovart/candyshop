@@ -250,7 +250,7 @@ var renderProduct = function (product) {
   };
 
   var renderProductPrice = function () {
-    productElement.querySelector('.card__price').innerHtml = product.price
+    productElement.querySelector('.card__price').innerHTML = product.price
     + '<span class="card__currency">₽</span><span class="card__weight">/ '
     + product.weight + ' Г</span>';
   };
@@ -477,8 +477,9 @@ var copyObj = function (arr, objName) {
       var currentObj = arr[i];
     }
   }
-
-  currentObj.amount -= 1;
+  if (currentObj.amount > 0) {
+    currentObj.amount -= 1;
+  }
 
   if (currentObj.amount < 1) {
     return false;
