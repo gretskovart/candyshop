@@ -236,6 +236,7 @@ var renderProduct = function (product) {
   var productElement = similarProductTemplate.cloneNode(true);
 
   var renderProductAmount = function () {
+    productElement.setAttribute('amount', product.amount);
     if (product.amount > 5) {
       productElement.classList.add('card--in-stock');
     } else if (product.amount >= 1 && product.amount <= 5) {
@@ -447,7 +448,12 @@ var addToCartButtonHandler = function () {
     addButton[i].addEventListener('click', function (evt) {
       var currentCard = evt.target.closest('.catalog__card');
       var currentCardName = currentCard.querySelector('.card__title').textContent;
-      var productObj = copyObj(productsArray, currentCardName);
+      var currentCardPrice = parseFloat(currentCard.querySelector('.card__price').textContent);
+      var productObj = copyObj(productsArray, currentCardName, currentCardPrice);
+      var attrAmount = parseFloat(currentCard.getAttribute('amount'));
+      if (attrAmount === 0) {
+        return;
+      }
 
       if (productObj) {
         if (productsCartArray.length === 0) {
@@ -472,9 +478,9 @@ var addToCartButtonHandler = function () {
 };
 
 // копируем объект карточки
-var copyObj = function (arr, objName) {
+var copyObj = function (arr, objName, objPrice) {
   for (var i = 0; i < arr.length; i++) {
-    if (arr[i].name === objName) {
+    if (arr[i].name === objName && arr[i].price === objPrice) {
       var currentObj = arr[i];
     }
   }
