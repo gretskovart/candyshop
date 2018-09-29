@@ -19,6 +19,7 @@ var productsCartArray = [];
 
 var sliderLeft = document.querySelector('.range__btn--left');
 var sliderRight = document.querySelector('.range__btn--right');
+var rangeFilter = document.querySelector('.range__filter');
 
 var getRandomFromArray = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -677,12 +678,36 @@ var sliderHandler = function (elem) {
       moveEvt.preventDefault();
 
       var rangePrice;
+      var movePosition = moveEvt.clientX;
+      var minPosition = rangeFilter.getBoundingClientRect().x;
+      var maxPosition = rangeFilter.getBoundingClientRect().x + rangeFilter
+      .getBoundingClientRect().width;
 
       var shift = {
-        x: currentPinCoord.x - moveEvt.clientX
+        x: currentPinCoord.x - movePosition
       };
 
-      elem.style.left = (currentPinCoord.x - shift.x) + 'px';
+      var coordsWithShift = currentPinCoord.x - shift.x - 85; // смещено на 85 px
+
+      switch (elem) {
+        case sliderLeft:
+          pinPosition.leftPin = coordsWithShift;
+          break;
+        case sliderRight:
+          pinPosition.rightPin = coordsWithShift;
+      }
+
+      if (movePosition < minPosition || movePosition > maxPosition ||
+      elem === sliderRight && pinPosition.rightPin < pinPosition.leftPin ||
+      elem === sliderLeft && pinPosition.leftPin > pinPosition.rightPin) {
+        document.removeEventListener('mousemove', movePinHandler);
+        document.removeEventListener('mouseup', moveUpHandler);
+        document.removeEventListener('mouseup', moveUpHandler);
+      } else {
+        elem.style.left = coordsWithShift + 'px';
+      }
+
+      makeLineFill(elem, coordsWithShift);
 
       switch (elem) {
         case sliderLeft:
@@ -702,13 +727,32 @@ var sliderHandler = function (elem) {
   });
 };
 
+var makeLineFill = function (elem, position) {
+  var line = rangeFilter.querySelector('.range__fill-line');
+  var currentLineCoordRight = rangeFilter.getBoundingClientRect().width - position;
+  var currentLineCoordLeft = position;
+
+  switch (elem) {
+    case sliderLeft:
+      line.style.left = currentLineCoordLeft + 'px';
+      break;
+    case sliderRight:
+      line.style.right = currentLineCoordRight + 'px';
+      break;
+  }
+};
+
 var getCoords = function (elem) {
   return parseInt(elem.getBoundingClientRect().x, 10);
 };
 
+var pinPosition = {
+  leftPin: getCoords(sliderLeft),
+  rightPin: getCoords(sliderRight)
+};
+
 var changeRangePrice = function (elem) {
   var currentCoords = getCoords(elem);
-  var rangeFilter = document.querySelector('.range__filter');
   var startCoords = getCoords(rangeFilter);
 
   return currentCoords - startCoords;
