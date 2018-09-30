@@ -678,12 +678,13 @@ var sliderHandler = function (elem) {
       document.removeEventListener('mousemove', movePinHandler);
       document.removeEventListener('mouseup', moveUpHandler);
       document.removeEventListener('mouseup', moveUpHandler);
+
+      getPrice(elem);
     };
 
     var movePinHandler = function (moveEvt) {
       moveEvt.preventDefault();
 
-      var rangePrice;
       var movePosition = moveEvt.clientX;
       var minPosition = rangeFilter.getBoundingClientRect().x;
       var maxPosition = rangeFilter.getBoundingClientRect().x + rangeFilter
@@ -713,24 +714,31 @@ var sliderHandler = function (elem) {
         elem.style.left = coordsWithShift + 'px';
       }
 
+      getPrice(elem);
+
       makeLineFill(elem, coordsWithShift);
 
-      switch (elem) {
-        case sliderLeft:
-          rangePrice = document.querySelector('.range__price--min');
-          break;
-        case sliderRight:
-          rangePrice = document.querySelector('.range__price--max');
-          break;
-      }
-
-      rangePrice.textContent = changeRangePrice(elem);
     };
 
     document.addEventListener('mousemove', movePinHandler);
     document.addEventListener('mouseup', moveUpHandler);
     document.addEventListener('mouseup', moveUpHandler);
   });
+};
+
+var getPrice = function (elem) {
+  var rangePrice;
+
+  switch (elem) {
+    case sliderLeft:
+      rangePrice = document.querySelector('.range__price--min');
+      break;
+    case sliderRight:
+      rangePrice = document.querySelector('.range__price--max');
+      break;
+  }
+
+  rangePrice.textContent = changeRangePrice(elem);
 };
 
 var makeLineFill = function (elem, position) {
