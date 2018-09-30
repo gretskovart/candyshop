@@ -661,36 +661,6 @@ var toggleDelivery = function (target) {
   checkedBtn.removeAttribute('checked');
 };
 
-// слайдер
-var sliderHandler = function () {
-  var sliderPinLeft = document.querySelector('.range__btn--left');
-  var sliderPinRight = document.querySelector('.range__btn--right');
-  var rangePriceMin = document.querySelector('.range__price--min');
-  var rangePriceMax = document.querySelector('.range__price--max');
-
-  sliderPinLeft.addEventListener('mouseup', function (evt) {
-    rangePriceMin.textContent = changeRangePrice(evt);
-  });
-  sliderPinRight.addEventListener('mouseup', function (evt) {
-    rangePriceMax.textContent = changeRangePrice(evt);
-  });
-};
-
-var getCoords = function (elem) {
-  return parseInt(elem.getBoundingClientRect().x, 10);
-};
-
-var changeRangePrice = function (evt) {
-  var currentPin = evt.target;
-  var currentCoords = getCoords(currentPin);
-  var rangeFilter = document.querySelector('.range__filter');
-  var startCoords = getCoords(rangeFilter);
-
-  return currentCoords - startCoords;
-};
-
-sliderHandler();
-
 var formInputsChecker = function () {
   var form = document.querySelector('.buy form');
   var formCardNum = form.querySelector('#payment__card-number');
