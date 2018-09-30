@@ -4,6 +4,9 @@
   window.productsCartArray = [];
   window.productsContainer = document.querySelector('.catalog__cards');
 
+  var fullPrice = 0;
+  var quantityInCart = 0;
+
   var productsCartContainer = document.querySelector('.goods__cards');
   var cardEmpty = document.querySelector('.goods__card-empty');
   var showAllProducts = document.querySelector('.catalog__submit');
@@ -35,7 +38,7 @@
 
     var target = evt.target;
 
-    while (target !== productsContainer) {
+    while (target !== window.productsContainer) {
       if (target.classList.contains('card__btn-favorite')) {
         target.classList.toggle('card__btn-favorite--selected');
 
@@ -47,8 +50,6 @@
 
   var renderHeaderProductCartPrice = function (price, act, qnty) {
     var headerCart = document.querySelector('.main-header__basket');
-    var fullPrice = 0;
-    var quantityInCart = 0;
 
     switch (act) {
       case 1:
@@ -116,7 +117,7 @@
   });
 
   var favoriteClickHandler = function () {
-    productsContainer.addEventListener('click', addSelectedFavorite);
+    window.productsContainer.addEventListener('click', addSelectedFavorite);
   };
 
   favoriteClickHandler();
@@ -262,11 +263,11 @@
 
     renderHeaderProductCartPrice(currentObjFullPrice, -1, currentObjQuantityVal);
 
-    if (window.productsCartArray.length === 1) {
+    currentObj.remove();
+
+    if (window.productsCartArray.length === 0) {
       hideGoodsCards();
     }
-
-    currentObj.remove();
 
     var indexCurrentObj = window.productsCartArray.indexOf(getCurrentCartObj(currentObjName));
     window.productsCartArray.splice(indexCurrentObj, 1);
