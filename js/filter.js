@@ -13,7 +13,6 @@
   var rangePriceLeft = document.querySelector('.range__price--min');
   var rangeWidth = rangeFilter.clientWidth;
 
-  // слайдер
   var sliderHandler = function (downEvt) {
     var currentPin = downEvt.target;
     var pinPosition = currentPin.offsetLeft;
