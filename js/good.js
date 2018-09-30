@@ -22,6 +22,9 @@ var productsCartArray = [];
 var sliderLeft = document.querySelector('.range__btn--left');
 var sliderRight = document.querySelector('.range__btn--right');
 var rangeFilter = document.querySelector('.range__filter');
+var line = rangeFilter.querySelector('.range__fill-line');
+var rangePriceRight = document.querySelector('.range__price--max');
+var rangePriceLeft = document.querySelector('.range__price--min');
 
 var getRandomFromArray = function (arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -351,11 +354,14 @@ var addProductsToCart = function (objToCart) {
 
   fragment.appendChild(renderProductCart(objToCart));
   productsCartContainer.appendChild(fragment);
+<<<<<<< current
 
   showGoodsCards();
   removeButtonHandler();
   decreaseCartHandler();
   increaseCartHandler();
+=======
+>>>>>>> before discard
 };
 
 var addSelectedFavorite = function (evt) {
@@ -729,22 +735,17 @@ var sliderHandler = function (elem) {
 };
 
 var getPrice = function (elem) {
-  var rangePrice;
-
   switch (elem) {
     case sliderLeft:
-      rangePrice = document.querySelector('.range__price--min');
+      rangePriceLeft.textContent = changeRangePrice(elem);
       break;
     case sliderRight:
-      rangePrice = document.querySelector('.range__price--max');
+      rangePriceRight.textContent = changeRangePrice(elem);
       break;
   }
-
-  rangePrice.textContent = changeRangePrice(elem);
 };
 
 var makeLineFill = function (elem, position) {
-  var line = rangeFilter.querySelector('.range__fill-line');
   var currentLineCoordRight = rangeFilter.getBoundingClientRect().width - position;
   var currentLineCoordLeft = position;
 
@@ -757,6 +758,19 @@ var makeLineFill = function (elem, position) {
       break;
   }
 };
+
+var setDefaultSlider = function (minVal, maxVal) {
+  sliderLeft.style.left = 0;
+  sliderRight.style.right = 0;
+  line.style.left = 0;
+  line.style.right = 0;
+  rangePriceLeft.textContent = minVal;
+  rangePriceRight.textContent = maxVal;
+
+  sliderLeft.style.zIndex = 10;
+};
+
+setDefaultSlider(PRODUCTS_PRICE_MIN, PRODUCTS_PRICE_MAX);
 
 var getCoords = function (elem) {
   return parseInt(elem.getBoundingClientRect().x, 10);
@@ -771,9 +785,9 @@ var changeRangePrice = function (elem) {
   var currentCoords = getCoords(elem);
   var startCoords = getCoords(rangeFilter);
   var rangeWidth = rangeFilter.getBoundingClientRect().width;
-  var countPerPx = parseInt(PRODUCTS_PRICE_MAX / rangeWidth, 10);
+  var countPerPx = Math.round(PRODUCTS_PRICE_MAX / rangeWidth);
 
-  return (currentCoords - startCoords) * countPerPx;
+  return Math.round((currentCoords - startCoords) * countPerPx);
 };
 
 sliderHandler(sliderLeft);
