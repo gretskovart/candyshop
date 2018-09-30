@@ -354,14 +354,11 @@ var addProductsToCart = function (objToCart) {
 
   fragment.appendChild(renderProductCart(objToCart));
   productsCartContainer.appendChild(fragment);
-<<<<<<< current
 
   showGoodsCards();
   removeButtonHandler();
   decreaseCartHandler();
   increaseCartHandler();
-=======
->>>>>>> before discard
 };
 
 var addSelectedFavorite = function (evt) {
