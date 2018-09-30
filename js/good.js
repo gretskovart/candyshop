@@ -1,6 +1,8 @@
 'use strict';
 
 var PRODUCTS_QUANTITY = 26;
+var PRODUCTS_PRICE_MAX = 1500;
+var PRODUCTS_PRICE_MIN = 100;
 
 var similarProductTemplate = document.querySelector('#card').content
 .querySelector('.catalog__card');
@@ -768,8 +770,10 @@ var pinPosition = {
 var changeRangePrice = function (elem) {
   var currentCoords = getCoords(elem);
   var startCoords = getCoords(rangeFilter);
+  var rangeWidth = rangeFilter.getBoundingClientRect().width;
+  var countPerPx = parseInt(PRODUCTS_PRICE_MAX / rangeWidth, 10);
 
-  return currentCoords - startCoords;
+  return (currentCoords - startCoords) * countPerPx;
 };
 
 sliderHandler(sliderLeft);
