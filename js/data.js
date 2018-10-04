@@ -3,7 +3,7 @@
 (function () {
   window.productsArray = [];
 
-  var onError = function (error) {
+  document.onError = function (error) {
     var modalError = document.querySelector('.modal--error');
     var modalErrorText = modalError.querySelector('.modal__message-text');
     var modalClose = modalError.querySelector('.modal__close');
@@ -12,7 +12,7 @@
     modalErrorText.textContent = error;
 
     var hideModal = function () {
-      modalError.style.display = 'none';
+      modalError.classList.remove('modal--hidden');
     };
 
     modalClose.addEventListener('click', hideModal);
@@ -23,6 +23,6 @@
   };
 
   window.addEventListener('load', function () {
-    window.loadData(onLoad, onError);
+    window.loadData(onLoad, document.onError);
   });
 })();

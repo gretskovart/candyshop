@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var form = document.querySelector('.buy form');
+  var modalSuccess = document.querySelector('.modal--success');
+
   // переключаем способ оплаты
   var changePayment = function () {
     var toggleButtonPay = document.querySelector('.toggle-btn');
@@ -57,7 +60,6 @@
   };
 
   var formInputsChecker = function () {
-    var form = document.querySelector('.buy form');
     var formCardNum = form.querySelector('#payment__card-number');
     var formCardDate = form.querySelector('#payment__card-date');
 
@@ -89,7 +91,15 @@
       });
     }
 
-    form.addEventListener('submit', function () {
+    var orderSuccsess = function () {
+      modalSuccess.classList.remove('modal--hidden');
+      form.reset();
+    };
+
+    form.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+      window.sendData(new FormData(form), orderSuccsess, document.onError);
+
       return (formCardNum.classList.contains('inputChecked') && formCardDate
       .classList.contains('inputChecked'));
     });
