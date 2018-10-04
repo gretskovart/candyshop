@@ -76,8 +76,9 @@
 
     var renderProductImage = function () {
       var imgProduct = productElement.querySelector('.card__img');
+      var productImagePath = 'img/cards/' + product.picture;
 
-      imgProduct.setAttribute('src', product.picture);
+      imgProduct.setAttribute('src', productImagePath);
       imgProduct.setAttribute('alt', product.name);
     };
 
@@ -103,6 +104,6 @@
     };
 
     showCatalogCards();
-    appendProductsFromArray(window.createProductsArray(PRODUCTS_QUANTITY));
+    appendProductsFromArray(window.productsArray);
   };
 })();
