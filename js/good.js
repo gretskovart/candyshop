@@ -3,7 +3,7 @@
 (function () {
   var PRODUCTS_QUANTITY = 26;
 
-  document.productImagePath = 'img/cards/';
+  window.productImagePath = 'img/cards/';
 
   var similarProductTemplate = document.querySelector('#card').content
   .querySelector('.catalog__card');
@@ -78,7 +78,7 @@
 
     var renderProductImage = function () {
       var imgProduct = productElement.querySelector('.card__img');
-      var catalogImgPath = document.productImagePath + product.picture;
+      var catalogImgPath = window.productImagePath + product.picture;
 
       imgProduct.setAttribute('src', catalogImgPath);
       imgProduct.setAttribute('alt', product.name);
