@@ -3,7 +3,7 @@
 (function () {
   var PRODUCTS_QUANTITY = 26;
 
-  document.productImagePath = 'img/cards/'
+  document.productImagePath = 'img/cards/';
 
   var similarProductTemplate = document.querySelector('#card').content
   .querySelector('.catalog__card');
