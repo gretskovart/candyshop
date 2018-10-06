@@ -9,7 +9,7 @@
 
   var productsCartContainer = document.querySelector('.goods__cards');
   var cardEmpty = document.querySelector('.goods__card-empty');
-  var showAllProducts = document.querySelector('.catalog__submit');
+  // var showAllProducts = document.querySelector('.catalog__submit');
 
   var addProductsToCart = function (objToCart) {
     var fragment = document.createDocumentFragment();
@@ -110,12 +110,6 @@
     return end;
   };
 
-  showAllProducts.addEventListener('click', function (evt) {
-    evt.preventDefault();
-    window.addProductsToPage();
-    addToCartButtonHandler();
-  });
-
   var favoriteClickHandler = function () {
     window.productsContainer.addEventListener('click', addSelectedFavorite);
   };
@@ -123,7 +117,7 @@
   favoriteClickHandler();
 
   // добавляем карточку по нажатию на кнопку
-  var addToCartButtonHandler = function () {
+  window.addToCartButtonHandler = function () {
     var addButton = document.querySelectorAll('.card__btn');
 
     for (var i = 0; i < addButton.length; i++) {

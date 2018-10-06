@@ -94,11 +94,11 @@
     return productElement;
   };
 
-  window.addProductsToPage = function () {
+  window.addProductsToPage = function (arr) {
     var fragment = document.createDocumentFragment();
 
-    var appendProductsFromArray = function (arr) {
-      for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
+    var appendProductsFromArray = function () {
+      for (var i = 0; i < arr.length; i++) {
         fragment.appendChild(renderProduct(arr[i]));
       }
 
@@ -106,6 +106,7 @@
     };
 
     showCatalogCards();
-    appendProductsFromArray(window.productsArray);
+    appendProductsFromArray(arr);
+    window.addToCartButtonHandler(); // добавление в корзину
   };
 })();

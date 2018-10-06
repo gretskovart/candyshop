@@ -28,6 +28,7 @@
         default:
           error = 'Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText;
       }
+      window.addProductsToPage();
     });
 
     xhr.addEventListener('timeout', function () {
