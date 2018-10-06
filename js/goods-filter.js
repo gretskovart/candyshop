@@ -67,14 +67,17 @@
     }
   };
 
-  var filterByInStock = function () {
-    var catalogCards = document.querySelectorAll('.catalog__card');
+  var filterByInStock = function (items) {
+    var inStock = [];
 
-    for (var i = 0; i < catalogCards.length; i++) {
-      if (catalogCards[i].contains('card--soon')) {
-        catalogCards[i].remove();
+    removeCards();
+
+    items.forEach(function (card, i) {
+      if (items[i].amount !== 0) {
+        inStock.push(items[i]);
       }
-    }
+    });
+    window.addProductsToPage(inStock);
   };
 
   var showEmptyFilter = function () {
@@ -113,7 +116,7 @@
         filterByFavorite();
         break;
       case 'В наличии':
-        filterByInStock();
+        filterByInStock(window.productsArray);
         break;
     }
   };
