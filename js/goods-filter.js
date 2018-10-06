@@ -67,6 +67,16 @@
     }
   };
 
+  var filterByInStock = function () {
+    var catalogCards = document.querySelectorAll('.catalog__card');
+
+    for (var i = 0; i < catalogCards.length; i++) {
+      if (catalogCards[i].contains('card--soon')) {
+        catalogCards[i].remove();
+      }
+    }
+  };
+
   var showEmptyFilter = function () {
     var cards = document.querySelector('.catalog__cards');
     var emptyFilterTemplate = document.querySelector('#empty-filters').content
@@ -101,6 +111,9 @@
         break;
       case 'Только избранное':
         filterByFavorite();
+        break;
+      case 'В наличии':
+        filterByInStock();
         break;
     }
   };
