@@ -1,10 +1,11 @@
 'use strict';
 
 (function () {
-  var catalogCards = document.querySelectorAll('.catalog__card');
   var filterBar = document.querySelector('.catalog__sidebar');
 
   var removeCards = function () {
+    var catalogCards = document.querySelectorAll('.catalog__card');
+
     if (catalogCards) {
       catalogCards.forEach(function (item, i) {
         catalogCards[i].remove();
@@ -39,6 +40,6 @@
         break;
     }
   };
-
+  removeCards();
   filterBar.addEventListener('click', filterHandler);
 })();

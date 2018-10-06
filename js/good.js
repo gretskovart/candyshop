@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var PRODUCTS_QUANTITY = 26;
-
   window.productImagePath = 'img/cards/';
 
   var similarProductTemplate = document.querySelector('#card').content
