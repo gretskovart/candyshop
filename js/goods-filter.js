@@ -122,6 +122,37 @@
     window.addProductsToPage(window.productsArray);
   });
 
+  var sortByCheaper = function () {
+    var cards = document.querySelector('.catalog__cards');
+    var card = cards.querySelectorAll('.catalog__card');
+    var cardsArr = [];
+
+    for (var i = 0; i < card.length; i++) {
+      cardsArr.push(card[i]);
+    }
+
+    var cardsArrCopy = cardsArr.slice();
+
+    removeCards();
+
+    cardsArrCopy.sort(function (first, second) {
+      var a = first.querySelector('.card__price').innerText;
+      var b = second.querySelector('.card__price').innerText;
+
+      if (a > b) {
+        return 1;
+      } else if (a < b) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    for (var j = 0; j < cardsArrCopy.length; j++) {
+      cards.appendChild(cardsArrCopy[j]);
+    }
+  };
+
   // обработчик нажатий на фильтр
   var filterHandler = function (evt) {
     var target = evt.target.innerText;
@@ -153,6 +184,9 @@
         break;
       case 'В наличии':
         filterByInStock(window.productsArray);
+        break;
+      case 'Сначала дешёвые':
+        sortByCheaper();
         break;
     }
   };
