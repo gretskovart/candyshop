@@ -118,6 +118,7 @@
     evt.preventDefault();
 
     removeCards();
+    window.clearPrice();
     window.addProductsToPage(window.productsArray);
   });
 

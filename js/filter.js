@@ -73,16 +73,20 @@
   sliderRight.addEventListener('mousedown', sliderHandler);
 
   // обнуляем изначальные значения фильтра
-  (function () {
+  window.clearPrice = function () {
     sliderLeft.style.zIndex = 1;
 
     sliderLeft.style.left = 0;
     sliderRight.style.right = 0;
+    sliderLeft.style.right = 'inherit';
+    sliderRight.style.left = 'inherit';
 
     line.style.left = 0;
     line.style.right = 0;
 
     rangePriceLeft.textContent = PRODUCTS_PRICE_MIN;
     rangePriceRight.textContent = PRODUCTS_PRICE_MAX;
-  })();
+  };
+
+  window.clearPrice();
 })();
