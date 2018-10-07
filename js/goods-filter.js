@@ -2,6 +2,8 @@
 
 (function () {
   var filterBar = document.querySelector('.catalog__sidebar');
+  var showAllButton = filterBar.querySelector('.catalog__submit');
+  var emptyBlock;
 
   var removeCards = function () {
     var catalogCards = document.querySelectorAll('.catalog__card');
@@ -54,8 +56,9 @@
   var filterByFavorite = function () {
     var favoriteCards = document.querySelectorAll('.card__btn-favorite--selected');
     var favoriteLinks = document.querySelectorAll('.card__btn-favorite');
+    emptyBlock = document.querySelector('.catalog__empty-filter');
 
-    if (favoriteCards.length === 0) {
+    if (favoriteCards.length === 0 && !emptyBlock) {
       removeCards();
       showEmptyFilter();
     } else {
@@ -93,7 +96,7 @@
     }
 
     var cards = document.querySelectorAll('.catalog__card');
-    var emptyBlock = document.querySelector('.catalog__empty-filter');
+    emptyBlock = document.querySelector('.catalog__empty-filter');
 
     if (cards.length === 0 && !emptyBlock) {
       showEmptyFilter();
@@ -111,9 +114,21 @@
     cards.appendChild(fragment);
   };
 
+  showAllButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+
+    removeCards();
+    window.addProductsToPage(window.productsArray);
+  });
+
   // обработчик нажатий на фильтр
   var filterHandler = function (evt) {
     var target = evt.target.innerText;
+    emptyBlock = document.querySelector('.catalog__empty-filter');
+
+    if (emptyBlock && emptyBlock !== 'undefined') {
+      emptyBlock.remove();
+    }
 
     switch (target) {
       case 'Мороженое':
