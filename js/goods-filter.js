@@ -80,6 +80,19 @@
     window.addProductsToPage(inStock);
   };
 
+  window.filterByPrice = function () {
+    var minPrice = document.querySelector('.range__price--min').innerText;
+    var maxPrice = document.querySelector('.range__price--max').innerText;
+
+    var cardsPrice = document.querySelectorAll('.card__price');
+
+    for (var i = 0; i < cardsPrice.length; i++) {
+      if (cardsPrice[i].innerText < minPrice || cardsPrice[i].innerText > maxPrice) {
+        cardsPrice[i].closest('.catalog__card').remove();
+      }
+    }
+  };
+
   var showEmptyFilter = function () {
     var cards = document.querySelector('.catalog__cards');
     var emptyFilterTemplate = document.querySelector('#empty-filters').content

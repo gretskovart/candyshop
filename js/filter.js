@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var PRODUCTS_PRICE_MAX = 1500;
-  var PRODUCTS_PRICE_MIN = 100;
+  var PRODUCTS_PRICE_MAX = 90;
+  var PRODUCTS_PRICE_MIN = 0;
   var PIN_WIDTH_X2 = 10;
 
   var sliderLeft = document.querySelector('.range__btn--left');
@@ -65,6 +65,8 @@
 
     document.addEventListener('mousemove', movePinHandler);
     document.addEventListener('mouseup', upPinHandler);
+    // фильтр товаров по цене
+    document.addEventListener('mouseup', window.filterByPrice);
   };
 
   sliderLeft.addEventListener('mousedown', sliderHandler);
