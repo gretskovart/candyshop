@@ -91,6 +91,13 @@
         cardsPrice[i].closest('.catalog__card').remove();
       }
     }
+
+    var cards = document.querySelectorAll('.catalog__card');
+    var emptyBlock = document.querySelector('.catalog__empty-filter');
+
+    if (cards.length === 0 && !emptyBlock) {
+      showEmptyFilter();
+    }
   };
 
   var showEmptyFilter = function () {
