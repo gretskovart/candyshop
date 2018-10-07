@@ -139,7 +139,26 @@
       }
     });
     removeCards();
+    addCardsIntoCatalog(cardsArrCopy);
+  };
 
+  // сортировка сначала дешевый
+  var sortByExpensive = function () {
+    var cardsArrCopy = getCardsArrCopy();
+
+    cardsArrCopy.sort(function (first, second) {
+      var a = first.querySelector('.card__price').innerText;
+      var b = second.querySelector('.card__price').innerText;
+
+      if (a < b) {
+        return 1;
+      } else if (a > b) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    removeCards();
     addCardsIntoCatalog(cardsArrCopy);
   };
 
@@ -198,6 +217,9 @@
         break;
       case 'Сначала дешёвые':
         sortByCheaper();
+        break;
+      case 'Сначала дорогие':
+        sortByExpensive();
         break;
     }
   };
