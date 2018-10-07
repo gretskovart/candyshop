@@ -39,25 +39,32 @@
     };
 
     var renderProductRating = function () {
-      var productsRatingClassList = productElement.querySelector('.stars__rating')
-      .classList;
+      var productsRatingList = productElement.querySelector('.stars__rating');
+      var productsRatingClassList = productsRatingList.classList;
+
       productsRatingClassList.remove('stars__rating--five');
+      productsRatingClassList.textContent = '';
 
       switch (product.rating.value) {
         case 1:
           productsRatingClassList.add('stars__rating--one');
+          productsRatingList.textContent = 'Рейтинг: 1 звезда';
           break;
         case 2:
           productsRatingClassList.add('stars__rating--two');
+          productsRatingList.textContent = 'Рейтинг: 2 звезды';
           break;
         case 3:
           productsRatingClassList.add('stars__rating--three');
+          productsRatingList.textContent = 'Рейтинг: 3 звезды';
           break;
         case 4:
           productsRatingClassList.add('stars__rating--four');
+          productsRatingList.textContent = 'Рейтинг: 4 звезды';
           break;
         case 5:
           productsRatingClassList.add('stars__rating--five');
+          productsRatingList.textContent = 'Рейтинг: 5 звезд';
           break;
       }
 

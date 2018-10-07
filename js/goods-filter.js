@@ -142,7 +142,7 @@
     addCardsIntoCatalog(cardsArrCopy);
   };
 
-  // сортировка сначала дешевый
+  // сортировка сначала дорогие
   var sortByExpensive = function () {
     var cardsArrCopy = getCardsArrCopy();
 
@@ -156,6 +156,34 @@
         return -1;
       } else {
         return 0;
+      }
+    });
+    removeCards();
+    addCardsIntoCatalog(cardsArrCopy);
+  };
+
+  // сортировка по рейтингу
+  var sortByRating = function () {
+    var cardsArrCopy = getCardsArrCopy();
+
+    cardsArrCopy.sort(function (first, second) {
+      var a = first.querySelector('.stars__rating').innerText;
+      var b = second.querySelector('.stars__rating').innerText;
+      var c = first.querySelector('.star__count').innerText;
+      var d = second.querySelector('.star__count').innerText;
+
+      if (a < b) {
+        return 1;
+      } else if (a > b) {
+        return -1;
+      } else {
+        if (c < d) {
+          return 1;
+        } else if (c > d) {
+          return -1;
+        } else {
+          return 0;
+        }
       }
     });
     removeCards();
@@ -220,6 +248,9 @@
         break;
       case 'Сначала дорогие':
         sortByExpensive();
+        break;
+      case 'По рейтингу':
+        sortByRating();
         break;
     }
   };
