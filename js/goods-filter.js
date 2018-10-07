@@ -122,18 +122,9 @@
     window.addProductsToPage(window.productsArray);
   });
 
+  // сортировка сначала дешевый
   var sortByCheaper = function () {
-    var cards = document.querySelector('.catalog__cards');
-    var card = cards.querySelectorAll('.catalog__card');
-    var cardsArr = [];
-
-    for (var i = 0; i < card.length; i++) {
-      cardsArr.push(card[i]);
-    }
-
-    var cardsArrCopy = cardsArr.slice();
-
-    removeCards();
+    var cardsArrCopy = getCardsArrCopy();
 
     cardsArrCopy.sort(function (first, second) {
       var a = first.querySelector('.card__price').innerText;
@@ -147,9 +138,29 @@
         return 0;
       }
     });
+    removeCards();
 
-    for (var j = 0; j < cardsArrCopy.length; j++) {
-      cards.appendChild(cardsArrCopy[j]);
+    addCardsIntoCatalog(cardsArrCopy);
+  };
+
+  var getCardsArrCopy = function () {
+    var cards = document.querySelector('.catalog__cards');
+    var card = cards.querySelectorAll('.catalog__card');
+    var cardsArr = [];
+
+    for (var i = 0; i < card.length; i++) {
+      cardsArr.push(card[i]);
+    }
+
+    return cardsArr.slice();
+  };
+
+  // добавить карточки на страницу после сортировки
+  var addCardsIntoCatalog = function (cardArr) {
+    var catalog = document.querySelector('.catalog__cards');
+
+    for (var i = 0; i < cardArr.length; i++) {
+      catalog.appendChild(cardArr[i]);
     }
   };
 
