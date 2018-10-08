@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var MAP_PATH_IMG = ['img/map/academicheskaya.jpg', 'img/map/vasileostrovskaya.jpg', 'img/map/rechka.jpg', 'img/map/petrogradskaya.jpg', 'img/map/proletarskaya.jpg', 'img/map/vostaniya.jpg', 'img/map/prosvesheniya.jpg', 'img/map/frunzenskaya.jpg', 'img/map/chernishevskaya.jpg', 'img/map/tehinstitute.jpg'];
+
+  window.form = document.querySelector('.buy form');
+
   // переключаем способ оплаты
   var changePayment = function () {
     var toggleButtonPay = document.querySelector('.toggle-btn');
@@ -43,6 +47,23 @@
     checkedBtn.removeAttribute('checked');
   };
 
+  var changeMap = function () {
+    var delivery = document.querySelector('.deliver');
+    var metroAddress = delivery.querySelectorAll('.input-btn__input--radio');
+    var metroMap = delivery.querySelector('.deliver__store-map-img');
+
+    var addCurrentMap = function () {
+      for (var i = 0; i < metroAddress.length; i++) {
+        if (metroAddress[i].checked) {
+          metroMap.src = MAP_PATH_IMG[i];
+        }
+      }
+    };
+
+    delivery.addEventListener('click', addCurrentMap);
+  };
+
+  changeMap();
 
   var toggleDelivery = function (target) {
     var deliverySection = document.querySelector('.deliver');
@@ -57,9 +78,8 @@
   };
 
   var formInputsChecker = function () {
-    var form = document.querySelector('.buy form');
-    var formCardNum = form.querySelector('#payment__card-number');
-    var formCardDate = form.querySelector('#payment__card-date');
+    var formCardNum = window.form.querySelector('#payment__card-number');
+    var formCardDate = window.form.querySelector('#payment__card-date');
 
     var formPaymentInputs = document.querySelector('.payment__inputs')
     .querySelectorAll('input');
@@ -89,7 +109,9 @@
       });
     }
 
-    form.addEventListener('submit', function () {
+    window.form.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+
       return (formCardNum.classList.contains('inputChecked') && formCardDate
       .classList.contains('inputChecked'));
     });
