@@ -162,6 +162,32 @@
     addCardsIntoCatalog(cardsArrCopy);
   };
 
+  // сортировка сначала популярные
+  var sortByPopular = function () {
+    var currentArr = getCardsArrCopy();
+    var loadedArr = window.productsArray;
+    var currentSortedArr = [];
+
+    for (var i = 0; i < currentArr.length; i++) {
+      for (var j = 0; j < loadedArr.length; j++) {
+        if (currentArr[i].title === loadedArr[j].name) {
+          currentSortedArr[j] = currentArr[i];
+        }
+      }
+    }
+
+    var removeEmptyElements = function (arr) {
+      arr = arr.filter(function (el) {
+        return el !== undefined;
+      });
+      return arr;
+    };
+
+    currentSortedArr = removeEmptyElements(currentSortedArr);
+    removeCards();
+    addCardsIntoCatalog(currentSortedArr);
+  };
+
   // сортировка по рейтингу
   var sortByRating = function () {
     var cardsArrCopy = getCardsArrCopy();
@@ -193,10 +219,12 @@
   var getCardsArrCopy = function () {
     var cards = document.querySelector('.catalog__cards');
     var card = cards.querySelectorAll('.catalog__card');
+    var cardTitle = cards.querySelectorAll('.card__title');
     var cardsArr = [];
 
     for (var i = 0; i < card.length; i++) {
       cardsArr.push(card[i]);
+      card[i].title = cardTitle[i].textContent;
     }
 
     return cardsArr.slice();
@@ -251,6 +279,9 @@
         break;
       case 'По рейтингу':
         sortByRating();
+        break;
+      case 'Сначала популярные':
+        sortByPopular();
         break;
     }
   };
