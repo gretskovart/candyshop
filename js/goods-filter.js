@@ -253,7 +253,7 @@
 
         for (var j = 0; j < window.productsArray.length; j++) {
           if (window.productsArray[j].kind === titlesOfType[i].textContent) {
-            count[i] += 1;
+            count[i]++;
           }
         }
         countsBlockOfType[i].innerText = '(' + count[i] + ')';
@@ -270,17 +270,17 @@
           switch (titlesOfNutrition[i].textContent) {
             case 'Без сахара':
               if (!checkNutrition(j, 'sugar')) {
-                count[i] += 1;
+                count[i]++;
               }
               break;
             case 'Вегетарианское':
               if (checkNutrition(j, 'vegetarian')) {
-                count[i] += 1;
+                count[i]++;
               }
               break;
             case 'Безглютеновое':
               if (!checkNutrition(j, 'gluten')) {
-                count[i] += 1;
+                count[i]++;
               }
               break;
           }
@@ -292,10 +292,22 @@
     window.getFilteredByFavoriteCount = function () {
       var catalog = document.querySelector('.catalog__cards');
       var cardFavorite = catalog.querySelectorAll('.card__btn-favorite--selected');
-      var countOfFavorite = cardFavorite.length;
+      count = cardFavorite.length;
       var countsBlockOfFavorite = selectBlockInFilter('mark').countsOfFilter;
 
-      countsBlockOfFavorite[0].innerText = '(' + countOfFavorite + ')';
+      countsBlockOfFavorite[0].innerText = '(' + count + ')';
+    };
+
+    var getFilteredByInStockCount = function () {
+      var countsBlockOfFavorite = selectBlockInFilter('mark').countsOfFilter;
+      count = 0;
+      for (var i = 0; i < window.productsArray.length; i++) {
+        if (window.productsArray[i].amount !== 0) {
+          count++;
+        }
+      }
+
+      countsBlockOfFavorite[1].innerText = '(' + count + ')';
     };
 
     var checkNutrition = function (index, prop) {
@@ -316,6 +328,7 @@
     getFilteredByTypeCount();
     getFilteredByNutritionCount();
     window.getFilteredByFavoriteCount();
+    getFilteredByInStockCount();
   };
 
   // обработчик нажатий на фильтр
