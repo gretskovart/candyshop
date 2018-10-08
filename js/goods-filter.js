@@ -289,6 +289,15 @@
       }
     };
 
+    window.getFilteredByFavoriteCount = function () {
+      var catalog = document.querySelector('.catalog__cards');
+      var cardFavorite = catalog.querySelectorAll('.card__btn-favorite--selected');
+      var countOfFavorite = cardFavorite.length;
+      var countsBlockOfFavorite = selectBlockInFilter('mark').countsOfFilter;
+
+      countsBlockOfFavorite[0].innerText = '(' + countOfFavorite + ')';
+    };
+
     var checkNutrition = function (index, prop) {
       return window.productsArray[index].nutritionFacts[prop];
     };
@@ -306,6 +315,7 @@
 
     getFilteredByTypeCount();
     getFilteredByNutritionCount();
+    window.getFilteredByFavoriteCount();
   };
 
   // обработчик нажатий на фильтр

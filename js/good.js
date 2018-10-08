@@ -113,5 +113,6 @@
     showCatalogCards();
     appendProductsFromArray(arr);
     window.addToCartButtonHandler(); // добавление в корзину
+    window.getCountOfFilteredCards();
   };
 })();
