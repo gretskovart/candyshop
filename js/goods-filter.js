@@ -239,6 +239,75 @@
     }
   };
 
+  // считаем количество отфильтрованных товаров
+  window.getCountOfFilteredCards = function () {
+    var count = [];
+
+    // по типу продукта
+    var getFilteredByTypeCount = function () {
+      var titlesOfType = selectBlockInFilter('food-type').titlesOfFilter;
+      var countsBlockOfType = selectBlockInFilter('food-type').countsOfFilter;
+
+      for (var i = 0; i < titlesOfType.length; i++) {
+        count[i] = 0;
+
+        for (var j = 0; j < window.productsArray.length; j++) {
+          if (window.productsArray[j].kind === titlesOfType[i].textContent) {
+            count[i] += 1;
+          }
+        }
+        countsBlockOfType[i].innerText = '(' + count[i] + ')';
+      }
+    };
+
+    var getFilteredByNutritionCount = function () {
+      var titlesOfNutrition = selectBlockInFilter('food-property').titlesOfFilter;
+      var countsBlockOfNutrition = selectBlockInFilter('food-property').countsOfFilter;
+
+      for (var i = 0; i < titlesOfNutrition.length; i++) {
+        count[i] = 0;
+        for (var j = 0; j < window.productsArray.length; j++) {
+          switch (titlesOfNutrition[i].textContent) {
+            case 'Без сахара':
+              if (!checkNutrition(j, 'sugar')) {
+                count[i] += 1;
+              }
+              break;
+            case 'Вегетарианское':
+              if (checkNutrition(j, 'vegetarian')) {
+                count[i] += 1;
+              }
+              break;
+            case 'Безглютеновое':
+              if (!checkNutrition(j, 'gluten')) {
+                count[i] += 1;
+              }
+              break;
+          }
+        }
+        countsBlockOfNutrition[i].innerText = '(' + count[i] + ')';
+      }
+    };
+
+    var checkNutrition = function (index, prop) {
+      return window.productsArray[index].nutritionFacts[prop];
+    };
+
+    var selectBlockInFilter = function (title) {
+      var blockFilter = {};
+
+      blockFilter.titlesOfFilter = document
+      .querySelectorAll('.input-btn__input[name="' + title + '"] + .input-btn__label');
+      blockFilter.countsOfFilter = document
+      .querySelectorAll('.input-btn__input[name="' + title + '"] + .input-btn__label + .input-btn__item-count');
+
+      return blockFilter;
+    };
+
+    getFilteredByTypeCount();
+    getFilteredByNutritionCount();
+  };
+
   // обработчик нажатий на фильтр
   var filterHandler = function (evt) {
     var target = evt.target.innerText;
