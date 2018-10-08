@@ -101,6 +101,23 @@
     if (cards.length === 0 && !emptyBlock) {
       showEmptyFilter();
     }
+
+    // количество подходящих по цене товаров
+    var getFilteredByPriceCount = function () {
+      var countsBlockOfPrice = filterBar.querySelector('.range__price-count .range__count');
+      var count = 0;
+
+      for (var j = 0; j < window.productsArray.length; j++) {
+        if (window.productsArray[j].price >= minPrice && window.productsArray[j]
+        .price <= maxPrice) {
+          count++;
+        }
+      }
+
+      countsBlockOfPrice.innerText = '(' + count + ')';
+    };
+
+    getFilteredByPriceCount();
   };
 
   var showEmptyFilter = function () {
@@ -289,17 +306,8 @@
       }
     };
 
-    window.getFilteredByFavoriteCount = function () {
-      var catalog = document.querySelector('.catalog__cards');
-      var cardFavorite = catalog.querySelectorAll('.card__btn-favorite--selected');
-      count = cardFavorite.length;
-      var countsBlockOfFavorite = selectBlockInFilter('mark').countsOfFilter;
-
-      countsBlockOfFavorite[0].innerText = '(' + count + ')';
-    };
-
     var getFilteredByInStockCount = function () {
-      var countsBlockOfFavorite = selectBlockInFilter('mark').countsOfFilter;
+      var countsBlockOfInStock = selectBlockInFilter('mark').countsOfFilter[1];
       count = 0;
       for (var i = 0; i < window.productsArray.length; i++) {
         if (window.productsArray[i].amount !== 0) {
@@ -307,7 +315,16 @@
         }
       }
 
-      countsBlockOfFavorite[1].innerText = '(' + count + ')';
+      countsBlockOfInStock.innerText = '(' + count + ')';
+    };
+
+    window.getFilteredByFavoriteCount = function () {
+      var catalog = document.querySelector('.catalog__cards');
+      var cardFavorite = catalog.querySelectorAll('.card__btn-favorite--selected');
+      count = cardFavorite.length;
+      var countsBlockOfFavorite = selectBlockInFilter('mark').countsOfFilter[0];
+
+      countsBlockOfFavorite.innerText = '(' + count + ')';
     };
 
     var checkNutrition = function (index, prop) {
@@ -329,6 +346,7 @@
     getFilteredByNutritionCount();
     window.getFilteredByFavoriteCount();
     getFilteredByInStockCount();
+    window.filterByPrice().getFilteredByPriceCount();
   };
 
   // обработчик нажатий на фильтр
