@@ -16,12 +16,16 @@
   };
 
   var isFilterLinkChecked = function (title) {
-    var filterLinks = filterBar.querySelectorAll('.input-btn__input--checkbox');
+    var filterCheckboxes = filterBar.querySelectorAll('.input-btn__input--checkbox');
+    var filterLabels = filterBar.querySelectorAll('.input-btn__label--checkbox');
     var index = 0;
 
-    for (var i = 0; i < filterLinks.length; i++) {
-      if (filterLinks[i].checked === true && filterLinks[i].textContent === title && index === 0) {
+    for (var i = 0; i < filterCheckboxes.length; i++) {
+      if (filterCheckboxes[i].checked === true && filterLabels[i].textContent === title && index === 0) {
         index++;
+        filterCheckboxes[i].checked = false;
+      } else if (filterCheckboxes[i].checked === false && filterLabels[i].textContent === title && index === 0) {
+        filterCheckboxes[i].checked = true;
       }
     }
     return !!index;
@@ -373,12 +377,11 @@
       emptyBlock.remove();
     }
 
-    if (!isFilterLinkChecked(targetTitle)) {
-      switch (target.type) {
-        case 'checkbox':
-          sortByPopular();
-          break;
-      }
+    evt.preventDefault();
+
+    if (isFilterLinkChecked(targetTitle)) {
+      filterByInStock(window.productsArray);
+      return;
     }
 
     switch (targetTitle) {
