@@ -390,19 +390,19 @@
         filterByType(target, window.productsArray);
         break;
       case 'Без сахара':
-        filterByNutrition(target, 'sugar', window.productsArray);
+        filterByNutrition('sugar', window.productsArray);
         break;
       case 'Вегетарианское':
-        filterByNutrition(target, 'vegetarian', window.productsArray);
+        filterByNutrition('vegetarian', window.productsArray);
         break;
       case 'Безглютеновое':
-        filterByNutrition(target, 'gluten', window.productsArray);
+        filterByNutrition('gluten', window.productsArray);
         break;
       case 'Только избранное':
-        filterByFavorite(target);
+        filterByFavorite();
         break;
       case 'В наличии':
-        filterByInStock(target, window.productsArray);
+        filterByInStock(window.productsArray);
         break;
       case 'Сначала дешёвые':
         sortByCheaper();
