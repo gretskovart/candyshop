@@ -15,13 +15,25 @@
     }
   };
 
-  var filterByType = function (evt, items) {
-    var target = evt.target.innerText;
+  var isFilterLinkChecked = function (title) {
+    var filterLinks = filterBar.querySelectorAll('.input-btn__input--checkbox');
+    var index = 0;
+
+    for (var i = 0; i < filterLinks.length; i++) {
+      if (filterLinks[i].checked === true && filterLinks[i].textContent === title && index === 0) {
+        index++;
+      }
+    }
+    return !!index;
+  };
+
+  var filterByType = function (target, items) {
+    var targetTitle = target.innerText;
     var byType = [];
     removeCards();
 
     items.forEach(function (card, i) {
-      if (items[i].kind === target) {
+      if (items[i].kind === targetTitle) {
         byType.push(items[i]);
       }
     });
@@ -352,35 +364,45 @@
 
   // обработчик нажатий на фильтр
   var filterHandler = function (evt) {
-    var target = evt.target.innerText;
+    var target = evt.target;
+    var targetTitle = target.innerText;
+
     emptyBlock = document.querySelector('.catalog__empty-filter');
 
     if (emptyBlock && emptyBlock !== 'undefined') {
       emptyBlock.remove();
     }
 
-    switch (target) {
+    if (!isFilterLinkChecked(targetTitle)) {
+      switch (target.type) {
+        case 'checkbox':
+          sortByPopular();
+          break;
+      }
+    }
+
+    switch (targetTitle) {
       case 'Мороженое':
       case 'Газировка':
       case 'Жевательная резинка':
       case 'Мармелад':
       case 'Зефир':
-        filterByType(evt, window.productsArray);
+        filterByType(target, window.productsArray);
         break;
       case 'Без сахара':
-        filterByNutrition('sugar', window.productsArray);
+        filterByNutrition(target, 'sugar', window.productsArray);
         break;
       case 'Вегетарианское':
-        filterByNutrition('vegetarian', window.productsArray);
+        filterByNutrition(target, 'vegetarian', window.productsArray);
         break;
       case 'Безглютеновое':
-        filterByNutrition('gluten', window.productsArray);
+        filterByNutrition(target, 'gluten', window.productsArray);
         break;
       case 'Только избранное':
-        filterByFavorite();
+        filterByFavorite(target);
         break;
       case 'В наличии':
-        filterByInStock(window.productsArray);
+        filterByInStock(target, window.productsArray);
         break;
       case 'Сначала дешёвые':
         sortByCheaper();
