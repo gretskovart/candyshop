@@ -102,22 +102,23 @@
       showEmptyFilter();
     }
 
-    // количество подходящих по цене товаров
-    var getFilteredByPriceCount = function () {
-      var countsBlockOfPrice = filterBar.querySelector('.range__price-count .range__count');
-      var count = 0;
+    window.getFilteredByPriceCount();
+  };
 
-      for (var j = 0; j < window.productsArray.length; j++) {
-        if (window.productsArray[j].price >= minPrice && window.productsArray[j]
-        .price <= maxPrice) {
-          count++;
-        }
+  window.getFilteredByPriceCount = function () {
+    var minPrice = document.querySelector('.range__price--min').innerText;
+    var maxPrice = document.querySelector('.range__price--max').innerText;
+    var countsBlockOfPrice = filterBar.querySelector('.range__price-count .range__count');
+    var count = 0;
+
+    for (var j = 0; j < window.productsArray.length; j++) {
+      if (window.productsArray[j].price >= minPrice && window.productsArray[j]
+      .price <= maxPrice) {
+        count++;
       }
+    }
 
-      countsBlockOfPrice.innerText = '(' + count + ')';
-    };
-
-    getFilteredByPriceCount();
+    countsBlockOfPrice.innerText = '(' + count + ')';
   };
 
   var showEmptyFilter = function () {
@@ -346,7 +347,7 @@
     getFilteredByNutritionCount();
     window.getFilteredByFavoriteCount();
     getFilteredByInStockCount();
-    window.filterByPrice().getFilteredByPriceCount();
+    window.getFilteredByPriceCount();
   };
 
   // обработчик нажатий на фильтр
