@@ -215,17 +215,17 @@
                 <div class="payment__inputs">
                   <div class="payment__card-group">
                     <p class="text-input text-input--light payment__input-wrap payment__input-wrap--card-number">
-                      <input type="number" class="text-input__input" name="card-number" id="payment__card-number" placeholder="Номер карты" minlength="16" maxlength="16">
+                      <input type="number" class="text-input__input" name="card-number" id="payment__card-number" placeholder="Номер карты" required>
                       <label class="text-input__label" for="payment__card-number">Номер карты</label>
                     </p>
 
                     <p class="text-input text-input--light payment__input-wrap payment__input-wrap--card-date">
-                      <input type="number" class="text-input__input" name="card-date" id="payment__card-date" placeholder="мм/гг" minlength="4" maxlength="4">
+                      <input type="number" class="text-input__input" name="card-date" id="payment__card-date" placeholder="мм/гг" required>
                       <label class="text-input__label" for="payment__card-date">мм/гг</label>
                     </p>
 
                     <p class="text-input text-input--light payment__input-wrap payment__input-wrap--cvc">
-                      <input type="number" class="text-input__input" name="card-cvc" id="payment__card-cvc" placeholder="CVC" minlength="3" maxlength="3">
+                      <input type="number" class="text-input__input" name="card-cvc" id="payment__card-cvc" placeholder="CVC" minlength="3" maxlength="3" required min="100" max="999">
                       <label class="text-input__label text-input__label--lock" for="payment__card-cvc">CVC</label>
                     </p>
 
@@ -337,22 +337,22 @@
 
                 <ul class="deliver__address-entry-fields">
                   <li class="text-input deliver__street">
-                    <input type="text" class="text-input__input" name="deliver-street" id="deliver__street" placeholder="Улица">
+                    <input type="text" class="text-input__input" name="deliver-street" id="deliver__street" placeholder="Улица" required>
                     <label class="text-input__label" for="deliver__street">Улица</label>
                   </li>
 
                   <li class="text-input deliver__house">
-                    <input type="text" class="text-input__input" name="deliver-house" id="deliver__house" placeholder="Дом">
+                    <input type="text" class="text-input__input" name="deliver-house" id="deliver__house" placeholder="Дом" required>
                     <label class="text-input__label" for="deliver__house">Дом</label>
                   </li>
 
                   <li class="text-input deliver__floor">
-                    <input type="text" class="text-input__input" name="deliver-floor" id="deliver__floor" placeholder="Эт.">
+                    <input type="number" class="text-input__input" name="deliver-floor" id="deliver__floor" placeholder="Эт." min="0">
                     <label class="text-input__label" for="deliver__floor">Эт.</label>
                   </li>
 
                   <li class="text-input deliver__room">
-                    <input type="text" class="text-input__input" name="deliver-room" id="deliver__room" placeholder="Кв.">
+                    <input type="text" class="text-input__input" name="deliver-room" id="deliver__room" placeholder="Кв." required>
                     <label class="text-input__label" for="deliver__room">Кв.</label>
                   </li>
                 </ul>
