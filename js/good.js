@@ -81,6 +81,38 @@
       productElement.querySelector('.card__composition-list').textContent = product.nutritionFacts.contents;
     };
 
+    var renderDataAttr = function () {
+      if (!product.nutritionFacts.sugar) {
+        productElement.setAttribute('data-no-sugar', '1');
+      }
+
+      if (!product.nutritionFacts.gluten) {
+        productElement.setAttribute('data-no-gluten', '1');
+      }
+
+      if (!product.nutritionFacts.vegetarian) {
+        productElement.setAttribute('data-vegetarian', '1');
+      }
+
+      switch (product.kind) {
+        case 'Мороженое':
+          productElement.setAttribute('data-kind-icecream', '1');
+          break;
+        case 'Газировка':
+          productElement.setAttribute('data-kind-soda', '1');
+          break;
+        case 'Жевательная резинка':
+          productElement.setAttribute('data-kind-bubblegum', '1');
+          break;
+        case 'Мармелад':
+          productElement.setAttribute('data-kind-marmalade', '1');
+          break;
+        case 'Зефир':
+          productElement.setAttribute('data-kind-zephyr', '1');
+          break;
+      }
+    };
+
     var renderProductImage = function () {
       var imgProduct = productElement.querySelector('.card__img');
       var catalogImgPath = window.productImagePath + product.picture;
@@ -104,6 +136,7 @@
     renderProductCharacteristic();
     renderProductImage();
     renderProductFavorite();
+    renderDataAttr();
 
     return productElement;
   };

@@ -1,18 +1,24 @@
 'use strict';
 
 (function () {
+  var TYPE_ITEMS_COUNT = 5;
+
   var filterBar = document.querySelector('.catalog__sidebar');
   var filterCheckboxes = filterBar.querySelectorAll('.input-btn__input--checkbox');
   var filterLabels = filterBar.querySelectorAll('.input-btn__label--checkbox');
   var showAllButton = filterBar.querySelector('.catalog__submit');
   var emptyBlock;
 
-  var removeCards = function () {
+  var removeCards = function (property) {
     var catalogCards = document.querySelectorAll('.catalog__card');
 
     if (catalogCards) {
       catalogCards.forEach(function (item, i) {
-        catalogCards[i].remove();
+        if (property in catalogCards[i]) {
+          catalogCards[i].remove();
+        } else {
+          catalogCards[i].remove();
+        }
       });
     }
   };
@@ -53,7 +59,37 @@
   var filterByType = function (target, items) {
     var targetTitle = target.innerText;
     var byType = [];
-    removeCards();
+debugger;
+    if (makeMultipleFilterByType() === 1) {
+      removeCards();
+    } else if (makeMultipleFilterByType() > 1) {
+      switch (targetTitle) {
+        case 'Мороженое':
+          removeCards('data-kind-icecream');
+          break;
+        case 'Газировка':
+          removeCards('data-kind-soda');
+          break;
+        case 'Жевательная резинка':
+          removeCards('data-kind-bubblegum');
+          break;
+        case 'Мармелад':
+          removeCards('data-kind-marmalade');
+          break;
+        case 'Зефир':
+          removeCards('data-kind-zephyr');
+          break;
+        case 'Без сахара':
+          removeCards('data-no-sugar');
+          break;
+        case 'Вегетарианское':
+          removeCards('data-vegetarian');
+          break;
+        case 'Безглютеновое':
+          removeCards('data-no-gluten');
+          break;
+      }
+    }
 
     items.forEach(function (card, i) {
       if (items[i].kind === targetTitle) {
@@ -61,6 +97,18 @@
       }
     });
     window.addProductsToPage(byType);
+  };
+
+  var makeMultipleFilterByType = function (title) {
+    debugger;
+    var count = 0;
+
+    for (var i = 0; i < TYPE_ITEMS_COUNT; i++) {
+      if (filterCheckboxes[i].checked === true && filterLabels[i] !== title) {
+        count++;
+      }
+    }
+    return count;
   };
 
   var filterByNutrition = function (kind, items) {
