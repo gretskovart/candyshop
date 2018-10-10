@@ -37,6 +37,27 @@
     evt.preventDefault();
 
     var target = evt.target;
+    var cardTitle = target.parentNode.parentNode.parentNode
+    .querySelector('.card__title').innerText.toLowerCase();
+
+    var addisFavorite = function () {
+
+      for (var i = 0; i < window.productsArray.length; i++) {
+        if (window.productsArray[i].name.toLowerCase() === cardTitle &&
+        !!window.productsArray[i].isFavorite === false) {
+          window.productsArray[i].isFavorite = true;
+
+          return;
+        } else if (window.productsArray[i].name.toLowerCase() === cardTitle &&
+        window.productsArray[i].isFavorite === true) {
+          window.productsArray[i].isFavorite = false;
+
+          return;
+        }
+      }
+    };
+
+    addisFavorite();
 
     while (target !== window.productsContainer) {
       if (target.classList.contains('card__btn-favorite')) {
