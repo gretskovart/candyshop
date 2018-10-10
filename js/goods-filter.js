@@ -2,6 +2,8 @@
 
 (function () {
   var filterBar = document.querySelector('.catalog__sidebar');
+  var filterCheckboxes = filterBar.querySelectorAll('.input-btn__input--checkbox');
+  var filterLabels = filterBar.querySelectorAll('.input-btn__label--checkbox');
   var showAllButton = filterBar.querySelector('.catalog__submit');
   var emptyBlock;
 
@@ -16,8 +18,6 @@
   };
 
   var isFilterLinkChecked = function (title) {
-    var filterCheckboxes = filterBar.querySelectorAll('.input-btn__input--checkbox');
-    var filterLabels = filterBar.querySelectorAll('.input-btn__label--checkbox');
     var index = 0;
 
     for (var i = 0; i < filterCheckboxes.length; i++) {
@@ -29,6 +29,25 @@
       }
     }
     return !!index;
+  };
+
+  var clearAllInputs = function (title) {
+    for (var i = 0; i < filterCheckboxes.length; i++) {
+      if (title !== filterLabels[i].textContent) {
+        filterCheckboxes[i].checked = false;
+      }
+    }
+  };
+
+  var clearMarkInputs = function (title) {
+    var markInputs = filterBar.querySelectorAll('.input-btn__input[name="mark"]');
+    var markLabels = filterBar.querySelectorAll('.input-btn__input[name="mark"] + .input-btn__label');
+
+    for (var j = 0; j < markLabels.length; j++) {
+      if (markInputs[j].checked === true && markLabels[j].textContent !== title) {
+        markInputs[j].checked = false;
+      }
+    }
   };
 
   var filterByType = function (target, items) {
@@ -390,21 +409,27 @@
       case 'Жевательная резинка':
       case 'Мармелад':
       case 'Зефир':
+        clearMarkInputs(targetTitle);
         filterByType(target, window.productsArray);
         break;
       case 'Без сахара':
+        clearMarkInputs(targetTitle);
         filterByNutrition('sugar', window.productsArray);
         break;
       case 'Вегетарианское':
+        clearMarkInputs(targetTitle);
         filterByNutrition('vegetarian', window.productsArray);
         break;
       case 'Безглютеновое':
+        clearMarkInputs(targetTitle);
         filterByNutrition('gluten', window.productsArray);
         break;
       case 'Только избранное':
+        clearAllInputs(targetTitle);
         filterByFavorite();
         break;
       case 'В наличии':
+        clearAllInputs(targetTitle);
         filterByInStock(window.productsArray);
         break;
       case 'Сначала дешёвые':
