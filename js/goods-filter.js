@@ -59,7 +59,7 @@
   var filterByType = function (target, items) {
     var targetTitle = target.innerText;
     var byType = [];
-debugger;
+
     if (makeMultipleFilterByType() === 1) {
       removeCards();
     } else if (makeMultipleFilterByType() > 1) {
@@ -100,7 +100,6 @@ debugger;
   };
 
   var makeMultipleFilterByType = function (title) {
-    debugger;
     var count = 0;
 
     for (var i = 0; i < TYPE_ITEMS_COUNT; i++) {
