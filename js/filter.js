@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var PRODUCTS_PRICE_MAX = 1500;
-  var PRODUCTS_PRICE_MIN = 100;
+  var PRODUCTS_PRICE_MAX = 90;
+  var PRODUCTS_PRICE_MIN = 0;
   var PIN_WIDTH_X2 = 10;
 
   var sliderLeft = document.querySelector('.range__btn--left');
@@ -65,22 +65,28 @@
 
     document.addEventListener('mousemove', movePinHandler);
     document.addEventListener('mouseup', upPinHandler);
+    // фильтр товаров по цене
+    document.addEventListener('mouseup', window.filterByPrice);
   };
 
   sliderLeft.addEventListener('mousedown', sliderHandler);
   sliderRight.addEventListener('mousedown', sliderHandler);
 
   // обнуляем изначальные значения фильтра
-  (function () {
+  window.clearPrice = function () {
     sliderLeft.style.zIndex = 1;
 
     sliderLeft.style.left = 0;
     sliderRight.style.right = 0;
+    sliderLeft.style.right = 'inherit';
+    sliderRight.style.left = 'inherit';
 
     line.style.left = 0;
     line.style.right = 0;
 
     rangePriceLeft.textContent = PRODUCTS_PRICE_MIN;
     rangePriceRight.textContent = PRODUCTS_PRICE_MAX;
-  })();
+  };
+
+  window.clearPrice();
 })();

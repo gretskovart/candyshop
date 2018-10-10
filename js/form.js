@@ -123,6 +123,10 @@
     var arr = cardNumber.value.toString().split('');
     var sum = 0;
 
+    if (arr.length !== 16) {
+      return false;
+    }
+
     for (var i = 0; i < arr.length; i++) {
       var integer = parseFloat(arr[i]);
       if (i % 2 === 0) {

@@ -9,7 +9,7 @@
 
   var productsCartContainer = document.querySelector('.goods__cards');
   var cardEmpty = document.querySelector('.goods__card-empty');
-  var showAllProducts = document.querySelector('.catalog__submit');
+  // var showAllProducts = document.querySelector('.catalog__submit');
 
   var addProductsToCart = function (objToCart) {
     var fragment = document.createDocumentFragment();
@@ -37,10 +37,31 @@
     evt.preventDefault();
 
     var target = evt.target;
+    var cardTitle = target.parentNode.parentNode.parentNode
+    .querySelector('.card__title').innerText.toLowerCase();
+
+    var addIsFavoriteProp = function () {
+      for (var i = 0; i < window.productsArray.length; i++) {
+        if (window.productsArray[i].name.toLowerCase() === cardTitle &&
+        !!window.productsArray[i].isFavorite === false) {
+          window.productsArray[i].isFavorite = true;
+
+          return;
+        } else if (window.productsArray[i].name.toLowerCase() === cardTitle &&
+        window.productsArray[i].isFavorite === true) {
+          window.productsArray[i].isFavorite = false;
+
+          return;
+        }
+      }
+    };
+
+    addIsFavoriteProp();
 
     while (target !== window.productsContainer) {
       if (target.classList.contains('card__btn-favorite')) {
         target.classList.toggle('card__btn-favorite--selected');
+        window.getFilteredByFavoriteCount();
 
         return;
       }
@@ -110,12 +131,6 @@
     return end;
   };
 
-  showAllProducts.addEventListener('click', function (evt) {
-    evt.preventDefault();
-    window.addProductsToPage();
-    addToCartButtonHandler();
-  });
-
   var favoriteClickHandler = function () {
     window.productsContainer.addEventListener('click', addSelectedFavorite);
   };
@@ -123,7 +138,7 @@
   favoriteClickHandler();
 
   // добавляем карточку по нажатию на кнопку
-  var addToCartButtonHandler = function () {
+  window.addToCartButtonHandler = function () {
     var addButton = document.querySelectorAll('.card__btn');
 
     for (var i = 0; i < addButton.length; i++) {
