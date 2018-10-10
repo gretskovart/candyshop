@@ -89,12 +89,21 @@
       imgProduct.setAttribute('alt', product.name);
     };
 
+    var renderProductFavorite = function () {
+      var favoriteButton = productElement.querySelector('.card__btn-favorite');
+
+      if (product.isFavorite) {
+        favoriteButton.classList.add('card__btn-favorite--selected');
+      }
+    };
+
     renderProductAmount();
     renderProductName();
     renderProductPrice();
     renderProductRating();
     renderProductCharacteristic();
     renderProductImage();
+    renderProductFavorite();
 
     return productElement;
   };
