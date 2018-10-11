@@ -7,13 +7,20 @@
   var showAllButton = filterBar.querySelector('.catalog__submit');
   var emptyBlock;
 
-  var removeCards = function () {
+  var removeCards = function (name) {
     var catalogCards = document.querySelectorAll('.catalog__card');
 
     if (catalogCards) {
-      catalogCards.forEach(function (item, i) {
-        catalogCards[i].remove();
-      });
+      for (var i = 0; i < catalogCards.length; i++) {
+        if (name) {
+          if (catalogCards[i].getAttribute('title') === name) {
+            catalogCards[i].remove();
+            return;
+          }
+        } else {
+          catalogCards[i].remove();
+        }
+      }
     }
   };
 
@@ -52,7 +59,25 @@
 
   var filterByType = function (target, items) {
     var targetTitle = target.innerText;
+    var indexOfAttribute = getFilterTitlesNumber(targetTitle);
+    var attr = window.dataAttributes[indexOfAttribute];
+    var currentName;
+    var arrForTypeFilter = [];
     var byType = [];
+
+    if (isFoodPropertyChecked()) {
+      arrForTypeFilter = getCardsArrCopy();
+
+      arrForTypeFilter.forEach(function (card, i) {
+        if (!arrForTypeFilter[i].dataset.hasOwnProperty(attr)) {
+          currentName = arrForTypeFilter[i].getAttribute('title');
+
+          removeCards(currentName);
+        }
+      });
+      return;
+    }
+
     removeCards();
 
     items.forEach(function (card, i) {
@@ -61,6 +86,29 @@
       }
     });
     window.addProductsToPage(byType);
+  };
+
+  var isFoodPropertyChecked = function () {
+    var checkedFoodProperty = filterBar
+    .querySelectorAll('.input-btn__input[name="food-property"]');
+
+    for (var i = 0; i < checkedFoodProperty.length; i++) {
+      if (checkedFoodProperty[i].checked === true) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  var getFilterTitlesNumber = function (title) {
+    var numOfTitles = 8;
+
+    for (var i = 0; i < numOfTitles; i++) {
+      if (filterLabels[i].innerText === title) {
+        break;
+      }
+    }
+    return i;
   };
 
   var filterByNutrition = function (kind, items) {

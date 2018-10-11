@@ -98,24 +98,25 @@
     };
 
     var renderDataAttributes = function () {
+      window.dataAttributes = ['ice_cream', 'soda', 'bublegum', 'marmelade', 'marshmallow'];
       var type;
       var composition;
 
       switch (product.kind) {
         case 'Мороженое':
-          type = 'ice_cream';
+          type = window.dataAttributes[0];
           break;
         case 'Газировка':
-          type = 'soda';
+          type = window.dataAttributes[1];
           break;
         case 'Жевательная резинка':
-          type = 'bublegum';
+          type = window.dataAttributes[2];
           break;
         case 'Мармелад':
-          type = 'marmelade';
+          type = window.dataAttributes[3];
           break;
         case 'Зефир':
-          type = 'marshmallow';
+          type = window.dataAttributes[4];
           break;
       }
 
