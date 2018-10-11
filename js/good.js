@@ -97,6 +97,43 @@
       }
     };
 
+    var renderDataAttributes = function () {
+      var type;
+      var composition;
+
+      switch (product.kind) {
+        case 'Мороженое':
+          type = 'ice_cream';
+          break;
+        case 'Газировка':
+          type = 'soda';
+          break;
+        case 'Жевательная резинка':
+          type = 'bublegum';
+          break;
+        case 'Мармелад':
+          type = 'marmelade';
+          break;
+        case 'Зефир':
+          type = 'marshmallow';
+          break;
+      }
+
+      productElement.setAttribute('data-' + type, '1');
+
+      if (product.nutritionFacts.sugar === false) {
+        composition = 'no_sugar';
+      }
+      if (product.nutritionFacts.vegetarian === true) {
+        composition = 'vegetarian';
+      }
+      if (product.nutritionFacts.gluten === false) {
+        composition = 'no_gluten';
+      }
+
+      productElement.setAttribute('data-' + composition, '1');
+    };
+
     renderProductAmount();
     renderProductName();
     renderProductPrice();
@@ -104,6 +141,7 @@
     renderProductCharacteristic();
     renderProductImage();
     renderProductFavorite();
+    renderDataAttributes();
 
     return productElement;
   };
