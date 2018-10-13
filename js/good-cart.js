@@ -26,6 +26,7 @@
     var renderProductCartPrice = function () {
       productElementCart.querySelector('.card-order__price').textContent =
       product.price + ' ₽';
+      productElementCart.setAttribute('data-price', product.price);
     };
 
     var renderProductCartAmount = function () {

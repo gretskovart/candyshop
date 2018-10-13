@@ -158,9 +158,13 @@
             addProductsToCart(productObj);
           } else {
             for (var j = 0; j < window.productsCartArray.length; j++) {
+
               if (window.productsCartArray[j].name === currentCardName) {
                 changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
+                changeOverallPrice(getCurrentCartCard(currentCardName), 1);
+
                 window.productsCartArray[j].amount += 1;
+
                 return;
               } else {
                 window.productsCartArray.push(productObj);
@@ -181,6 +185,7 @@
         var currentObj = arr[i];
       }
     }
+
     if (currentObj.amount > 0) {
       currentObj.amount -= 1;
     }
@@ -199,10 +204,12 @@
   // изменяем количество товаров в корзине
   var changeQantityCartObj = function (evtTar, act) {
     var currentCard = evtTar.closest('.goods_card');
+    var currentName = currentCard.querySelector('.card-order__title').textContent;
+
     var cartObjCount = currentCard.querySelector('.card-order__count');
     var currentCount = parseInt(cartObjCount.getAttribute('value'), 10);
-    var cartPrice = currentCard.querySelector('.card-order__price').textContent;
-    var currentName = currentCard.querySelector('.card-order__title').textContent;
+
+    var cartPrice = currentCard.getAttribute('data-price');
     var currentIntPrice = parseInt(cartPrice, 10);
 
     switch (act) {
@@ -223,6 +230,27 @@
     }
 
     renderHeaderProductCartPrice(currentIntPrice, act);
+  };
+
+  var changeOverallPrice = function (evtTar, act) {
+    var currentCard = evtTar.closest('.goods_card');
+    var cartObjPrice = currentCard.querySelector('.card-order__price');
+    var currentPrice = parseInt(cartObjPrice.innerText, 10);
+    var currentName = currentCard.querySelector('.card-order__title').textContent;
+    var currenProductPrice = getCurrentCartObj(currentName).price;
+
+    switch (act) {
+      case 1:
+        cartObjPrice.textContent = currentPrice + currenProductPrice;
+
+        break;
+      case -1:
+        if (currentPrice !== currenProductPrice) {
+          cartObjPrice.textContent = currentPrice - currenProductPrice;
+        }
+
+        break;
+    }
   };
 
   var getCurrentCartObj = function (objName) {
@@ -253,6 +281,7 @@
     decreaseButton[lastElem].addEventListener('click', function (evt) {
       evt.stopPropagation();
       changeQantityCartObj(evt.target, -1);
+      changeOverallPrice(evt.target, -1);
     });
   };
 
@@ -263,6 +292,7 @@
     increaseButton[lastElem].addEventListener('click', function (evt) {
       evt.stopPropagation();
       changeQantityCartObj(evt.target, 1);
+      changeOverallPrice(evt.target, 1);
     });
   };
   // изменяем количество товаров в корзине
@@ -286,8 +316,6 @@
 
     var indexCurrentObj = window.productsCartArray.indexOf(getCurrentCartObj(currentObjName));
     window.productsCartArray.splice(indexCurrentObj, 1);
-
-    // TODO: hideCatalogCards(); при условии пустого глобально массива
   };
 
   var removeButtonHandler = function () {
