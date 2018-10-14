@@ -153,7 +153,6 @@
       arr.forEach(function (item) {
         fragment.appendChild(renderProduct(item));
       });
-
       window.productsContainer.appendChild(fragment);
     };
 

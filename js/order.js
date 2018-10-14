@@ -151,6 +151,7 @@
         var currentCardPrice = parseFloat(currentCard.querySelector('.card__price').textContent);
         var productObj = copyObj(window.productsArray, currentCardName, currentCardPrice);
         var attrAmount = parseFloat(currentCard.getAttribute('amount'));
+        var noSimilar = true;
         if (attrAmount === 0) {
           return;
         }
@@ -159,21 +160,24 @@
           if (window.productsCartArray.length === 0) {
             window.productsCartArray.push(productObj);
             addProductsToCart(productObj);
+            renderHeaderProductCartPrice(productObj.price, 1);
           } else {
-            window.productsCartArray.forEach(function () {
-              if (item.name === currentCardName) {
+            window.productsCartArray.forEach(function (itemProduct) {
+              if (itemProduct.name === currentCardName) {
                 changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
                 changeOverallPrice(getCurrentCartCard(currentCardName), 1);
 
-                item.amount += 1;
-              } else {
-                window.productsCartArray.push(productObj);
-                addProductsToCart(productObj);
+                itemProduct.amount += 1;
+                noSimilar = false;
               }
             });
+            if (noSimilar) {
+              window.productsCartArray.push(productObj);
+              renderHeaderProductCartPrice(productObj.price, 1);
+              addProductsToCart(productObj);
+            }
           }
         }
-        renderHeaderProductCartPrice(productObj.price, 1);
       });
     });
   };
