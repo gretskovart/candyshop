@@ -48,7 +48,7 @@
 
     cardWrap.classList.toggle('visually-hidden');
     cashWrap.classList.toggle('visually-hidden');
-    target.setAttribute('checked', true);
+    target.setAttribute('checked', '');
     checkedBtn.removeAttribute('checked');
     window.disableTabInputs(paymentSection);
   };
@@ -84,17 +84,29 @@
   };
 
   window.disableTabInputs = function (tab) {
-    var inputs = tab.querySelectorAll('.visually-hidden input');
+    var input = tab.querySelectorAll('input');
+    var inputsHidden = tab.querySelectorAll('.visually-hidden input');
 
-    inputs.forEach(function (item) {
-      item.setAttribute('disabled', '');
+    inputsHidden.forEach(function (itemHidden) {
+      itemHidden.setAttribute('disabled', '');
     });
 
     if (tab.classList.contains('deliver__courier')) {
       var tabTextArea = tab.querySelector('textarea');
 
+      if (tabTextArea.getAttribute('disabled')) {
+        tabTextArea.removeAttribute('disabled');
+      }
+
       tabTextArea.setAttribute('disabled', '');
     }
+
+    input.forEach(function (item) {
+      if (!item.classList.contains('visually-hidden') || !item.parentNode.parentNode.parentNode.parentNode.classList.contains('visually-hidden')) {
+        item.removeAttribute('disabled');
+      }
+    });
+
   };
 
   var formInputsChecker = function (evt) {
