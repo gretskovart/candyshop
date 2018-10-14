@@ -106,7 +106,6 @@
         item.removeAttribute('disabled');
       }
     });
-
   };
 
   var formInputsChecker = function (evt) {
