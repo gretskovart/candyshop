@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var PRODUCTS_QUANTITY = 26;
+  window.productImagePath = 'img/cards/';
 
   var similarProductTemplate = document.querySelector('#card').content
   .querySelector('.catalog__card');
@@ -9,7 +9,6 @@
   var load = document.querySelector('.catalog__load');
 
   var showCatalogCards = function () {
-  // вынести 2-ую функцию
     cards.classList.remove('catalog__cards--load');
     load.classList.add('visually-hidden');
   };
@@ -39,25 +38,32 @@
     };
 
     var renderProductRating = function () {
-      var productsRatingClassList = productElement.querySelector('.stars__rating')
-      .classList;
+      var productsRatingList = productElement.querySelector('.stars__rating');
+      var productsRatingClassList = productsRatingList.classList;
+
       productsRatingClassList.remove('stars__rating--five');
+      productsRatingClassList.textContent = '';
 
       switch (product.rating.value) {
         case 1:
           productsRatingClassList.add('stars__rating--one');
+          productsRatingList.textContent = 'Рейтинг: 1 звезда';
           break;
         case 2:
           productsRatingClassList.add('stars__rating--two');
+          productsRatingList.textContent = 'Рейтинг: 2 звезды';
           break;
         case 3:
           productsRatingClassList.add('stars__rating--three');
+          productsRatingList.textContent = 'Рейтинг: 3 звезды';
           break;
         case 4:
           productsRatingClassList.add('stars__rating--four');
+          productsRatingList.textContent = 'Рейтинг: 4 звезды';
           break;
         case 5:
           productsRatingClassList.add('stars__rating--five');
+          productsRatingList.textContent = 'Рейтинг: 5 звезд';
           break;
       }
 
@@ -76,9 +82,56 @@
 
     var renderProductImage = function () {
       var imgProduct = productElement.querySelector('.card__img');
+      var catalogImgPath = window.productImagePath + product.picture;
 
-      imgProduct.setAttribute('src', product.picture);
+      imgProduct.setAttribute('src', catalogImgPath);
       imgProduct.setAttribute('alt', product.name);
+    };
+
+    var renderProductFavorite = function () {
+      var favoriteButton = productElement.querySelector('.card__btn-favorite');
+
+      if (product.isFavorite) {
+        favoriteButton.classList.add('card__btn-favorite--selected');
+      }
+    };
+
+    var renderDataAttributes = function () {
+      window.dataAttributes = ['ice_cream', 'soda', 'bublegum', 'marmelade', 'marshmallow'];
+      var type;
+      var composition;
+
+      switch (product.kind) {
+        case 'Мороженое':
+          type = window.dataAttributes[0];
+          break;
+        case 'Газировка':
+          type = window.dataAttributes[1];
+          break;
+        case 'Жевательная резинка':
+          type = window.dataAttributes[2];
+          break;
+        case 'Мармелад':
+          type = window.dataAttributes[3];
+          break;
+        case 'Зефир':
+          type = window.dataAttributes[4];
+          break;
+      }
+
+      productElement.setAttribute('data-' + type, '1');
+
+      if (product.nutritionFacts.sugar === false) {
+        composition = 'no_sugar';
+      }
+      if (product.nutritionFacts.vegetarian === true) {
+        composition = 'vegetarian';
+      }
+      if (product.nutritionFacts.gluten === false) {
+        composition = 'no_gluten';
+      }
+
+      productElement.setAttribute('data-' + composition, '1');
     };
 
     renderProductAmount();
@@ -87,22 +140,27 @@
     renderProductRating();
     renderProductCharacteristic();
     renderProductImage();
+    renderProductFavorite();
+    renderDataAttributes();
 
     return productElement;
   };
 
-  window.addProductsToPage = function () {
+  window.addProductsToPage = function (arr) {
     var fragment = document.createDocumentFragment();
 
-    var appendProductsFromArray = function (arr) {
-      for (var i = 0; i < PRODUCTS_QUANTITY; i++) {
-        fragment.appendChild(renderProduct(arr[i]));
-      }
+    var appendProductsFromArray = function () {
+      arr.forEach(function (item) {
+        fragment.appendChild(renderProduct(item));
+      });
 
       window.productsContainer.appendChild(fragment);
     };
 
     showCatalogCards();
-    appendProductsFromArray(window.createProductsArray(PRODUCTS_QUANTITY));
+    appendProductsFromArray(arr);
+    window.addToCartButtonHandler(); // добавление в корзину
+    window.getCountOfFilteredCards();
+    window.makeInputsDisabled(); // блокируем инпуты формы
   };
 })();

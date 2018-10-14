@@ -17,14 +17,16 @@
 
     var renderProductCartImage = function () {
       var imgProduct = productElementCart.querySelector('.card-order__img');
+      var cartImgPath = window.productImagePath + product.picture;
 
-      imgProduct.setAttribute('src', product.picture);
+      imgProduct.setAttribute('src', cartImgPath);
       imgProduct.setAttribute('alt', product.name);
     };
 
     var renderProductCartPrice = function () {
       productElementCart.querySelector('.card-order__price').textContent =
       product.price + ' ₽';
+      productElementCart.setAttribute('data-price', product.price);
     };
 
     var renderProductCartAmount = function () {
