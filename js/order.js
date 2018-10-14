@@ -14,6 +14,7 @@
   var cardEmpty = document.querySelector('.goods__card-empty');
 
   var addProductsToCart = function (objToCart) {
+    var deliverySection = window.form.querySelector('.deliver');
     var fragment = document.createDocumentFragment();
 
     fragment.appendChild(window.renderProductCart(objToCart));
@@ -24,6 +25,7 @@
     decreaseCartHandler();
     increaseCartHandler();
     window.clearInputsDisabled();
+    window.disableTabInputs(deliverySection);
   };
 
   var showGoodsCards = function () {
@@ -339,19 +341,19 @@
     var orderFormDelieveryInputs = orderForm.querySelectorAll('.input-btn__input[name="store"]');
 
     orderFormInputs.forEach(function (item) {
-      item.setAttribute('disabled', 'true');
+      item.setAttribute('disabled', '');
     });
-    orderFormTextArea.setAttribute('disabled', 'true');
-    submitButton.setAttribute('disabled', 'true');
+    orderFormTextArea.setAttribute('disabled', '');
+    submitButton.setAttribute('disabled', '');
 
     orderFormDelieveryInputs.forEach(function (item) {
-      item.setAttribute('disabled', 'true');
+      item.setAttribute('disabled', '');
     });
   };
 
   window.clearInputsDisabled = function () {
-    var disabledInputs = orderForm.querySelectorAll('input[disabled="true"]');
-    var disableTextArea = orderForm.querySelector('textarea[disabled="true"]');
+    var disabledInputs = orderForm.querySelectorAll('input[disabled]');
+    var disableTextArea = orderForm.querySelector('textarea[disabled]');
 
     disabledInputs.forEach(function (item) {
       item.removeAttribute('disabled');
