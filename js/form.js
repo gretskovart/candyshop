@@ -13,7 +13,6 @@
   var paymentSection = window.form.querySelector('.payment');
   var paymentInputsBlock = paymentSection.querySelector('.payment__card-group');
 
-  // переключаем способ оплаты
   var changePayment = function () {
     var toggleButtonPay = document.querySelector('.toggle-btn');
 

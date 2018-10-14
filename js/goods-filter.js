@@ -261,6 +261,7 @@
     removeCards();
     clearMarksInputs(evt);
     getEmptyFilter(filteredArr);
+    window.addProductsToPage(filteredArr);
   };
 
   var clearAllInputs = function () {
@@ -294,7 +295,7 @@
   var getEmptyFilter = function (arr) {
     if (arr.length) {
       window.showEmptyFilter('hide');
-      window.addProductsToPage(arr);
+
     } else {
       window.showEmptyFilter('show');
     }
