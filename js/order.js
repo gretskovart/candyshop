@@ -2,6 +2,7 @@
 
 (function () {
   var orderForm = document.querySelector('#order');
+  var submitButton = document.querySelector('.buy__submit-btn');
 
   window.productsCartArray = [];
   window.productsContainer = document.querySelector('.catalog__cards');
@@ -335,13 +336,17 @@
   window.makeInputsDisabled = function () {
     var orderFormInputs = orderForm.querySelectorAll('.text-input__input');
     var orderFormTextArea = orderForm.querySelector('textarea');
-    var orderFormDelieveryInputs = orderForm.querySelectorAll('.deliver__store-item input');
+    var orderFormDelieveryInputs = orderForm.querySelectorAll('.input-btn__input[name="store"]');
 
     orderFormInputs.forEach(function (item) {
       item.setAttribute('disabled', 'true');
     });
     orderFormTextArea.setAttribute('disabled', 'true');
-    orderFormDelieveryInputs.setAttribute('disabled', 'true');
+    submitButton.setAttribute('disabled', 'true');
+
+    orderFormDelieveryInputs.forEach(function (item) {
+      item.setAttribute('disabled', 'true');
+    });
   };
 
   window.clearInputsDisabled = function () {
@@ -353,5 +358,6 @@
     });
 
     disableTextArea.removeAttribute('disabled');
+    submitButton.removeAttribute('disabled');
   };
 })();

@@ -3,6 +3,9 @@
 (function () {
   var MAP_PATH_IMG = ['img/map/academicheskaya.jpg', 'img/map/vasileostrovskaya.jpg', 'img/map/rechka.jpg', 'img/map/petrogradskaya.jpg', 'img/map/proletarskaya.jpg', 'img/map/vostaniya.jpg', 'img/map/prosvesheniya.jpg', 'img/map/frunzenskaya.jpg', 'img/map/chernishevskaya.jpg', 'img/map/tehinstitute.jpg'];
 
+  var deliverySection = document.querySelector('.deliver');
+  var paymentSection = document.querySelector('.payment');
+
   window.form = document.querySelector('.buy form');
 
   // переключаем способ оплаты
@@ -34,9 +37,7 @@
 
   changeDelievery();
 
-  // TODO: объединить функции табов
   var togglePayment = function (target) {
-    var paymentSection = document.querySelector('.payment');
     var cashWrap = paymentSection.querySelector('.payment__cash-wrap');
     var cardWrap = paymentSection.querySelector('.payment__card-wrap');
     var checkedBtn = paymentSection.querySelector('.toggle-btn__input[checked]');
@@ -45,6 +46,7 @@
     cashWrap.classList.toggle('visually-hidden');
     target.setAttribute('checked', true);
     checkedBtn.removeAttribute('checked');
+    disableTabInputs(paymentSection);
   };
 
   var changeMap = function () {
@@ -66,7 +68,6 @@
   changeMap();
 
   var toggleDelivery = function (target) {
-    var deliverySection = document.querySelector('.deliver');
     var store = deliverySection.querySelector('.deliver__store');
     var courier = deliverySection.querySelector('.deliver__courier');
     var checkedBtn = deliverySection.querySelector('.toggle-btn__input[checked]');
@@ -75,7 +76,25 @@
     courier.classList.toggle('visually-hidden');
     target.setAttribute('checked', true);
     checkedBtn.removeAttribute('checked');
+    disableTabInputs(deliverySection);
   };
+
+  var disableTabInputs = function (tab) {
+    var inputs = tab.querySelectorAll('.visually-hidden input');
+
+    inputs.forEach(function (item) {
+      item.setAttribute('disable', 'true');
+    });
+
+    if (tab.classList.contains('deliver__courier')) {
+      var tabTextArea = tab.querySelector('textarea');
+
+      tabTextArea.setAttribute('disable', 'true');
+    }
+  };
+
+  disableTabInputs(deliverySection);
+  disableTabInputs(paymentSection);
 
   var formInputsChecker = function () {
     var formCardNum = window.form.querySelector('#payment__card-number');
