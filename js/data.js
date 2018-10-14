@@ -23,6 +23,6 @@
   };
 
   window.addEventListener('load', function () {
-    window.loadData(onLoad, document.onError);
+    window.serverData.loadData(onLoad, document.onError);
   });
 })();

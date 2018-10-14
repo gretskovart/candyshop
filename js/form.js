@@ -86,7 +86,7 @@
 
   window.disableTabInputs = function (tab) {
     var inputs = tab.querySelectorAll('.visually-hidden input');
-debugger;
+
     inputs.forEach(function (item) {
       item.setAttribute('disabled', '');
     });

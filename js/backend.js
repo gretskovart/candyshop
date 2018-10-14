@@ -42,15 +42,17 @@
     }
   };
 
-  window.loadData = function (onLoad, onError) {
-    responseChecker(onLoad, onError);
-    xhr.open('GET', URL_DATA);
-    xhr.send();
+  window.serverData = {
+    loadData: function (onLoad, onError) {
+      responseChecker(onLoad, onError);
+      xhr.open('GET', URL_DATA);
+      xhr.send();
+    },
+    sendData: function (data, onLoad, onError) {
+      responseChecker(onLoad, onError);
+      xhr.open('POST', URL_SEND);
+      xhr.send(data);
+    }
   };
 
-  window.sendData = function (data, onLoad, onError) {
-    responseChecker(onLoad, onError);
-    xhr.open('POST', URL_SEND);
-    xhr.send(data);
-  };
 })();

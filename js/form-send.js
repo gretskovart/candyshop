@@ -25,7 +25,7 @@
   window.form.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
-    window.sendData(new FormData(window.form), orderSuccsess, document.onError);
+    window.serverData.sendData(new FormData(window.form), orderSuccsess, document.onError);
     document.addEventListener('keydown', onPopupEscPress);
     closeModal.addEventListener('click', closeOrderSuccess);
 

@@ -9,7 +9,6 @@
   var load = document.querySelector('.catalog__load');
 
   var showCatalogCards = function () {
-  // вынести 2-ую функцию
     cards.classList.remove('catalog__cards--load');
     load.classList.add('visually-hidden');
   };
