@@ -151,9 +151,9 @@
     var fragment = document.createDocumentFragment();
 
     var appendProductsFromArray = function () {
-      for (var i = 0; i < arr.length; i++) {
-        fragment.appendChild(renderProduct(arr[i]));
-      }
+      arr.forEach(function (item) {
+        fragment.appendChild(renderProduct(item));
+      });
 
       window.productsContainer.appendChild(fragment);
     };

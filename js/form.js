@@ -60,11 +60,11 @@
     var metroMap = delivery.querySelector('.deliver__store-map-img');
 
     var addCurrentMap = function () {
-      for (var i = 0; i < metroAddress.length; i++) {
-        if (metroAddress[i].checked) {
+      metroAddress.forEach(function (item, i) {
+        if (item.checked) {
           metroMap.src = MAP_PATH_IMG[i];
         }
-      }
+      });
     };
 
     delivery.addEventListener('click', addCurrentMap);

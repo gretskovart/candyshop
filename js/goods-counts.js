@@ -11,26 +11,27 @@
       var titlesOfType = selectBlockInFilter('food-type').titlesOfFilter;
       var countsBlockOfType = selectBlockInFilter('food-type').countsOfFilter;
 
-      for (var i = 0; i < titlesOfType.length; i++) {
+      titlesOfType.forEach(function (itemTitle, i) {
         count[i] = 0;
 
-        for (var j = 0; j < window.productsArray.length; j++) {
-          if (window.productsArray[j].kind === titlesOfType[i].textContent) {
+        window.productsArray.forEach(function (itemProduct) {
+          if (itemProduct.kind === itemTitle.textContent) {
             count[i]++;
           }
-        }
+        });
         countsBlockOfType[i].innerText = '(' + count[i] + ')';
-      }
+      });
     };
 
     var getFilteredByNutritionCount = function () {
       var titlesOfNutrition = selectBlockInFilter('food-property').titlesOfFilter;
       var countsBlockOfNutrition = selectBlockInFilter('food-property').countsOfFilter;
 
-      for (var i = 0; i < titlesOfNutrition.length; i++) {
+      titlesOfNutrition.forEach(function (itemTitle, i) {
         count[i] = 0;
-        for (var j = 0; j < window.productsArray.length; j++) {
-          switch (titlesOfNutrition[i].textContent) {
+
+        window.productsArray.forEach(function (itemProduct, j) {
+          switch (itemTitle.textContent) {
             case 'Без сахара':
               if (!checkNutrition(j, 'sugar')) {
                 count[i]++;
@@ -47,9 +48,9 @@
               }
               break;
           }
-        }
+        });
         countsBlockOfNutrition[i].innerText = '(' + count[i] + ')';
-      }
+      });
     };
 
     var getFilteredByPriceCount = function () {
@@ -58,12 +59,11 @@
       var countsBlockOfPrice = filterBar.querySelector('.range__price-count .range__count');
       var countPrice = 0;
 
-      for (var j = 0; j < window.productsArray.length; j++) {
-        if (window.productsArray[j].price >= minPrice && window.productsArray[j]
-        .price <= maxPrice) {
+      window.productsArray.forEach(function (item) {
+        if (item.price >= minPrice && item.price <= maxPrice) {
           countPrice++;
         }
-      }
+      });
 
       countsBlockOfPrice.innerText = '(' + countPrice + ')';
     };
@@ -80,11 +80,12 @@
     var getFilteredByInStockCount = function () {
       var countsBlockOfInStock = selectBlockInFilter('mark').countsOfFilter[1];
       count = 0;
-      for (var i = 0; i < window.productsArray.length; i++) {
-        if (window.productsArray[i].amount !== 0) {
+
+      window.productsArray.forEach(function (item) {
+        if (item.amount !== 0) {
           count++;
         }
-      }
+      });
 
       countsBlockOfInStock.innerText = '(' + count + ')';
     };

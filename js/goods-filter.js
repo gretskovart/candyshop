@@ -223,16 +223,16 @@
     var catalogCards = document.querySelectorAll('.catalog__card');
 
     if (catalogCards) {
-      for (var i = 0; i < catalogCards.length; i++) {
+      catalogCards.forEach(function (item) {
         if (name) {
-          if (catalogCards[i].getAttribute('title') === name) {
-            catalogCards[i].remove();
+          if (item.getAttribute('title') === name) {
+            item.remove();
             return;
           }
         } else {
-          catalogCards[i].remove();
+          item.remove();
         }
-      }
+      });
     }
   };
 
@@ -267,9 +267,9 @@
     var inputs = filterBar.querySelectorAll('input');
     var inputOfPopular = filterBar.querySelector('#filter-popular');
 
-    for (var i = 0; i < inputs.length; i++) {
-      inputs[i].checked = false;
-    }
+    inputs.forEach(function (item) {
+      item.checked = false;
+    });
 
     inputOfPopular.checked = true;
   };

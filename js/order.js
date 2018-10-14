@@ -46,19 +46,17 @@
     .querySelector('.card__title').innerText.toLowerCase();
 
     var addIsFavoriteProp = function () {
-      for (var i = 0; i < window.productsArray.length; i++) {
-        if (window.productsArray[i].name.toLowerCase() === cardTitle &&
-        !!window.productsArray[i].isFavorite === false) {
-          window.productsArray[i].isFavorite = true;
+      window.productsArray.forEach(function (item) {
+        if (item.name.toLowerCase() === cardTitle &&
+        !!item.isFavorite === false) {
+          item.isFavorite = true;
 
-          return;
-        } else if (window.productsArray[i].name.toLowerCase() === cardTitle &&
-        window.productsArray[i].isFavorite === true) {
-          window.productsArray[i].isFavorite = false;
+        } else if (item.name.toLowerCase() === cardTitle &&
+        item.isFavorite === true) {
+          item.isFavorite = false;
 
-          return;
         }
-      }
+      });
     };
 
     addIsFavoriteProp();
@@ -146,8 +144,8 @@
   window.addToCartButtonHandler = function () {
     var addButton = document.querySelectorAll('.card__btn');
 
-    for (var i = 0; i < addButton.length; i++) {
-      addButton[i].addEventListener('click', function (evt) {
+    addButton.forEach(function (item) {
+      item.addEventListener('click', function (evt) {
         var currentCard = evt.target.closest('.catalog__card');
         var currentCardName = currentCard.querySelector('.card__title').textContent;
         var currentCardPrice = parseFloat(currentCard.querySelector('.card__price').textContent);
@@ -162,25 +160,22 @@
             window.productsCartArray.push(productObj);
             addProductsToCart(productObj);
           } else {
-            for (var j = 0; j < window.productsCartArray.length; j++) {
-
-              if (window.productsCartArray[j].name === currentCardName) {
+            window.productsCartArray.forEach(function () {
+              if (item.name === currentCardName) {
                 changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
                 changeOverallPrice(getCurrentCartCard(currentCardName), 1);
 
-                window.productsCartArray[j].amount += 1;
-
-                return;
+                item.amount += 1;
               } else {
                 window.productsCartArray.push(productObj);
                 addProductsToCart(productObj);
               }
-            }
+            });
           }
         }
         renderHeaderProductCartPrice(productObj.price, 1);
       });
-    }
+    });
   };
 
   // копируем объект карточки
@@ -327,12 +322,12 @@
   var removeButtonHandler = function () {
     var removeButton = productsCartContainer.querySelectorAll('.card-order__close');
 
-    for (var i = 0; i < removeButton.length; i++) {
-      removeButton[i].addEventListener('click', function (evt) {
+    removeButton.forEach(function (item) {
+      item.addEventListener('click', function (evt) {
         evt.preventDefault();
         removeCartObj(evt.target);
       });
-    }
+    });
   };
 
   window.makeInputsDisabled = function () {
