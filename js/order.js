@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var orderForm = document.querySelector('#order');
+
   window.productsCartArray = [];
   window.productsContainer = document.querySelector('.catalog__cards');
 
@@ -9,7 +11,6 @@
 
   var productsCartContainer = document.querySelector('.goods__cards');
   var cardEmpty = document.querySelector('.goods__card-empty');
-  // var showAllProducts = document.querySelector('.catalog__submit');
 
   var addProductsToCart = function (objToCart) {
     var fragment = document.createDocumentFragment();
@@ -21,6 +22,7 @@
     removeButtonHandler();
     decreaseCartHandler();
     increaseCartHandler();
+    window.clearInputsDisabled();
   };
 
   var showGoodsCards = function () {
@@ -312,6 +314,7 @@
 
     if (window.productsCartArray.length === 0) {
       hideGoodsCards();
+      window.makeInputsDisabled();
     }
 
     var indexCurrentObj = window.productsCartArray.indexOf(getCurrentCartObj(currentObjName));
@@ -327,5 +330,28 @@
         removeCartObj(evt.target);
       });
     }
+  };
+
+  window.makeInputsDisabled = function () {
+    var orderFormInputs = orderForm.querySelectorAll('.text-input__input');
+    var orderFormTextArea = orderForm.querySelector('textarea');
+    var orderFormDelieveryInputs = orderForm.querySelectorAll('.deliver__store-item input');
+
+    orderFormInputs.forEach(function (item) {
+      item.setAttribute('disabled', 'true');
+    });
+    orderFormTextArea.setAttribute('disabled', 'true');
+    orderFormDelieveryInputs.setAttribute('disabled', 'true');
+  };
+
+  window.clearInputsDisabled = function () {
+    var disabledInputs = orderForm.querySelectorAll('input[disabled="true"]');
+    var disableTextArea = orderForm.querySelector('textarea[disabled="true"]');
+
+    disabledInputs.forEach(function (item) {
+      item.removeAttribute('disabled');
+    });
+
+    disableTextArea.removeAttribute('disabled');
   };
 })();
