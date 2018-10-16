@@ -3,14 +3,41 @@
 (function () {
   var MAP_PATH_IMG = ['img/map/academicheskaya.jpg', 'img/map/vasileostrovskaya.jpg', 'img/map/rechka.jpg', 'img/map/petrogradskaya.jpg', 'img/map/proletarskaya.jpg', 'img/map/vostaniya.jpg', 'img/map/prosvesheniya.jpg', 'img/map/frunzenskaya.jpg', 'img/map/chernishevskaya.jpg', 'img/map/tehinstitute.jpg'];
 
-  window.form = document.querySelector('.buy form');
+  window.form = {
+    disableTabInputs: function (tab) {
+      var input = tab.querySelectorAll('input');
+      var inputsHidden = tab.querySelectorAll('.visually-hidden input');
 
-  var formCardNum = window.form.querySelector('#payment__card-number');
-  var formCardDate = window.form.querySelector('#payment__card-date');
-  var formCardCvc = window.form.querySelector('#payment__card-cvc');
-  var cardStatus = window.form.querySelector('.payment__card-status');
-  var deliverySection = window.form.querySelector('.deliver');
-  var paymentSection = window.form.querySelector('.payment');
+      inputsHidden.forEach(function (itemHidden) {
+        itemHidden.setAttribute('disabled', '');
+      });
+
+      if (tab.classList.contains('deliver__courier')) {
+        var tabTextArea = tab.querySelector('textarea');
+
+        if (tabTextArea.getAttribute('disabled')) {
+          tabTextArea.removeAttribute('disabled');
+        }
+
+        tabTextArea.setAttribute('disabled', '');
+      }
+
+      input.forEach(function (item) {
+        if (!item.classList.contains('visually-hidden') || !item.parentNode.parentNode.parentNode.parentNode.classList.contains('visually-hidden')) {
+          item.removeAttribute('disabled');
+        }
+      });
+    },
+
+    formBlock: document.querySelector('.buy form')
+  };
+
+  var formCardNum = window.form.formBlock.querySelector('#payment__card-number');
+  var formCardDate = window.form.formBlock.querySelector('#payment__card-date');
+  var formCardCvc = window.form.formBlock.querySelector('#payment__card-cvc');
+  var cardStatus = window.form.formBlock.querySelector('.payment__card-status');
+  var deliverySection = window.form.formBlock.querySelector('.deliver');
+  var paymentSection = window.form.formBlock.querySelector('.payment');
   var paymentInputsBlock = paymentSection.querySelector('.payment__card-group');
 
   var changePayment = function () {
@@ -50,7 +77,7 @@
     cashWrap.classList.toggle('visually-hidden');
     target.setAttribute('checked', '');
     checkedBtn.removeAttribute('checked');
-    window.disableTabInputs(paymentSection);
+    window.form.disableTabInputs(paymentSection);
   };
 
   var changeMap = function () {
@@ -80,32 +107,7 @@
     courier.classList.toggle('visually-hidden');
     target.setAttribute('checked', true);
     checkedBtn.removeAttribute('checked');
-    window.disableTabInputs(deliverySection);
-  };
-
-  window.disableTabInputs = function (tab) {
-    var input = tab.querySelectorAll('input');
-    var inputsHidden = tab.querySelectorAll('.visually-hidden input');
-
-    inputsHidden.forEach(function (itemHidden) {
-      itemHidden.setAttribute('disabled', '');
-    });
-
-    if (tab.classList.contains('deliver__courier')) {
-      var tabTextArea = tab.querySelector('textarea');
-
-      if (tabTextArea.getAttribute('disabled')) {
-        tabTextArea.removeAttribute('disabled');
-      }
-
-      tabTextArea.setAttribute('disabled', '');
-    }
-
-    input.forEach(function (item) {
-      if (!item.classList.contains('visually-hidden') || !item.parentNode.parentNode.parentNode.parentNode.classList.contains('visually-hidden')) {
-        item.removeAttribute('disabled');
-      }
-    });
+    window.form.disableTabInputs(deliverySection);
   };
 
   var formInputsChecker = function (evt) {

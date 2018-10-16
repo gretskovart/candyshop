@@ -6,29 +6,6 @@
   var MapOfKinds = {'icecream': 'Мороженое', 'marshmallows': 'Зефир', 'soda': 'Газировка', 'gum': 'Жевательная резинка', 'marmalade': 'Мармелад'};
   var allCheckedItems;
 
-  window.showEmptyFilter = function (act) {
-    var cards = document.querySelector('.catalog__cards');
-    var emptyFilterTemplate = document.querySelector('#empty-filters').content
-    .querySelector('.catalog__empty-filter');
-    var emptyFilterDom = cards.querySelector('.catalog__empty-filter');
-    var emptyFilter = emptyFilterTemplate.cloneNode(true);
-    var fragment = document.createDocumentFragment();
-
-    switch (act) {
-      case 'show':
-        if (!emptyFilterDom) {
-          fragment.appendChild(emptyFilter);
-          cards.appendChild(fragment);
-        }
-        break;
-      case 'hide':
-        if (emptyFilterDom) {
-          emptyFilterDom.remove();
-        }
-        break;
-    }
-  };
-
   var allCheckedItemsFilter = {
     'filter-icecream': function (item) {
       return item.kind === MapOfKinds['icecream'];
@@ -89,27 +66,13 @@
       sort: ''
     };
 
-    var fillByTypeItems = function () {
-      var typeLen = checkedFilterItems.typeItems.length;
+    var fillByItems = function (checked, allChecked) {
+      var len = checked.length;
 
-      if (!typeLen) {
-        return;
-      }
-
-      for (var i = 0; i < typeLen; i++) {
-        allCheckedItems.type.push(checkedFilterItems.typeItems[i].id);
-      }
-    };
-
-    var fillByPropertyItems = function () {
-      var propertyLen = checkedFilterItems.propertyItems.length;
-
-      if (!propertyLen) {
-        return;
-      }
-
-      for (var i = 0; i < propertyLen; i++) {
-        allCheckedItems.property.push(checkedFilterItems.propertyItems[i].id);
+      if (len) {
+        checked.forEach(function (item) {
+          allChecked.push(item.id);
+        });
       }
     };
 
@@ -128,17 +91,15 @@
     var fillBySortItems = function () {
       var sortLen = checkedFilterItems.sortItems.length;
 
-      if (!sortLen) {
-        return;
-      }
-
-      for (var i = 0; i < sortLen; i++) {
-        allCheckedItems.sort = checkedFilterItems.sortItems[i].id;
+      if (sortLen) {
+        checkedFilterItems.sortItems.forEach(function (item) {
+          allCheckedItems.sort = item.id;
+        });
       }
     };
 
-    fillByTypeItems();
-    fillByPropertyItems();
+    fillByItems(checkedFilterItems.typeItems, allCheckedItems.type);
+    fillByItems(checkedFilterItems.propertyItems, allCheckedItems.property);
     fillByFavoriteItem();
     fillByinStockItem();
     fillBySortItems();
@@ -151,13 +112,14 @@
       var typeEl;
 
       if (typeLen) {
-        for (var i = 0; i < typeLen; i++) {
-          typeEl = allCheckedItems.type[i];
+        allCheckedItems.type.forEach(function (itemType) {
+          typeEl = itemType;
 
           if (allCheckedItemsFilter[typeEl](item)) {
             statusType++;
           }
-        }
+        });
+
       } else {
         statusType++;
       }
@@ -170,14 +132,16 @@
       var propEl;
 
       if (propLen) {
-        for (var i = 0; i < propLen; i++) {
-          propEl = allCheckedItems.property[i];
+        allCheckedItems.property.forEach(function (itemProperty) {
+          propEl = itemProperty;
 
           if (allCheckedItemsFilter[propEl](item)) {
             statusProp++;
           }
-        }
+        });
+
         statusProp = statusProp === propLen;
+
       } else {
         statusProp++;
       }
@@ -238,6 +202,7 @@
 
   window.useFilter = function (evt) {
     fillObjByFilterItems();
+
     var filteredArr = [];
 
     filteredArr = window.productsArray.filter(filterCards.byType);
@@ -261,7 +226,30 @@
     removeCards();
     clearMarksInputs(evt);
     getEmptyFilter(filteredArr);
-    window.addProductsToPage(filteredArr);
+    window.good.addProductsToPage(filteredArr);
+  };
+
+  var showEmptyFilter = function (act) {
+    var cards = document.querySelector('.catalog__cards');
+    var emptyFilterTemplate = document.querySelector('#empty-filters').content
+    .querySelector('.catalog__empty-filter');
+    var emptyFilterDom = cards.querySelector('.catalog__empty-filter');
+    var emptyFilter = emptyFilterTemplate.cloneNode(true);
+    var fragment = document.createDocumentFragment();
+
+    switch (act) {
+      case 'show':
+        if (!emptyFilterDom) {
+          fragment.appendChild(emptyFilter);
+          cards.appendChild(fragment);
+        }
+        break;
+      case 'hide':
+        if (emptyFilterDom) {
+          emptyFilterDom.remove();
+        }
+        break;
+    }
   };
 
   var clearAllInputs = function () {
@@ -294,21 +282,21 @@
 
   var getEmptyFilter = function (arr) {
     if (arr.length) {
-      window.showEmptyFilter('hide');
+      showEmptyFilter('hide');
 
     } else {
-      window.showEmptyFilter('show');
+      showEmptyFilter('show');
     }
   };
 
   var showAll = function (evt) {
     evt.preventDefault();
 
-    window.showEmptyFilter('hide');
+    showEmptyFilter('hide');
     clearAllInputs();
     removeCards();
     window.clearPrice();
-    window.addProductsToPage(window.productsArray);
+    window.good.addProductsToPage(window.productsArray);
   };
 
   filterBar.addEventListener('change', window.useFilter);

@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  window.productImagePath = 'img/cards/';
-
   var similarProductTemplate = document.querySelector('#card').content
   .querySelector('.catalog__card');
   var cards = document.querySelector('.catalog__cards');
@@ -82,7 +80,7 @@
 
     var renderProductImage = function () {
       var imgProduct = productElement.querySelector('.card__img');
-      var catalogImgPath = window.productImagePath + product.picture;
+      var catalogImgPath = window.good.productImagePath + product.picture;
 
       imgProduct.setAttribute('src', catalogImgPath);
       imgProduct.setAttribute('alt', product.name);
@@ -146,20 +144,24 @@
     return productElement;
   };
 
-  window.addProductsToPage = function (arr) {
-    var fragment = document.createDocumentFragment();
+  window.good = {
+    addProductsToPage: function (arr) {
+      var fragment = document.createDocumentFragment();
 
-    var appendProductsFromArray = function () {
-      arr.forEach(function (item) {
-        fragment.appendChild(renderProduct(item));
-      });
-      window.productsContainer.appendChild(fragment);
-    };
+      var appendProductsFromArray = function () {
+        arr.forEach(function (item) {
+          fragment.appendChild(renderProduct(item));
+        });
+        window.productsContainer.appendChild(fragment);
+      };
 
-    showCatalogCards();
-    appendProductsFromArray(arr);
-    window.addToCartButtonHandler(); // добавление в корзину
-    window.getCountOfFilteredCards();
-    window.makeInputsDisabled(); // блокируем инпуты формы
+      showCatalogCards();
+      appendProductsFromArray(arr);
+      window.order.addToCartButtonHandler(); // добавление в корзину
+      window.goodsCounts.getCountOfFilteredCards();
+      window.order.makeInputsDisabled(); // блокируем инпуты формы
+    },
+
+    productImagePath: 'img/cards/'
   };
 })();

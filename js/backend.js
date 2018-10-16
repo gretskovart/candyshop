@@ -28,7 +28,7 @@
         default:
           error = 'Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText;
       }
-      window.addProductsToPage(window.productsArray);
+      window.good.addProductsToPage(window.productsArray);
     });
 
     xhr.addEventListener('timeout', function () {

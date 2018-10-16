@@ -14,7 +14,7 @@
   var cardEmpty = document.querySelector('.goods__card-empty');
 
   var addProductsToCart = function (objToCart) {
-    var deliverySection = window.form.querySelector('.deliver');
+    var deliverySection = window.form.formBlock.querySelector('.deliver');
     var fragment = document.createDocumentFragment();
 
     fragment.appendChild(window.renderProductCart(objToCart));
@@ -24,8 +24,8 @@
     removeButtonHandler();
     decreaseCartHandler();
     increaseCartHandler();
-    window.clearInputsDisabled();
-    window.disableTabInputs(deliverySection);
+    window.order.clearInputsDisabled();
+    window.form.disableTabInputs(deliverySection);
   };
 
   var showGoodsCards = function () {
@@ -64,7 +64,7 @@
     while (target !== window.productsContainer) {
       if (target.classList.contains('card__btn-favorite')) {
         target.classList.toggle('card__btn-favorite--selected');
-        window.getFilteredByFavoriteCount();
+        window.goodsCounts.getFilteredByFavoriteCount();
 
         return;
       }
@@ -140,55 +140,88 @@
 
   favoriteClickHandler();
 
-  // добавляем карточку по нажатию на кнопку
-  window.addToCartButtonHandler = function () {
-    var addButton = document.querySelectorAll('.card__btn');
+  window.order = {
 
-    addButton.forEach(function (item) {
-      item.addEventListener('click', function (evt) {
-        var currentCard = evt.target.closest('.catalog__card');
-        var currentCardName = currentCard.querySelector('.card__title').textContent;
-        var currentCardPrice = parseFloat(currentCard.querySelector('.card__price').textContent);
-        var productObj = copyObj(window.productsArray, currentCardName, currentCardPrice);
-        var attrAmount = parseFloat(currentCard.getAttribute('amount'));
-        var noSimilar = true;
-        if (attrAmount === 0) {
-          return;
-        }
+    // добавляем карточку по нажатию на кнопку
+    addToCartButtonHandler: function () {
+      var addButton = document.querySelectorAll('.card__btn');
 
-        if (productObj) {
-          if (window.productsCartArray.length === 0) {
-            window.productsCartArray.push(productObj);
-            addProductsToCart(productObj);
-            renderHeaderProductCartPrice(productObj.price, 1);
-          } else {
-            window.productsCartArray.forEach(function (itemProduct) {
-              if (itemProduct.name === currentCardName) {
-                changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
-                changeOverallPrice(getCurrentCartCard(currentCardName), 1);
+      addButton.forEach(function (item) {
+        item.addEventListener('click', function (evt) {
+          var currentCard = evt.target.closest('.catalog__card');
+          var currentCardName = currentCard.querySelector('.card__title').textContent;
+          var currentCardPrice = parseFloat(currentCard.querySelector('.card__price').textContent);
+          var productObj = copyObj(window.productsArray, currentCardName, currentCardPrice);
+          var attrAmount = parseFloat(currentCard.getAttribute('amount'));
+          var noSimilar = true;
+          if (attrAmount === 0) {
+            return;
+          }
 
-                itemProduct.amount += 1;
-                noSimilar = false;
-              }
-            });
-            if (noSimilar) {
+          if (productObj) {
+            if (window.productsCartArray.length === 0) {
               window.productsCartArray.push(productObj);
-              renderHeaderProductCartPrice(productObj.price, 1);
               addProductsToCart(productObj);
+              renderHeaderProductCartPrice(productObj.price, 1);
+            } else {
+              window.productsCartArray.forEach(function (itemProduct) {
+                if (itemProduct.name === currentCardName) {
+                  changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
+                  changeOverallPrice(getCurrentCartCard(currentCardName), 1);
+
+                  itemProduct.amount += 1;
+                  noSimilar = false;
+                }
+              });
+              if (noSimilar) {
+                window.productsCartArray.push(productObj);
+                renderHeaderProductCartPrice(productObj.price, 1);
+                addProductsToCart(productObj);
+              }
             }
           }
-        }
+        });
       });
-    });
+    },
+
+    makeInputsDisabled: function () {
+      var orderFormInputs = orderForm.querySelectorAll('.text-input__input');
+      var orderFormTextArea = orderForm.querySelector('textarea');
+      var orderFormDelieveryInputs = orderForm.querySelectorAll('.input-btn__input[name="store"]');
+
+      orderFormInputs.forEach(function (item) {
+        item.setAttribute('disabled', '');
+      });
+      orderFormTextArea.setAttribute('disabled', '');
+      submitButton.setAttribute('disabled', '');
+
+      orderFormDelieveryInputs.forEach(function (item) {
+        item.setAttribute('disabled', '');
+      });
+    },
+
+    clearInputsDisabled: function () {
+      var disabledInputs = orderForm.querySelectorAll('input[disabled]');
+      var disableTextArea = orderForm.querySelector('textarea[disabled]');
+
+      disabledInputs.forEach(function (item) {
+        item.removeAttribute('disabled');
+      });
+
+      disableTextArea.removeAttribute('disabled');
+      submitButton.removeAttribute('disabled');
+    }
   };
 
   // копируем объект карточки
   var copyObj = function (arr, objName, objPrice) {
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i].name === objName && arr[i].price === objPrice) {
-        var currentObj = arr[i];
+    var currentObj = {};
+
+    arr.forEach(function (item) {
+      if (item.name === objName && item.price === objPrice) {
+        currentObj = item;
       }
-    }
+    });
 
     if (currentObj.amount > 0) {
       currentObj.amount -= 1;
@@ -258,22 +291,26 @@
   };
 
   var getCurrentCartObj = function (objName) {
-    for (var i = 0; i < window.productsCartArray.length; i++) {
-      if (window.productsCartArray[i].name === objName) {
-        var currentCartObj = window.productsCartArray[i];
+    var currentCartObj;
+
+    window.productsCartArray.forEach(function (item) {
+      if (item.name === objName) {
+        currentCartObj = item;
       }
-    }
+    });
     return currentCartObj;
   };
 
   var getCurrentCartCard = function (objName) {
     var goodsTitles = document.querySelectorAll('.card-order__title');
+    var currentCard;
 
-    for (var i = 0; i < goodsTitles.length; i++) {
-      if (goodsTitles[i].textContent === objName) {
-        var currentCard = goodsTitles[i];
+    goodsTitles.forEach(function (item) {
+
+      if (item.textContent === objName) {
+        currentCard = item;
       }
-    }
+    });
 
     return currentCard;
   };
@@ -316,7 +353,7 @@
 
     if (window.productsCartArray.length === 0) {
       hideGoodsCards();
-      window.makeInputsDisabled();
+      window.order.makeInputsDisabled();
     }
 
     var indexCurrentObj = window.productsCartArray.indexOf(getCurrentCartObj(currentObjName));
@@ -334,31 +371,4 @@
     });
   };
 
-  window.makeInputsDisabled = function () {
-    var orderFormInputs = orderForm.querySelectorAll('.text-input__input');
-    var orderFormTextArea = orderForm.querySelector('textarea');
-    var orderFormDelieveryInputs = orderForm.querySelectorAll('.input-btn__input[name="store"]');
-
-    orderFormInputs.forEach(function (item) {
-      item.setAttribute('disabled', '');
-    });
-    orderFormTextArea.setAttribute('disabled', '');
-    submitButton.setAttribute('disabled', '');
-
-    orderFormDelieveryInputs.forEach(function (item) {
-      item.setAttribute('disabled', '');
-    });
-  };
-
-  window.clearInputsDisabled = function () {
-    var disabledInputs = orderForm.querySelectorAll('input[disabled]');
-    var disableTextArea = orderForm.querySelector('textarea[disabled]');
-
-    disabledInputs.forEach(function (item) {
-      item.removeAttribute('disabled');
-    });
-
-    disableTextArea.removeAttribute('disabled');
-    submitButton.removeAttribute('disabled');
-  };
 })();
