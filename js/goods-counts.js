@@ -4,64 +4,53 @@
   var filterBar = document.querySelector('.catalog__sidebar');
   var count = [];
 
-  var selectBlockInFilter = function (title) {
-    var blockFilter = {};
-
-    blockFilter.titlesOfFilter = document
-    .querySelectorAll('.input-btn__input[name="' + title + '"] + .input-btn__label');
-    blockFilter.countsOfFilter = document
-    .querySelectorAll('.input-btn__input[name="' + title + '"] + .input-btn__label + .input-btn__item-count');
-
-    return blockFilter;
-  };
-
   window.goodsCounts = {
     getCountOfFilteredCards: function () {
 
       // по типу продукта
       var getFilteredByTypeCount = function () {
-        var titlesOfType = selectBlockInFilter('food-type').titlesOfFilter;
-        var countsBlockOfType = selectBlockInFilter('food-type').countsOfFilter;
+        var titlesOfType = window.goodsCounts.selectBlockInFilter('food-type').titlesOfFilter;
+        var countsBlockOfType = window.goodsCounts.selectBlockInFilter('food-type').countsOfFilter;
 
         titlesOfType.forEach(function (itemTitle, i) {
-          count[i] = 0;
+          count = 0;
 
           window.productsArray.forEach(function (itemProduct) {
             if (itemProduct.kind === itemTitle.textContent) {
-              count[i]++;
+              count++;
             }
           });
-          countsBlockOfType[i].innerText = '(' + count[i] + ')';
+          countsBlockOfType[i].innerText = '(' + count + ')';
         });
       };
 
       var getFilteredByNutritionCount = function () {
-        var titlesOfNutrition = selectBlockInFilter('food-property').titlesOfFilter;
-        var countsBlockOfNutrition = selectBlockInFilter('food-property').countsOfFilter;
+        var titlesOfNutrition = window.goodsCounts.selectBlockInFilter('food-property').titlesOfFilter;
+        var countsBlockOfNutrition = window.goodsCounts.selectBlockInFilter('food-property').countsOfFilter;
 
         titlesOfNutrition.forEach(function (itemTitle, i) {
-          count[i] = 0;
+          count = 0;
 
           window.productsArray.forEach(function (itemProduct, j) {
             switch (itemTitle.textContent) {
               case 'Без сахара':
                 if (!checkNutrition(j, 'sugar')) {
-                  count[i]++;
+                  count++;
                 }
                 break;
               case 'Вегетарианское':
                 if (checkNutrition(j, 'vegetarian')) {
-                  count[i]++;
+                  count++;
                 }
                 break;
               case 'Безглютеновое':
                 if (!checkNutrition(j, 'gluten')) {
-                  count[i]++;
+                  count++;
                 }
                 break;
             }
           });
-          countsBlockOfNutrition[i].innerText = '(' + count[i] + ')';
+          countsBlockOfNutrition[i].innerText = '(' + count + ')';
         });
       };
 
@@ -81,7 +70,7 @@
       };
 
       var getFilteredByInStockCount = function () {
-        var countsBlockOfInStock = selectBlockInFilter('mark').countsOfFilter[1];
+        var countsBlockOfInStock = window.goodsCounts.selectBlockInFilter('mark').countsOfFilter[1];
         count = 0;
 
         window.productsArray.forEach(function (item) {
@@ -99,18 +88,20 @@
 
       getFilteredByTypeCount();
       getFilteredByNutritionCount();
-      window.goodsCounts.getFilteredByFavoriteCount();
+      window.goodsFilter.getFilteredByFavoriteCount();
       getFilteredByInStockCount();
       getFilteredByPriceCount();
     },
 
-    getFilteredByFavoriteCount: function () {
-      var catalog = document.querySelector('.catalog__cards');
-      var cardFavorite = catalog.querySelectorAll('.card__btn-favorite--selected');
-      count = cardFavorite.length;
-      var countsBlockOfFavorite = selectBlockInFilter('mark').countsOfFilter[0];
+    selectBlockInFilter: function (title) {
+      var blockFilter = {};
 
-      countsBlockOfFavorite.innerText = '(' + count + ')';
+      blockFilter.titlesOfFilter = document
+      .querySelectorAll('.input-btn__input[name="' + title + '"] + .input-btn__label');
+      blockFilter.countsOfFilter = document
+      .querySelectorAll('.input-btn__input[name="' + title + '"] + .input-btn__label + .input-btn__item-count');
+
+      return blockFilter;
     }
   };
 })();

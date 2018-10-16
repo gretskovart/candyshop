@@ -64,7 +64,7 @@
     while (target !== window.productsContainer) {
       if (target.classList.contains('card__btn-favorite')) {
         target.classList.toggle('card__btn-favorite--selected');
-        window.goodsCounts.getFilteredByFavoriteCount();
+        window.goodsFilter.getFilteredByFavoriteCount();
 
         return;
       }

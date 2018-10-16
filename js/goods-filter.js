@@ -77,6 +77,7 @@
     };
 
     var fillByFavoriteItem = function () {
+      debugger;
       if (checkedFilterItems.favoriteItem.length) {
         allCheckedItems.favorite = 1;
       }
@@ -200,33 +201,48 @@
     }
   };
 
-  window.useFilter = function (evt) {
-    fillObjByFilterItems();
+  window.goodsFilter = {
+    useFilter: function (evt) {
+      fillObjByFilterItems();
 
-    var filteredArr = [];
+      var filteredArr = [];
 
-    filteredArr = window.productsArray.filter(filterCards.byType);
-    filteredArr = filteredArr.filter(filterCards.byProperty);
-    filteredArr = filteredArr.filter(filterCards.byPrice);
-    filteredArr = filteredArr.filter(filterCards.byFavorite);
-    filteredArr = filteredArr.filter(filterCards.byInstock);
+      filteredArr = window.productsArray.filter(filterCards.byType);
+      filteredArr = filteredArr.filter(filterCards.byProperty);
+      filteredArr = filteredArr.filter(filterCards.byPrice);
+      filteredArr = filteredArr.filter(filterCards.byFavorite);
+      filteredArr = filteredArr.filter(filterCards.byInstock);
 
-    if (allCheckedItems.sort) {
-      var copyItems;
+      if (allCheckedItems.sort) {
+        var copyItems;
 
-      copyItems = filteredArr.slice();
+        copyItems = filteredArr.slice();
 
-      if (allCheckedItems.sort === 'filter-popular') {
-        filteredArr = copyItems;
-      } else {
-        filteredArr = filteredArr.sort(getSortedArr[allCheckedItems.sort]);
+        if (allCheckedItems.sort === 'filter-popular') {
+          filteredArr = copyItems;
+        } else {
+          filteredArr = filteredArr.sort(getSortedArr[allCheckedItems.sort]);
+        }
       }
-    }
 
-    removeCards();
-    clearMarksInputs(evt);
-    getEmptyFilter(filteredArr);
-    window.good.addProductsToPage(filteredArr);
+      removeCards();
+      clearMarksInputs(evt);
+      getEmptyFilter(filteredArr);
+      window.good.addProductsToPage(filteredArr);
+    },
+
+    getFilteredByFavoriteCount: function () {
+      var countsBlockOfFavorite = window.goodsCounts.selectBlockInFilter('mark').countsOfFilter[0];
+      var countOfFavorite = 0;
+
+      window.productsArray.forEach(function (item) {
+        if (item.isFavorite) {
+          countOfFavorite++;
+        }
+      });
+
+      countsBlockOfFavorite.innerText = '(' + countOfFavorite + ')';
+    }
   };
 
   var showEmptyFilter = function (act) {
@@ -299,6 +315,6 @@
     window.good.addProductsToPage(window.productsArray);
   };
 
-  filterBar.addEventListener('change', window.useFilter);
+  filterBar.addEventListener('change', window.goodsFilter.useFilter);
   showButton.addEventListener('click', showAll);
 })();
