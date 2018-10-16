@@ -77,7 +77,6 @@
     };
 
     var fillByFavoriteItem = function () {
-      debugger;
       if (checkedFilterItems.favoriteItem.length) {
         allCheckedItems.favorite = 1;
       }

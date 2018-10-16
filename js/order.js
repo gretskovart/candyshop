@@ -21,7 +21,6 @@
     productsCartContainer.appendChild(fragment);
 
     showGoodsCards();
-    removeButtonHandler();
     decreaseCartHandler();
     increaseCartHandler();
     window.order.clearInputsDisabled();
@@ -361,14 +360,17 @@
   };
 
   var removeButtonHandler = function () {
-    var removeButton = productsCartContainer.querySelectorAll('.card-order__close');
+    productsCartContainer.addEventListener('click', function (evt) {
+      evt.preventDefault();
 
-    removeButton.forEach(function (item) {
-      item.addEventListener('click', function (evt) {
-        evt.preventDefault();
+      if (evt.target.classList.contains('card-order__close')) {
         removeCartObj(evt.target);
-      });
+
+        return;
+      }
     });
   };
+
+  removeButtonHandler();
 
 })();
