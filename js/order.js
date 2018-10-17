@@ -341,7 +341,7 @@
 
     currentObj.remove();
 
-    if (window.productsCartArray.length === 0) {
+    if (window.productsCartArray.length === 1) {
       hideGoodsCards();
       window.order.makeInputsDisabled();
     }
