@@ -6,9 +6,6 @@
   var currentObjCatalog;
   var currentObjCart;
 
-  window.productsCartArray = [];
-  window.productsContainer = document.querySelector('.catalog__cards');
-
   var fullPrice = 0;
   var quantityInCart = 0;
 
@@ -147,12 +144,12 @@
           var noSimilar = true;
 
           if (productObj) {
-            if (window.productsCartArray.length === 0) {
-              window.productsCartArray.push(productObj);
+            if (window.order.productsCartArray.length === 0) {
+              window.order.productsCartArray.push(productObj);
               addProductsToCart(productObj);
               renderHeaderProductCartPrice(productObj.price, 1);
             } else {
-              window.productsCartArray.forEach(function (itemProduct) {
+              window.order.productsCartArray.forEach(function (itemProduct) {
                 if (itemProduct.name === currentCardName) {
                   changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
 
@@ -160,7 +157,7 @@
                 }
               });
               if (noSimilar) {
-                window.productsCartArray.push(productObj);
+                window.order.productsCartArray.push(productObj);
                 renderHeaderProductCartPrice(productObj.price, 1);
                 addProductsToCart(productObj);
               }
@@ -196,7 +193,11 @@
 
       disableTextArea.removeAttribute('disabled');
       submitButton.removeAttribute('disabled');
-    }
+    },
+
+    productsCartArray: [],
+
+    productsContainer: document.querySelector('.catalog__cards')
   };
 
   // копируем объект карточки
@@ -227,13 +228,13 @@
 
     var cartObjPrice = currentCard.querySelector('.card-order__price');
     var currentPrice = parseInt(cartObjPrice.innerText, 10);
-    var currenProductPrice = getCurrentCartObj(currentName, window.productsCartArray).price;
+    var currenProductPrice = getCurrentCartObj(currentName, window.order.productsCartArray).price;
 
     var cartPrice = currentCard.getAttribute('data-price');
     var currentIntPrice = parseInt(cartPrice, 10);
 
     currentObjCatalog = getCurrentCartObj(currentName, window.productsArray);
-    currentObjCart = getCurrentCartObj(currentName, window.productsCartArray);
+    currentObjCart = getCurrentCartObj(currentName, window.order.productsCartArray);
 
     switch (act) {
       case 1:
@@ -323,13 +324,13 @@
 
     currentObj.remove();
 
-    if (window.productsCartArray.length === 1) {
+    if (window.order.productsCartArray.length === 1) {
       hideGoodsCards();
       window.order.makeInputsDisabled();
     }
 
-    var indexCurrentObj = window.productsCartArray.indexOf(getCurrentCartObj(currentObjName, window.productsCartArray));
-    window.productsCartArray.splice(indexCurrentObj, 1);
+    var indexCurrentObj = window.order.productsCartArray.indexOf(getCurrentCartObj(currentObjName, window.order.productsCartArray));
+    window.order.productsCartArray.splice(indexCurrentObj, 1);
   };
 
   var removeButtonHandler = function () {
@@ -345,5 +346,5 @@
   };
 
   removeButtonHandler();
-  window.productsContainer.addEventListener('click', addSelectedFavorite);
+  window.order.productsContainer.addEventListener('click', addSelectedFavorite);
 })();
