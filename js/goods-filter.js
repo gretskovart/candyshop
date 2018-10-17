@@ -109,16 +109,11 @@
     byType: function (item) {
       var statusType = 0;
       var typeLen = allCheckedItems.type.length;
-      var typeEl;
 
       if (typeLen) {
-        allCheckedItems.type.forEach(function (itemType) {
-          typeEl = itemType;
-
-          if (allCheckedItemsFilter[typeEl](item)) {
-            statusType++;
-          }
-        });
+        statusType = allCheckedItems.type.filter(function (itemType) {
+          return allCheckedItemsFilter[itemType](item);
+        }).length;
 
       } else {
         statusType++;
@@ -129,16 +124,11 @@
     byProperty: function (item) {
       var statusProp = 0;
       var propLen = allCheckedItems.property.length;
-      var propEl;
 
       if (propLen) {
-        allCheckedItems.property.forEach(function (itemProperty) {
-          propEl = itemProperty;
-
-          if (allCheckedItemsFilter[propEl](item)) {
-            statusProp++;
-          }
-        });
+        statusProp = allCheckedItems.property.filter(function (itemProperty) {
+          return allCheckedItemsFilter[itemProperty](item);
+        }).length;
 
         statusProp = statusProp === propLen;
 
