@@ -5,8 +5,8 @@
 
   window.form = {
     disableTabInputs: function (tab) {
-      var input = tab.querySelectorAll('input');
-      var inputsHidden = tab.querySelectorAll('.visually-hidden input');
+      var input = window.form.formBlock.querySelectorAll('input');
+      var inputsHidden = window.form.formBlock.querySelectorAll('.visually-hidden input');
 
       inputsHidden.forEach(function (itemHidden) {
         itemHidden.setAttribute('disabled', '');
@@ -23,19 +23,20 @@
       }
 
       input.forEach(function (item) {
-        if (!item.classList.contains('visually-hidden') || !item.parentNode.parentNode.parentNode.parentNode.classList.contains('visually-hidden')) {
+        if (!item.parentNode.parentNode.parentNode.parentNode.classList.contains('visually-hidden')) {
           item.removeAttribute('disabled');
         }
       });
     },
 
-    formBlock: document.querySelector('.buy form')
+    formBlock: document.querySelector('.buy form'),
+
+    cardStatus: document.querySelector('.payment__card-status')
   };
 
   var formCardNum = window.form.formBlock.querySelector('#payment__card-number');
   var formCardDate = window.form.formBlock.querySelector('#payment__card-date');
   var formCardCvc = window.form.formBlock.querySelector('#payment__card-cvc');
-  var cardStatus = window.form.formBlock.querySelector('.payment__card-status');
   var deliverySection = window.form.formBlock.querySelector('.deliver');
   var paymentSection = window.form.formBlock.querySelector('.payment');
   var paymentInputsBlock = paymentSection.querySelector('.payment__card-group');
@@ -129,12 +130,19 @@
           formCardDate.setCustomValidity('');
         }
         break;
+      case 'payment__card-cvc':
+        if (!cvcChecker(value)) {
+          formCardCvc.setCustomValidity('Введите правильный cvc');
+        } else {
+          formCardCvc.setCustomValidity('');
+        }
+        break;
     }
 
     if (formCardNum.validity.valid && formCardDate.validity.valid && formCardCvc.validity.valid) {
-      cardStatus.textContent = 'Одобрен';
+      window.form.cardStatus.textContent = 'Одобрен';
     } else {
-      cardStatus.textContent = 'Не определен';
+      window.form.cardStatus.textContent = 'Не определен';
     }
   };
 
@@ -178,6 +186,12 @@
     };
 
     return checkMonth() && checkYear();
+  };
+
+  var cvcChecker = function (val) {
+    var value = parseInt(val, 10);
+
+    return (value >= 100 && value <= 999);
   };
 
   var addDividerToDate = function (target) {

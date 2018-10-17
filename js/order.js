@@ -171,7 +171,7 @@
     },
 
     makeInputsDisabled: function () {
-      var orderFormInputs = orderForm.querySelectorAll('.text-input__input');
+      var orderFormInputs = orderForm.querySelectorAll('input');
       var orderFormTextArea = orderForm.querySelector('textarea');
       var orderFormDelieveryInputs = orderForm.querySelectorAll('.input-btn__input[name="store"]');
 

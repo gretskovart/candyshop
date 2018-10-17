@@ -8,6 +8,8 @@
   var orderSuccsess = function () {
     modalSuccess.classList.remove('modal--hidden');
     window.form.formBlock.reset();
+
+    window.form.cardStatus.textContent = 'Не определен';
   };
 
   var closeOrderSuccess = function () {
