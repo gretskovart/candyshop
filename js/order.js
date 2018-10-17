@@ -44,31 +44,25 @@
     var cardTitle = target.parentNode.parentNode.parentNode
     .querySelector('.card__title').innerText.toLowerCase();
 
-    var addIsFavoriteProp = function () {
-      window.productsArray.forEach(function (item) {
-        if (item.name.toLowerCase() === cardTitle &&
-        !!item.isFavorite === false) {
-          item.isFavorite = true;
-
-        } else if (item.name.toLowerCase() === cardTitle &&
-        item.isFavorite === true) {
-          item.isFavorite = false;
-
-        }
-      });
-    };
-
-    addIsFavoriteProp();
-
-    while (target !== window.productsContainer) {
-      if (target.classList.contains('card__btn-favorite')) {
-        target.classList.toggle('card__btn-favorite--selected');
-        window.goodsFilter.getFilteredByFavoriteCount();
-
-        return;
-      }
-      target = target.parentNode;
+    if (target.classList.contains('card__btn-favorite')) {
+      target.classList.toggle('card__btn-favorite--selected');
     }
+
+    addIsFavoriteProp(cardTitle);
+    window.goodsFilter.getFilteredByFavoriteCount();
+  };
+
+  var addIsFavoriteProp = function (title) {
+    window.productsArray.forEach(function (item) {
+      if (item.name.toLowerCase() === title && !item.hasOwnProperty('isFavorite') ||
+       item.name.toLowerCase() === title || item.isFavorite === false) {
+        item.isFavorite = true;
+
+      } else if (item.name.toLowerCase() === title &&
+      item.isFavorite === true) {
+        item.isFavorite = false;
+      }
+    });
   };
 
   var renderHeaderProductCartPrice = function (price, act, qnty) {
@@ -133,11 +127,7 @@
     return end;
   };
 
-  var favoriteClickHandler = function () {
-    window.productsContainer.addEventListener('click', addSelectedFavorite);
-  };
-
-  favoriteClickHandler();
+  window.productsContainer.addEventListener('click', addSelectedFavorite);
 
   window.order = {
 
