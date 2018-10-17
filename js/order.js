@@ -55,11 +55,12 @@
   var addIsFavoriteProp = function (title) {
     window.productsArray.forEach(function (item) {
       if (item.name.toLowerCase() === title && !item.hasOwnProperty('isFavorite') ||
-       item.name.toLowerCase() === title || item.isFavorite === false) {
+       item.name.toLowerCase() === title && item.isFavorite === false) {
         item.isFavorite = true;
 
       } else if (item.name.toLowerCase() === title &&
       item.isFavorite === true) {
+
         item.isFavorite = false;
       }
     });
