@@ -7,7 +7,9 @@
 
   var orderSuccsess = function () {
     modalSuccess.classList.remove('modal--hidden');
-    window.form.reset();
+    window.form.formBlock.reset();
+
+    window.form.cardStatus.textContent = 'Не определен';
   };
 
   var closeOrderSuccess = function () {
@@ -22,10 +24,10 @@
     }
   };
 
-  window.form.addEventListener('submit', function (evt) {
+  window.form.formBlock.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
-    window.serverData.sendData(new FormData(window.form), orderSuccsess, document.onError);
+    window.serverData.sendData(new FormData(window.form.formBlock), orderSuccsess, document.onError);
     document.addEventListener('keydown', onPopupEscPress);
     closeModal.addEventListener('click', closeOrderSuccess);
 

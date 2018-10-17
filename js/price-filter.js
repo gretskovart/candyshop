@@ -66,7 +66,7 @@
     document.addEventListener('mousemove', movePinHandler);
     document.addEventListener('mouseup', upPinHandler);
     // фильтр товаров по цене
-    document.addEventListener('mouseup', window.useFilter);
+    document.addEventListener('mouseup', window.goodsFilter.useFilter);
   };
 
   sliderLeft.addEventListener('mousedown', sliderHandler);

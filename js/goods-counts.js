@@ -2,108 +2,98 @@
 
 (function () {
   var filterBar = document.querySelector('.catalog__sidebar');
+  var count = [];
 
-  window.getCountOfFilteredCards = function () {
-    var count = [];
+  window.goodsCounts = {
+    getCountOfFilteredCards: function () {
 
-    // по типу продукта
-    var getFilteredByTypeCount = function () {
-      var titlesOfType = selectBlockInFilter('food-type').titlesOfFilter;
-      var countsBlockOfType = selectBlockInFilter('food-type').countsOfFilter;
+      // по типу продукта
+      var getFilteredByTypeCount = function () {
+        var titlesOfType = window.goodsCounts.selectBlockInFilter('food-type').titlesOfFilter;
+        var countsBlockOfType = window.goodsCounts.selectBlockInFilter('food-type').countsOfFilter;
 
-      titlesOfType.forEach(function (itemTitle, i) {
-        count[i] = 0;
+        titlesOfType.forEach(function (itemTitle, i) {
+          count = 0;
 
-        window.productsArray.forEach(function (itemProduct) {
-          if (itemProduct.kind === itemTitle.textContent) {
-            count[i]++;
+          window.productsArray.forEach(function (itemProduct) {
+            if (itemProduct.kind === itemTitle.textContent) {
+              count++;
+            }
+          });
+          countsBlockOfType[i].innerText = '(' + count + ')';
+        });
+      };
+
+      var getFilteredByNutritionCount = function () {
+        var titlesOfNutrition = window.goodsCounts.selectBlockInFilter('food-property').titlesOfFilter;
+        var countsBlockOfNutrition = window.goodsCounts.selectBlockInFilter('food-property').countsOfFilter;
+
+        titlesOfNutrition.forEach(function (itemTitle, i) {
+          count = 0;
+
+          window.productsArray.forEach(function (itemProduct, j) {
+            switch (itemTitle.textContent) {
+              case 'Без сахара':
+                if (!checkNutrition(j, 'sugar')) {
+                  count++;
+                }
+                break;
+              case 'Вегетарианское':
+                if (checkNutrition(j, 'vegetarian')) {
+                  count++;
+                }
+                break;
+              case 'Безглютеновое':
+                if (!checkNutrition(j, 'gluten')) {
+                  count++;
+                }
+                break;
+            }
+          });
+          countsBlockOfNutrition[i].innerText = '(' + count + ')';
+        });
+      };
+
+      var getFilteredByPriceCount = function () {
+        var minPrice = document.querySelector('.range__price--min').innerText;
+        var maxPrice = document.querySelector('.range__price--max').innerText;
+        var countsBlockOfPrice = filterBar.querySelector('.range__price-count .range__count');
+        var countPrice = 0;
+
+        window.productsArray.forEach(function (item) {
+          if (item.price >= minPrice && item.price <= maxPrice) {
+            countPrice++;
           }
         });
-        countsBlockOfType[i].innerText = '(' + count[i] + ')';
-      });
-    };
 
-    var getFilteredByNutritionCount = function () {
-      var titlesOfNutrition = selectBlockInFilter('food-property').titlesOfFilter;
-      var countsBlockOfNutrition = selectBlockInFilter('food-property').countsOfFilter;
+        countsBlockOfPrice.innerText = '(' + countPrice + ')';
+      };
 
-      titlesOfNutrition.forEach(function (itemTitle, i) {
-        count[i] = 0;
+      var getFilteredByInStockCount = function () {
+        var countsBlockOfInStock = window.goodsCounts.selectBlockInFilter('mark').countsOfFilter[1];
+        count = 0;
 
-        window.productsArray.forEach(function (itemProduct, j) {
-          switch (itemTitle.textContent) {
-            case 'Без сахара':
-              if (!checkNutrition(j, 'sugar')) {
-                count[i]++;
-              }
-              break;
-            case 'Вегетарианское':
-              if (checkNutrition(j, 'vegetarian')) {
-                count[i]++;
-              }
-              break;
-            case 'Безглютеновое':
-              if (!checkNutrition(j, 'gluten')) {
-                count[i]++;
-              }
-              break;
+        window.productsArray.forEach(function (item) {
+          if (item.amount !== 0) {
+            count++;
           }
         });
-        countsBlockOfNutrition[i].innerText = '(' + count[i] + ')';
-      });
-    };
 
-    var getFilteredByPriceCount = function () {
-      var minPrice = document.querySelector('.range__price--min').innerText;
-      var maxPrice = document.querySelector('.range__price--max').innerText;
-      var countsBlockOfPrice = filterBar.querySelector('.range__price-count .range__count');
-      var countPrice = 0;
+        countsBlockOfInStock.innerText = '(' + count + ')';
+      };
 
-      window.productsArray.forEach(function (item) {
-        if (item.price >= minPrice && item.price <= maxPrice) {
-          countPrice++;
-        }
-      });
+      var checkNutrition = function (index, prop) {
+        return window.productsArray[index].nutritionFacts[prop];
+      };
 
-      countsBlockOfPrice.innerText = '(' + countPrice + ')';
-    };
+      getFilteredByTypeCount();
+      getFilteredByNutritionCount();
+      window.goodsFilter.getFilteredByFavoriteCount();
+      getFilteredByInStockCount();
+      getFilteredByPriceCount();
+    },
 
-    var getFilteredByFavoriteCount = function () {
-      var catalog = document.querySelector('.catalog__cards');
-      var cardFavorite = catalog.querySelectorAll('.card__btn-favorite--selected');
-      var countFavorite = cardFavorite.length;
-      var countsBlockOfFavorite = selectBlockInFilter('mark').countsOfFilter[0];
-
-      countsBlockOfFavorite.innerText = '(' + countFavorite + ')';
-    };
-
-    var getFilteredByInStockCount = function () {
-      var countsBlockOfInStock = selectBlockInFilter('mark').countsOfFilter[1];
-      count = 0;
-
-      window.productsArray.forEach(function (item) {
-        if (item.amount !== 0) {
-          count++;
-        }
-      });
-
-      countsBlockOfInStock.innerText = '(' + count + ')';
-    };
-
-    window.getFilteredByFavoriteCount = function () {
-      var catalog = document.querySelector('.catalog__cards');
-      var cardFavorite = catalog.querySelectorAll('.card__btn-favorite--selected');
-      count = cardFavorite.length;
-      var countsBlockOfFavorite = selectBlockInFilter('mark').countsOfFilter[0];
-
-      countsBlockOfFavorite.innerText = '(' + count + ')';
-    };
-
-    var checkNutrition = function (index, prop) {
-      return window.productsArray[index].nutritionFacts[prop];
-    };
-
-    var selectBlockInFilter = function (title) {
+    selectBlockInFilter: function (title) {
       var blockFilter = {};
 
       blockFilter.titlesOfFilter = document
@@ -112,12 +102,6 @@
       .querySelectorAll('.input-btn__input[name="' + title + '"] + .input-btn__label + .input-btn__item-count');
 
       return blockFilter;
-    };
-
-    getFilteredByTypeCount();
-    getFilteredByNutritionCount();
-    getFilteredByFavoriteCount();
-    getFilteredByInStockCount();
-    getFilteredByPriceCount();
+    }
   };
 })();
