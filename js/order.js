@@ -3,6 +3,8 @@
 (function () {
   var orderForm = document.querySelector('#order');
   var submitButton = document.querySelector('.buy__submit-btn');
+  var currentObjCatalog;
+  var currentObjCart;
 
   window.productsCartArray = [];
   window.productsContainer = document.querySelector('.catalog__cards');
@@ -142,11 +144,7 @@
           var currentCardName = currentCard.querySelector('.card__title').textContent;
           var currentCardPrice = parseFloat(currentCard.querySelector('.card__price').textContent);
           var productObj = copyObj(window.productsArray, currentCardName, currentCardPrice);
-          var attrAmount = parseFloat(currentCard.getAttribute('amount'));
           var noSimilar = true;
-          if (attrAmount === 0) {
-            return;
-          }
 
           if (productObj) {
             if (window.productsCartArray.length === 0) {
@@ -157,9 +155,7 @@
               window.productsCartArray.forEach(function (itemProduct) {
                 if (itemProduct.name === currentCardName) {
                   changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
-                  changeOverallPrice(getCurrentCartCard(currentCardName), 1);
 
-                  itemProduct.amount += 1;
                   noSimilar = false;
                 }
               });
@@ -213,18 +209,11 @@
       }
     });
 
-    if (currentObj.amount > 0) {
-      currentObj.amount -= 1;
-    }
+    var copy = Object.assign({}, currentObj);
+    copy.amount = 1;
 
-    if (currentObj.amount < 1) {
-      return false;
-    } else {
-      var copy = Object.assign({}, currentObj);
-      copy.amount = 1;
+    return copy;
 
-      return copy;
-    }
   };
   // копируем объект карточки
 
@@ -236,54 +225,49 @@
     var cartObjCount = currentCard.querySelector('.card-order__count');
     var currentCount = parseInt(cartObjCount.getAttribute('value'), 10);
 
+    var cartObjPrice = currentCard.querySelector('.card-order__price');
+    var currentPrice = parseInt(cartObjPrice.innerText, 10);
+    var currenProductPrice = getCurrentCartObj(currentName, window.productsCartArray).price;
+
     var cartPrice = currentCard.getAttribute('data-price');
     var currentIntPrice = parseInt(cartPrice, 10);
 
+    currentObjCatalog = getCurrentCartObj(currentName, window.productsArray);
+    currentObjCart = getCurrentCartObj(currentName, window.productsCartArray);
+
     switch (act) {
       case 1:
-        cartObjCount.setAttribute('value', currentCount += 1);
-        getCurrentCartObj(currentName).amount += 1;
+        if (currentObjCatalog.amount > currentObjCart.amount) {
+          cartObjCount.setAttribute('value', currentCount += 1);
+          currentObjCart.amount += 1;
+          cartObjPrice.textContent = currentPrice + currenProductPrice;
 
-        break;
-      case -1:
-        if (currentCount !== 1) {
-          cartObjCount.setAttribute('value', currentCount -= 1);
-          getCurrentCartObj(currentName).amount -= 1;
-        } else {
-          removeCartObj(evtTar);
+          renderHeaderProductCartPrice(currentIntPrice, act);
         }
 
         break;
-    }
-
-    renderHeaderProductCartPrice(currentIntPrice, act);
-  };
-
-  var changeOverallPrice = function (evtTar, act) {
-    var currentCard = evtTar.closest('.goods_card');
-    var cartObjPrice = currentCard.querySelector('.card-order__price');
-    var currentPrice = parseInt(cartObjPrice.innerText, 10);
-    var currentName = currentCard.querySelector('.card-order__title').textContent;
-    var currenProductPrice = getCurrentCartObj(currentName).price;
-
-    switch (act) {
-      case 1:
-        cartObjPrice.textContent = currentPrice + currenProductPrice;
-
-        break;
       case -1:
-        if (currentPrice !== currenProductPrice) {
-          cartObjPrice.textContent = currentPrice - currenProductPrice;
+        if (currentObjCatalog.amount >= currentObjCart.amount) {
+          if (currentCount !== 1) {
+            cartObjCount.setAttribute('value', currentCount -= 1);
+            currentObjCart.amount -= 1;
+            cartObjPrice.textContent = currentPrice - currenProductPrice;
+
+          } else {
+            removeCartObj(evtTar);
+          }
+
+          renderHeaderProductCartPrice(currentIntPrice, act);
         }
 
         break;
     }
   };
 
-  var getCurrentCartObj = function (objName) {
+  var getCurrentCartObj = function (objName, arr) {
     var currentCartObj;
 
-    window.productsCartArray.forEach(function (item) {
+    arr.forEach(function (item) {
       if (item.name === objName) {
         currentCartObj = item;
       }
@@ -312,7 +296,6 @@
     decreaseButton[lastElem].addEventListener('click', function (evt) {
       evt.stopPropagation();
       changeQantityCartObj(evt.target, -1);
-      changeOverallPrice(evt.target, -1);
     });
   };
 
@@ -323,7 +306,6 @@
     increaseButton[lastElem].addEventListener('click', function (evt) {
       evt.stopPropagation();
       changeQantityCartObj(evt.target, 1);
-      changeOverallPrice(evt.target, 1);
     });
   };
   // изменяем количество товаров в корзине
@@ -346,7 +328,7 @@
       window.order.makeInputsDisabled();
     }
 
-    var indexCurrentObj = window.productsCartArray.indexOf(getCurrentCartObj(currentObjName));
+    var indexCurrentObj = window.productsCartArray.indexOf(getCurrentCartObj(currentObjName, window.productsCartArray));
     window.productsCartArray.splice(indexCurrentObj, 1);
   };
 
