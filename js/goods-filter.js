@@ -183,19 +183,12 @@
     }
   };
 
-  var removeCards = function (name) {
+  var removeCards = function () {
     var catalogCards = document.querySelectorAll('.catalog__card');
 
     if (catalogCards) {
       catalogCards.forEach(function (item) {
-        if (name) {
-          if (item.getAttribute('title') === name) {
-            item.remove();
-            return;
-          }
-        } else {
-          item.remove();
-        }
+        item.remove();
       });
     }
   };
