@@ -42,16 +42,18 @@
   var addSelectedFavorite = function (evt) {
     evt.preventDefault();
 
-    var target = evt.target;
-    var cardTitle = target.parentNode.parentNode.parentNode
-    .querySelector('.card__title').innerText.toLowerCase();
+    if (evt.target.classList.contains('card__btn-favorite')) {
+      var target = evt.target;
+      var cardTitle = target.parentNode.parentNode.parentNode
+      .querySelector('.card__title').innerText.toLowerCase();
 
-    if (target.classList.contains('card__btn-favorite')) {
-      target.classList.toggle('card__btn-favorite--selected');
+      if (target.classList.contains('card__btn-favorite')) {
+        target.classList.toggle('card__btn-favorite--selected');
+      }
+
+      addIsFavoriteProp(cardTitle);
+      window.goodsFilter.getFilteredByFavoriteCount();
     }
-
-    addIsFavoriteProp(cardTitle);
-    window.goodsFilter.getFilteredByFavoriteCount();
   };
 
   var addIsFavoriteProp = function (title) {
@@ -129,8 +131,6 @@
 
     return end;
   };
-
-  window.productsContainer.addEventListener('click', addSelectedFavorite);
 
   window.order = {
 
@@ -345,5 +345,5 @@
   };
 
   removeButtonHandler();
-
+  window.productsContainer.addEventListener('click', addSelectedFavorite);
 })();
