@@ -268,14 +268,12 @@
     if (target.name === 'mark') {
       isInputChecked = target.checked;
 
-      if (target.id === 'filter-availability') {
-        showAll(evt);
-      } else {
-        clearAllInputs();
-      }
+      showAll();
 
       target.checked = isInputChecked;
     }
+
+    window.goodsFilter.useFilter();
   };
 
   var getEmptyFilter = function (arr) {
@@ -292,11 +290,10 @@
 
     showEmptyFilter('hide');
     clearAllInputs();
-    removeCards();
     window.clearPrice();
-    window.good.addProductsToPage(window.productsArray);
+    window.goodsFilter.useFilter();
   };
 
-  filterBar.addEventListener('change', window.goodsFilter.useFilter);
+  filterBar.addEventListener('change', clearMarksInputs);
   showButton.addEventListener('click', showAll);
 })();
