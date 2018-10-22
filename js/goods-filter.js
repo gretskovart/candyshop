@@ -184,7 +184,7 @@
   };
 
   window.goodsFilter = {
-    useFilter: function (evt) {
+    useFilter: function () {
       fillObjByFilterItems();
 
       var filteredArr = [];
@@ -207,10 +207,9 @@
         }
       }
 
-      removeCards();
-      clearMarksInputs(evt);
       getEmptyFilter(filteredArr);
       window.good.addProductsToPage(filteredArr);
+      debugger;
     },
 
     getFilteredByFavoriteCount: function () {
@@ -268,11 +267,12 @@
     if (target.name === 'mark') {
       isInputChecked = target.checked;
 
-      showAll();
+      showAll(evt);
 
       target.checked = isInputChecked;
     }
 
+    removeCards();
     window.goodsFilter.useFilter();
   };
 
