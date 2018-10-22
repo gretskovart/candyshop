@@ -207,9 +207,9 @@
         }
       }
 
+      removeCards();
       getEmptyFilter(filteredArr);
       window.good.addProductsToPage(filteredArr);
-      debugger;
     },
 
     getFilteredByFavoriteCount: function () {
@@ -272,7 +272,6 @@
       target.checked = isInputChecked;
     }
 
-    removeCards();
     window.goodsFilter.useFilter();
   };
 
