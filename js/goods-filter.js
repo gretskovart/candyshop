@@ -173,16 +173,6 @@
     }
   };
 
-  var removeCards = function () {
-    var catalogCards = document.querySelectorAll('.catalog__card');
-
-    if (catalogCards) {
-      catalogCards.forEach(function (item) {
-        item.remove();
-      });
-    }
-  };
-
   window.goodsFilter = {
     useFilter: function () {
       fillObjByFilterItems();
@@ -207,7 +197,6 @@
         }
       }
 
-      removeCards();
       getEmptyFilter(filteredArr);
       window.good.addProductsToPage(filteredArr);
     },

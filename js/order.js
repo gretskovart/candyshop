@@ -132,39 +132,33 @@
   window.order = {
 
     // добавляем карточку по нажатию на кнопку
-    addToCartButtonHandler: function () {
-      var addButton = document.querySelectorAll('.card__btn');
+    addToCartButtonHandler: function (evt) {
+      var currentCard = evt.target.closest('.catalog__card');
+      var currentCardName = currentCard.querySelector('.card__title').textContent;
+      var currentCardPrice = parseFloat(currentCard.querySelector('.card__price').textContent);
+      var productObj = copyObj(window.productsArray, currentCardName, currentCardPrice);
+      var noSimilar = true;
 
-      addButton.forEach(function (item) {
-        item.addEventListener('click', function (evt) {
-          var currentCard = evt.target.closest('.catalog__card');
-          var currentCardName = currentCard.querySelector('.card__title').textContent;
-          var currentCardPrice = parseFloat(currentCard.querySelector('.card__price').textContent);
-          var productObj = copyObj(window.productsArray, currentCardName, currentCardPrice);
-          var noSimilar = true;
+      if (productObj) {
+        if (window.order.productsCartArray.length === 0) {
+          window.order.productsCartArray.push(productObj);
+          addProductsToCart(productObj);
+          renderHeaderProductCartPrice(productObj.price, 1);
+        } else {
+          window.order.productsCartArray.forEach(function (itemProduct) {
+            if (itemProduct.name === currentCardName) {
+              changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
 
-          if (productObj) {
-            if (window.order.productsCartArray.length === 0) {
-              window.order.productsCartArray.push(productObj);
-              addProductsToCart(productObj);
-              renderHeaderProductCartPrice(productObj.price, 1);
-            } else {
-              window.order.productsCartArray.forEach(function (itemProduct) {
-                if (itemProduct.name === currentCardName) {
-                  changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
-
-                  noSimilar = false;
-                }
-              });
-              if (noSimilar) {
-                window.order.productsCartArray.push(productObj);
-                renderHeaderProductCartPrice(productObj.price, 1);
-                addProductsToCart(productObj);
-              }
+              noSimilar = false;
             }
+          });
+          if (noSimilar) {
+            window.order.productsCartArray.push(productObj);
+            renderHeaderProductCartPrice(productObj.price, 1);
+            addProductsToCart(productObj);
           }
-        });
-      });
+        }
+      }
     },
 
     makeInputsDisabled: function () {
@@ -295,7 +289,6 @@
     var lastElem = decreaseButton.length - 1;
 
     decreaseButton[lastElem].addEventListener('click', function (evt) {
-      evt.stopPropagation();
       changeQantityCartObj(evt.target, -1);
     });
   };
@@ -305,7 +298,6 @@
     var lastElem = increaseButton.length - 1;
 
     increaseButton[lastElem].addEventListener('click', function (evt) {
-      evt.stopPropagation();
       changeQantityCartObj(evt.target, 1);
     });
   };
@@ -346,5 +338,5 @@
   };
 
   removeButtonHandler();
-  window.order.productsContainer.addEventListener('click', addSelectedFavorite);
+  window.order.productsContainer.addEventListener('mouseup', addSelectedFavorite);
 })();

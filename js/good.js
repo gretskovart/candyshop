@@ -132,6 +132,12 @@
       productElement.setAttribute('data-' + composition, '1');
     };
 
+    var addProductsHandlers = function () {
+      var addButton = productElement.querySelector('.card__btn');
+
+      addButton.addEventListener('mouseup', window.order.addToCartButtonHandler);
+    };
+
     renderProductAmount();
     renderProductName();
     renderProductPrice();
@@ -140,8 +146,17 @@
     renderProductImage();
     renderProductFavorite();
     renderDataAttributes();
+    addProductsHandlers();
 
     return productElement;
+  };
+
+  var removeCards = function () {
+    var catalogCards = document.querySelector('.catalog__cards');
+
+    while (catalogCards.firstChild) {
+      catalogCards.removeChild(catalogCards.firstChild);
+    }
   };
 
   window.good = {
@@ -156,8 +171,8 @@
       };
 
       showCatalogCards();
+      removeCards();
       appendProductsFromArray(arr);
-      window.order.addToCartButtonHandler(); // добавление в корзину
       window.goodsCounts.getCountOfFilteredCards();
       window.order.makeInputsDisabled(); // блокируем инпуты формы
     },
