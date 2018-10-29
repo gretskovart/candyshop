@@ -8,8 +8,17 @@
   var orderSuccsess = function () {
     modalSuccess.classList.remove('modal--hidden');
     window.form.formBlock.reset();
+    clearCart();
 
     window.form.cardStatus.textContent = 'Не определен';
+  };
+
+  var clearCart = function () {
+    var cardsInCart = document.querySelectorAll('.card-order__close');
+
+    cardsInCart.forEach(function (item) {
+      window.order.removeCartObj(item);
+    });
   };
 
   var closeOrderSuccess = function () {

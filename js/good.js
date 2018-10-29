@@ -135,7 +135,7 @@
     var addProductsHandlers = function () {
       var addButton = productElement.querySelector('.card__btn');
 
-      addButton.addEventListener('mouseup', window.order.addToCartButtonHandler);
+      addButton.addEventListener('click', window.order.addToCartButtonHandler);
     };
 
     renderProductAmount();

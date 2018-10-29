@@ -197,8 +197,8 @@
         }
       }
 
-      getEmptyFilter(filteredArr);
       window.good.addProductsToPage(filteredArr);
+      getEmptyFilter(filteredArr);
     },
 
     getFilteredByFavoriteCount: function () {
