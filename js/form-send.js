@@ -8,9 +8,11 @@
   var orderSuccsess = function () {
     modalSuccess.classList.remove('modal--hidden');
     window.form.formBlock.reset();
+    window.form.cardStatus.textContent = 'Не определен';
     clearCart();
 
-    window.form.cardStatus.textContent = 'Не определен';
+    document.addEventListener('keydown', onPopupEscPress);
+    closeModal.addEventListener('click', closeOrderSuccess);
   };
 
   var clearCart = function () {
@@ -37,8 +39,6 @@
     evt.preventDefault();
 
     window.serverData.sendData(new FormData(window.form.formBlock), orderSuccsess, document.onError);
-    document.addEventListener('keydown', onPopupEscPress);
-    closeModal.addEventListener('click', closeOrderSuccess);
 
     setTimeout(closeOrderSuccess, 3000);
   });
