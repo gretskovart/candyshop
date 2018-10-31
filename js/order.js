@@ -339,5 +339,7 @@
   };
 
   removeButtonHandler();
+  window.order.makeInputsDisabled(); // блокируем инпуты формы
+
   window.order.productsContainer.addEventListener('click', addSelectedFavorite);
 })();

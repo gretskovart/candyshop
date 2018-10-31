@@ -174,7 +174,6 @@
       removeCards();
       appendProductsFromArray(arr);
       window.goodsCounts.getCountOfFilteredCards();
-      window.order.makeInputsDisabled(); // блокируем инпуты формы
     },
 
     productImagePath: 'img/cards/'
