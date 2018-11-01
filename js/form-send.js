@@ -11,7 +11,7 @@
     window.form.cardStatus.textContent = 'Не определен';
     clearCart();
 
-    document.addEventListener('keydown', onPopupEscPress);
+    document.addEventListener('keydown', pressEscPopupHandler);
     closeModal.addEventListener('click', closeOrderSuccess);
   };
 
@@ -26,10 +26,10 @@
   var closeOrderSuccess = function () {
     modalSuccess.classList.add('modal--hidden');
 
-    document.removeEventListener('keydown', onPopupEscPress);
+    document.removeEventListener('keydown', pressEscPopupHandler);
   };
 
-  var onPopupEscPress = function (evt) {
+  var pressEscPopupHandler = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       closeOrderSuccess();
     }

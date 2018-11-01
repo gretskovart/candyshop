@@ -131,7 +131,6 @@
 
   window.order = {
 
-    // добавляем карточку по нажатию на кнопку
     addToCartButtonHandler: function (evt) {
       var currentCard = evt.target.closest('.catalog__card');
       var currentCardName = currentCard.querySelector('.card__title').textContent;
@@ -187,7 +186,10 @@
         item.removeAttribute('disabled');
       });
 
-      disableTextArea.removeAttribute('disabled');
+      if (disableTextArea) {
+        disableTextArea.removeAttribute('disabled');
+      }
+
       submitButton.removeAttribute('disabled');
     },
 
@@ -217,7 +219,6 @@
     }
   };
 
-  // копируем объект карточки
   var copyObj = function (arr, objName, objPrice) {
     var currentObj = {};
 
@@ -233,9 +234,7 @@
     return copy;
 
   };
-  // копируем объект карточки
 
-  // изменяем количество товаров в корзине
   var changeQantityCartObj = function (evtTar, act) {
     var currentCard = evtTar.closest('.goods_card');
     var currentName = currentCard.querySelector('.card-order__title').textContent;
@@ -324,7 +323,6 @@
       changeQantityCartObj(evt.target, 1);
     });
   };
-  // изменяем количество товаров в корзине
 
   var removeButtonHandler = function () {
     productsCartContainer.addEventListener('click', function (evt) {
@@ -339,7 +337,7 @@
   };
 
   removeButtonHandler();
-  window.order.makeInputsDisabled(); // блокируем инпуты формы
+  window.order.makeInputsDisabled();
 
   window.order.productsContainer.addEventListener('click', addSelectedFavorite);
 })();
