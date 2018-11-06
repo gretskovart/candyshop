@@ -10,8 +10,8 @@
 
   var responseChecker = function (onLoad, onError) {
     var error;
-    xhr.addEventListener('load', function () {
 
+    xhr.addEventListener('load', function () {
       switch (xhr.status) {
         case 200:
           onLoad(xhr.response);
@@ -27,8 +27,8 @@
           break;
         default:
           error = 'Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText;
+          break;
       }
-      window.good.addProductsToPage(window.productsArray);
     });
 
     xhr.addEventListener('timeout', function () {
@@ -54,5 +54,4 @@
       xhr.send(data);
     }
   };
-
 })();

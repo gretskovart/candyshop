@@ -230,5 +230,4 @@
   paymentInputsBlock.addEventListener('change', changeInputsPaymentHandler);
   paymentInputsBlock.addEventListener('keyup', changeInputsPaymentHandler);
   paymentInputsBlock.addEventListener('focusout', formInputsChecker);
-
 })();

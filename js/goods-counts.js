@@ -7,7 +7,6 @@
   window.goodsCounts = {
     getCountOfFilteredCards: function () {
 
-      // по типу продукта
       var getFilteredByTypeCount = function () {
         var titlesOfType = window.goodsCounts.selectBlockInFilter('food-type').titlesOfFilter;
         var countsBlockOfType = window.goodsCounts.selectBlockInFilter('food-type').countsOfFilter;

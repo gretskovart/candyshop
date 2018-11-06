@@ -19,10 +19,11 @@
   };
 
   var onLoad = function (objects) {
-    window.productsArray = objects;
+    if (Array.isArray(objects)) {
+      window.productsArray = objects;
+      window.good.addProductsToPage(window.productsArray);
+    }
   };
 
-  window.addEventListener('load', function () {
-    window.serverData.loadData(onLoad, document.onError);
-  });
+  window.serverData.loadData(onLoad, document.onError);
 })();

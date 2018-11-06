@@ -5,12 +5,13 @@
   var PRODUCTS_PRICE_MIN = 0;
   var PIN_WIDTH_X2 = 10;
 
-  var sliderLeft = document.querySelector('.range__btn--left');
-  var sliderRight = document.querySelector('.range__btn--right');
-  var rangeFilter = document.querySelector('.range__filter');
+  var filterBar = document.querySelector('.catalog__sidebar');
+  var rangeFilter = filterBar.querySelector('.range__filter');
+  var sliderLeft = rangeFilter.querySelector('.range__btn--left');
+  var sliderRight = rangeFilter.querySelector('.range__btn--right');
   var line = rangeFilter.querySelector('.range__fill-line');
-  var rangePriceRight = document.querySelector('.range__price--max');
-  var rangePriceLeft = document.querySelector('.range__price--min');
+  var rangePriceRight = filterBar.querySelector('.range__price--max');
+  var rangePriceLeft = filterBar.querySelector('.range__price--min');
   var rangeWidth = rangeFilter.clientWidth;
 
   var sliderHandler = function (downEvt) {
@@ -37,8 +38,8 @@
     };
 
     var upPinHandler = function () {
-      document.removeEventListener('mousemove', movePinHandler);
-      document.removeEventListener('mouseup', upPinHandler);
+      filterBar.removeEventListener('mousemove', movePinHandler);
+      filterBar.removeEventListener('mouseup', upPinHandler);
     };
 
     var getRangePrice = function (position) {
@@ -63,10 +64,9 @@
       }
     };
 
-    document.addEventListener('mousemove', movePinHandler);
-    document.addEventListener('mouseup', upPinHandler);
-    // фильтр товаров по цене
-    document.addEventListener('mouseup', window.goodsFilter.useFilter);
+    filterBar.addEventListener('mousemove', movePinHandler);
+    filterBar.addEventListener('mouseup', upPinHandler);
+    filterBar.addEventListener('mouseup', window.goodsFilter.useFilter);
   };
 
   sliderLeft.addEventListener('mousedown', sliderHandler);

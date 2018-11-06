@@ -131,40 +131,35 @@
 
   window.order = {
 
-    // добавляем карточку по нажатию на кнопку
-    addToCartButtonHandler: function () {
-      var addButton = document.querySelectorAll('.card__btn');
+    addToCartButtonHandler: function (evt) {
+      var currentCard = evt.target.closest('.catalog__card');
+      var currentCardName = currentCard.querySelector('.card__title').textContent;
+      var currentCardPrice = parseFloat(currentCard.querySelector('.card__price').textContent);
+      var productObj = copyObj(window.productsArray, currentCardName, currentCardPrice);
+      var noSimilar = true;
 
-      addButton.forEach(function (item) {
-        item.addEventListener('click', function (evt) {
-          var currentCard = evt.target.closest('.catalog__card');
-          var currentCardName = currentCard.querySelector('.card__title').textContent;
-          var currentCardPrice = parseFloat(currentCard.querySelector('.card__price').textContent);
-          var productObj = copyObj(window.productsArray, currentCardName, currentCardPrice);
-          var noSimilar = true;
+      if (productObj) {
+        evt.preventDefault();
 
-          if (productObj) {
-            if (window.order.productsCartArray.length === 0) {
-              window.order.productsCartArray.push(productObj);
-              addProductsToCart(productObj);
-              renderHeaderProductCartPrice(productObj.price, 1);
-            } else {
-              window.order.productsCartArray.forEach(function (itemProduct) {
-                if (itemProduct.name === currentCardName) {
-                  changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
+        if (window.order.productsCartArray.length === 0) {
+          window.order.productsCartArray.push(productObj);
+          addProductsToCart(productObj);
+          renderHeaderProductCartPrice(productObj.price, 1);
+        } else {
+          window.order.productsCartArray.forEach(function (itemProduct) {
+            if (itemProduct.name === currentCardName) {
+              changeQantityCartObj(getCurrentCartCard(currentCardName), 1);
 
-                  noSimilar = false;
-                }
-              });
-              if (noSimilar) {
-                window.order.productsCartArray.push(productObj);
-                renderHeaderProductCartPrice(productObj.price, 1);
-                addProductsToCart(productObj);
-              }
+              noSimilar = false;
             }
+          });
+          if (noSimilar) {
+            window.order.productsCartArray.push(productObj);
+            renderHeaderProductCartPrice(productObj.price, 1);
+            addProductsToCart(productObj);
           }
-        });
-      });
+        }
+      }
     },
 
     makeInputsDisabled: function () {
@@ -191,16 +186,39 @@
         item.removeAttribute('disabled');
       });
 
-      disableTextArea.removeAttribute('disabled');
+      if (disableTextArea) {
+        disableTextArea.removeAttribute('disabled');
+      }
+
       submitButton.removeAttribute('disabled');
     },
 
     productsCartArray: [],
 
-    productsContainer: document.querySelector('.catalog__cards')
+    productsContainer: document.querySelector('.catalog__cards'),
+
+    removeCartObj: function (evtTar) {
+      var currentObj = evtTar.closest('.goods_card');
+      var currentObjQuantity = currentObj.querySelector('.card-order__count');
+      var currentObjQuantityVal = parseInt(currentObjQuantity.getAttribute('value'), 10);
+      var cartPrice = currentObj.querySelector('.card-order__price').textContent;
+      var currentObjFullPrice = parseInt(cartPrice, 10) * currentObjQuantityVal;
+      var currentObjName = currentObj.querySelector('.card-order__title').textContent;
+
+      renderHeaderProductCartPrice(currentObjFullPrice, -1, currentObjQuantityVal);
+
+      currentObj.remove();
+
+      if (window.order.productsCartArray.length === 1) {
+        hideGoodsCards();
+        window.order.makeInputsDisabled();
+      }
+
+      var indexCurrentObj = window.order.productsCartArray.indexOf(getCurrentCartObj(currentObjName, window.order.productsCartArray));
+      window.order.productsCartArray.splice(indexCurrentObj, 1);
+    }
   };
 
-  // копируем объект карточки
   var copyObj = function (arr, objName, objPrice) {
     var currentObj = {};
 
@@ -216,9 +234,7 @@
     return copy;
 
   };
-  // копируем объект карточки
 
-  // изменяем количество товаров в корзине
   var changeQantityCartObj = function (evtTar, act) {
     var currentCard = evtTar.closest('.goods_card');
     var currentName = currentCard.querySelector('.card-order__title').textContent;
@@ -255,7 +271,7 @@
             cartObjPrice.textContent = currentPrice - currenProductPrice;
 
           } else {
-            removeCartObj(evtTar);
+            window.order.removeCartObj(evtTar);
           }
 
           renderHeaderProductCartPrice(currentIntPrice, act);
@@ -295,7 +311,6 @@
     var lastElem = decreaseButton.length - 1;
 
     decreaseButton[lastElem].addEventListener('click', function (evt) {
-      evt.stopPropagation();
       changeQantityCartObj(evt.target, -1);
     });
   };
@@ -305,32 +320,8 @@
     var lastElem = increaseButton.length - 1;
 
     increaseButton[lastElem].addEventListener('click', function (evt) {
-      evt.stopPropagation();
       changeQantityCartObj(evt.target, 1);
     });
-  };
-  // изменяем количество товаров в корзине
-
-  // удаляем товар из корзины
-  var removeCartObj = function (evtTar) {
-    var currentObj = evtTar.closest('.goods_card');
-    var currentObjQuantity = currentObj.querySelector('.card-order__count');
-    var currentObjQuantityVal = parseInt(currentObjQuantity.getAttribute('value'), 10);
-    var cartPrice = currentObj.querySelector('.card-order__price').textContent;
-    var currentObjFullPrice = parseInt(cartPrice, 10) * currentObjQuantityVal;
-    var currentObjName = currentObj.querySelector('.card-order__title').textContent;
-
-    renderHeaderProductCartPrice(currentObjFullPrice, -1, currentObjQuantityVal);
-
-    currentObj.remove();
-
-    if (window.order.productsCartArray.length === 1) {
-      hideGoodsCards();
-      window.order.makeInputsDisabled();
-    }
-
-    var indexCurrentObj = window.order.productsCartArray.indexOf(getCurrentCartObj(currentObjName, window.order.productsCartArray));
-    window.order.productsCartArray.splice(indexCurrentObj, 1);
   };
 
   var removeButtonHandler = function () {
@@ -338,7 +329,7 @@
       evt.preventDefault();
 
       if (evt.target.classList.contains('card-order__close')) {
-        removeCartObj(evt.target);
+        window.order.removeCartObj(evt.target);
 
         return;
       }
@@ -346,5 +337,7 @@
   };
 
   removeButtonHandler();
+  window.order.makeInputsDisabled();
+
   window.order.productsContainer.addEventListener('click', addSelectedFavorite);
 })();
